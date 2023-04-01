@@ -19,6 +19,9 @@ dependencies:
   '@mantine/notifications':
     specifier: ^6.0.5
     version: 6.0.5(@mantine/core@6.0.5)(@mantine/hooks@6.0.5)(react-dom@18.2.0)(react@18.2.0)
+  '@tabler/icons-react':
+    specifier: ^2.12.0
+    version: 2.12.0(react@18.2.0)
   '@types/node':
     specifier: ^18.15.11
     version: 18.15.11
@@ -54,6 +57,12 @@ devDependencies:
   '@vitejs/plugin-react':
     specifier: ^3.1.0
     version: 3.1.0(vite@4.2.0)
+  postcss:
+    specifier: ^8.4.21
+    version: 8.4.21
+  postcss-nested:
+    specifier: ^6.0.1
+    version: 6.0.1(postcss@8.4.21)
   typescript:
     specifier: ^4.9.3
     version: 4.9.3
@@ -865,6 +874,20 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
+  /@tabler/icons-react@2.12.0(react@18.2.0):
+    resolution: {integrity: sha512-5O26fB0sigZ9UaDnMTPsht8clU6KYyClvTwhLPud0ZjeTnOMzGhe2Yx5qvfhDkCBNQqz+hIV8kBUe7fvNGv1Ng==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@tabler/icons': 2.12.0
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
+  /@tabler/icons@2.12.0:
+    resolution: {integrity: sha512-PiYD2zUOewNAtfJKU9tBZfyv3NeFlTlUe5LSGTTplvBcM0iuHrNVnd30+HIcUGJQhi3Uf0Ng9FRi/kPqm/q6ZA==}
+    dev: false
+
   /@types/compose-function@0.0.30:
     resolution: {integrity: sha512-TY6zsIzbLU9nsRMVwaq5hYNSoglao3ZOm2I4jAi1EojDZJdF8vtDqBG+f086WJ17pwRH4sQseXp/U6GVxUxHwA==}
     dev: true
@@ -1030,6 +1053,12 @@ packages:
       path-type: 4.0.0
       yaml: 1.10.2
     dev: false
+
+  /cssesc@3.0.0:
+    resolution: {integrity: sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==}
+    engines: {node: '>=4'}
+    hasBin: true
+    dev: true
 
   /csstype@3.0.9:
     resolution: {integrity: sha512-rpw6JPxK6Rfg1zLOYCSwle2GFOOsnjmDYDaBwEcwoOg4qlsIVCN789VkBZDJAGi4T07gI4YSutR43t9Zz4Lzuw==}
@@ -1358,6 +1387,24 @@ packages:
 
   /picocolors@1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
+    dev: true
+
+  /postcss-nested@6.0.1(postcss@8.4.21):
+    resolution: {integrity: sha512-mEp4xPMi5bSWiMbsgoPfcP74lsWLHkQbZc3sY+jWYd65CUwXrUaTp0fmNpa01ZcETKlIgUdFN/MpS2xZtqL9dQ==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      postcss: ^8.2.14
+    dependencies:
+      postcss: 8.4.21
+      postcss-selector-parser: 6.0.11
+    dev: true
+
+  /postcss-selector-parser@6.0.11:
+    resolution: {integrity: sha512-zbARubNdogI9j7WY4nQJBiNqQf3sLS3wCP4WfOidu+p28LofJqDH1tcXypGrcmMHhDk2t9wGhCsYe/+szLTy1g==}
+    engines: {node: '>=4'}
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
     dev: true
 
   /postcss@8.4.21:
@@ -1697,6 +1744,10 @@ packages:
       react: 18.2.0
       tslib: 2.5.0
     dev: false
+
+  /util-deprecate@1.0.2:
+    resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
+    dev: true
 
   /vite@4.2.0(@types/node@18.15.11):
     resolution: {integrity: sha512-AbDTyzzwuKoRtMIRLGNxhLRuv1FpRgdIw+1y6AQG73Q5+vtecmvzKo/yk8X/vrHDpETRTx01ABijqUHIzBXi0g==}

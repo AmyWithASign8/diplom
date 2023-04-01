@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from "../../widgets/header";
+import {LandingLayout} from "./landing-layout";
 
 export const LandingPage = () => {
     return (
         <div>
-            <Header/>
+            <LandingLayout/>
         </div>
     );
 };
