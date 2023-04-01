@@ -1,5 +1,5 @@
 import React from "react";
 
-export const CartPage = () => {
+export const CartLayout = () => {
   return <div>CartPage</div>;
 };

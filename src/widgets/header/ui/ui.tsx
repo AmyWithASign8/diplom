@@ -5,12 +5,49 @@ import {
   Image,
   Text,
   Header as ManTineHeader,
+  Menu,
+  Grid,
+  ColorScheme,
+  useMantineTheme,
 } from "@mantine/core";
 import HeaderImg from "../assets/images/favicon.png";
-import { IconShoppingCart } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import {
+  IconHome2,
+  IconInfoCircle,
+  IconLocation,
+  IconMoonStars,
+  IconPizza,
+  IconSettings,
+  IconShoppingCart,
+  IconSun,
+  IconUser,
+  IconUserCircle,
+  IconUserPlus,
+} from "@tabler/icons-react";
+import { Link, useLocation } from "react-router-dom";
+import { useStore } from "effector-react/compat";
+import { $theme, switchTheme } from "../../../app/models/themeStore";
 
 export const Header = () => {
+  const mantineTheme = useMantineTheme();
+  const theme = useStore($theme);
+  localStorage.setItem("theme", theme);
+  const altTheme = theme === "light" ? "dark" : "light";
+  const dataNavigation = [
+    { name: "Главная", icon: <IconHome2 />, currentUrl: "/" },
+    { name: "Каталог", icon: <IconPizza />, currentUrl: "/catalog" },
+    { name: "Авторизация", icon: <IconUser />, currentUrl: "/auth" },
+    { name: "Регистрация", icon: <IconUserPlus />, currentUrl: "/reg" },
+    { name: "Корзина", icon: <IconShoppingCart />, currentUrl: "/cart" },
+    { name: "Мой профиль", icon: <IconUserCircle />, currentUrl: "/about-us" },
+    {
+      name: "Мои настройки",
+      icon: <IconSettings />,
+      currentUrl: "/about-us",
+    },
+    { name: "О нас", icon: <IconInfoCircle />, currentUrl: "/about-us" },
+  ];
+  const urll = useLocation();
   return (
     <ManTineHeader
       height={80}
@@ -18,23 +55,66 @@ export const Header = () => {
         position: "fixed",
         width: "100%",
         opacity: 0.8,
-        transition: "0.7s all",
+        transition: "0.7s opacity",
 
         "&:hover": {
           opacity: 1,
-          transition: "0.7s all",
+          transition: "0.7s opacity",
         },
       })}
     >
-      <Group position={"apart"}>
+      <Group position={"apart"} mr={"5%"}>
         <Link to={"/"}>
           <Group>
             <Image src={HeaderImg} width={70} />
-            <Text fs={"Italic"} fw={500} size={30}>
+            <Text
+              variant="gradient"
+              gradient={{ from: "yellow", to: "orange", deg: 45 }}
+              fs={"Italic"}
+              fw={500}
+              size={30}
+            >
               Tasty pizza
             </Text>
           </Group>
         </Link>
+        <Menu>
+          <Menu.Target>
+            <Button variant="subtle" color="orange" leftIcon={<IconLocation />}>
+              Навигация по сайту
+            </Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Grid
+              grow
+              maw={600}
+              gutter={"xs"}
+              sx={() => ({
+                textAlign: "center",
+                padding: 10,
+              })}
+            >
+              {dataNavigation.map((data) => (
+                <Grid.Col span={4} key={data.name}>
+                  <Button
+                    component={Link}
+                    to={data.currentUrl}
+                    variant={
+                      urll.pathname === data.currentUrl ? "filled" : "subtle"
+                    }
+                    color={"orange"}
+                    leftIcon={data.icon}
+                  >
+                    {data.name}
+                  </Button>
+                </Grid.Col>
+              ))}
+            </Grid>
+          </Menu.Dropdown>
+        </Menu>
+        <Button leftIcon={<IconUser />} variant="subtle" color="orange">
+          Действия пользователя
+        </Button>
         <Button
           leftIcon={<IconShoppingCart />}
           variant="subtle"
@@ -43,6 +123,20 @@ export const Header = () => {
           to={"/cart"}
         >
           Корзина
+        </Button>
+        <Button
+          color={theme === "light" ? "blue" : "orange"}
+          variant={"subtle"}
+          leftIcon={
+            theme === "light" ? (
+              <IconMoonStars color={mantineTheme.colors.blue[6]} />
+            ) : (
+              <IconSun color={mantineTheme.colors.yellow[4]} />
+            )
+          }
+          onClick={() => switchTheme(altTheme)}
+        >
+          Сменить тему
         </Button>
       </Group>
     </ManTineHeader>

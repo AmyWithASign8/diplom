@@ -25,7 +25,7 @@ export const AboutUs = () => {
           </Text>
           <Button
             variant={"subtle"}
-            color={"yellow"}
+            color={"orange"}
             leftIcon={<IconArrowBigDownLinesFilled />}
             mt={20}
           >

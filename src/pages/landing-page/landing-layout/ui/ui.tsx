@@ -7,48 +7,66 @@ import {
   Image,
   Button,
   Group,
+  Stack,
 } from "@mantine/core";
 import BgImagePizza from "../assets/images/bg-pizza.jpg";
 import { Carousel } from "@mantine/carousel";
+import { Link } from "react-router-dom";
+import PizzaCard from "../../../../features/pizza-card/ui/ui";
+import { CommentCard } from "../../../../features/comment-card";
 
 export const LandingLayout = () => {
   return (
     <div>
       <BackgroundImage src={BgImagePizza}>
-        <Center>
-          <Box
-            bg={"rgba(0, 0, 0, 0.7);"}
-            maw={800}
-            mt={200}
-            sx={() => ({
-              textAlign: "center",
-              padding: 50,
-              borderRadius: 20,
-            })}
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <Box
+          bg={"rgba(0, 0, 0, 0);"}
+          maw={1600}
+          ml={"10%"}
+          sx={() => ({
+            padding: 50,
+            borderRadius: 20,
+          })}
+        >
+          <Text
+            variant={"gradient"}
+            gradient={{ from: "orange", to: "yellow", deg: 45 }}
+            fw={700}
+            size={70}
           >
-            <Center>
-              <Text color={"#fff"} fw={700} size={60}>
-                Добро пожаловать
-              </Text>
-            </Center>
-            <Text color={"#fff"}>
-              Вы попали на сайт онлайн-пиццерия "Tasty pizza". Закажите быстро и
-              просто вкуснейшюю пиццуВы попали на сайт онлайн-пиццерия "Tasty
-              pizza". Закажите быстро и просто вкуснейшюю пиццуВы попали на сайт
-              онлайн-пиццерия "Tasty pizza". Закажите быстро и просто вкуснейшюю
-              пиццуВы попали на сайт онлайн-пиццерия "Tasty pizza". Закажите
-              быстро и просто вкуснейшюю пиццуВы попали на сайт онлайн-пиццерия
-              "Tasty pizza". Закажите быстро и просто вкуснейшюю пиццуВы попали
-              на сайт онлайн-пиццерия "Tasty pizza". Закажите быстро и просто
-              вкуснейшюю пиццуВы попали на сайт онлайн-пиццерия "Tasty pizza".
-              Закажите быстро и просто вкуснейшюю пиццуВы попали на сайт
-              онлайн-пиццерия "Tasty pizza". Закажите быстро и просто вкуснейшюю
-              пиццуВы попали на сайт онлайн-пиццерия "Tasty pizza". Закажите
-              быстро и просто вкуснейшюю пиццуВы попали на сайт онлайн-пиццерия
-              "Tasty pizza". Закажите быстро и просто вкуснейшюю пиццу
-            </Text>
-          </Box>
-        </Center>
+            Добро пожаловать
+          </Text>
+
+          <Text
+            variant={"gradient"}
+            gradient={{ from: "orange", to: "yellow", deg: 75 }}
+            fw={700}
+            size={70}
+            ml={"35%"}
+          >
+            на наш сайт
+          </Text>
+          <Text
+            variant={"gradient"}
+            gradient={{ from: "orange", to: "yellow", deg: 45 }}
+            fw={700}
+            size={70}
+            ml={"60%"}
+          >
+            TASTY PIZZA
+          </Text>
+        </Box>
+
+        <br />
         <br />
         <br />
         <br />
@@ -62,51 +80,112 @@ export const LandingLayout = () => {
         <br />
         <br />
       </BackgroundImage>
-      <Center>
-        <Text fw={500} size={30}>
-          Стоит попробывать :{" "}
-        </Text>
-      </Center>
-      <Carousel slideSize="70%" height={400} slideGap="md" loop withIndicators>
-        <Carousel.Slide>
-          <BackgroundImage src={BgImagePizza}>
-            <Box
-              bg={"rgba(0, 0, 0, 0.5);"}
-              maw={800}
-              sx={() => ({
-                textAlign: "center",
-                padding: 50,
-                borderRadius: 20,
-              })}
-            >
-              <Button>Каталог</Button>
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-              <br />
-            </Box>
-          </BackgroundImage>
-        </Carousel.Slide>
-        <Carousel.Slide>
-          <Image src={BgImagePizza} />
-        </Carousel.Slide>
-        <Carousel.Slide>
-          <Image src={BgImagePizza} />
-        </Carousel.Slide>
-      </Carousel>
-      <Center>
+      <Group mt={"5%"} grow>
+        <Stack ml={"10%"} mb={"5%"}>
+          <Text
+            variant={"gradient"}
+            gradient={{ from: "yellow", to: "orange", deg: 45 }}
+            fw={700}
+            size={70}
+          >
+            Наши
+          </Text>
+          <Text
+            variant={"gradient"}
+            gradient={{ from: "orange", to: "yellow", deg: 45 }}
+            ml={"7%"}
+            fw={700}
+            size={70}
+          >
+            новинки :
+          </Text>
+        </Stack>
+        <Carousel
+          mr={"7%"}
+          withIndicators
+          height={400}
+          slideSize="27.333333%"
+          slideGap="md"
+          loop
+          align="start"
+          slidesToScroll={3}
+        >
+          <Carousel.Slide>
+            <PizzaCard landing={true} commerce={false} />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <PizzaCard landing={true} commerce={false} />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <PizzaCard landing={true} commerce={false} />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <PizzaCard landing={true} commerce={false} />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <PizzaCard landing={true} commerce={false} />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <PizzaCard landing={true} commerce={false} />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <PizzaCard landing={true} commerce={false} />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <PizzaCard landing={true} commerce={false} />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <PizzaCard landing={true} commerce={false} />
+          </Carousel.Slide>
+        </Carousel>
+      </Group>
+      <Group mt={"5%"} grow>
+        <Stack ml={"10%"} mb={"5%"}>
+          <Text
+            variant={"gradient"}
+            gradient={{ from: "yellow", to: "orange", deg: 45 }}
+            fw={700}
+            size={70}
+          >
+            Последние
+          </Text>
+          <Text
+            variant={"gradient"}
+            gradient={{ from: "orange", to: "yellow", deg: 45 }}
+            ml={"16%"}
+            fw={700}
+            size={70}
+          >
+            отзывы :
+          </Text>
+        </Stack>
+        <Carousel
+          mr={"7%"}
+          withIndicators
+          height={400}
+          slideSize="27.333333%"
+          slideGap="md"
+          loop
+          align="start"
+          slidesToScroll={3}
+        >
+          <Carousel.Slide>
+            <CommentCard />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <CommentCard />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <CommentCard />
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <CommentCard />
+          </Carousel.Slide>
+        </Carousel>
+      </Group>
+      <Group mt={150} position={"center"} mb={200}>
         <Box
           maw={700}
-          mt={50}
           sx={() => ({
             backgroundColor: "rgba(255, 111, 0, 0.5)",
             textAlign: "center",
@@ -123,16 +202,15 @@ export const LandingLayout = () => {
             к нашему сайту
           </Text>
           <Group position={"center"} mt={40}>
-            <Button color={"orange"}>Каталог товаров</Button>
+            <Button component={Link} to={"/catalog"} color={"orange"}>
+              Каталог товаров
+            </Button>
             <Button color={"orange"}>Комментарии</Button>
           </Group>
         </Box>
-      </Center>
-      <Center>
+
         <Box
           maw={700}
-          mt={50}
-          mb={100}
           sx={() => ({
             backgroundColor: "rgba(255, 111, 0, 0.5)",
             textAlign: "center",
@@ -141,7 +219,7 @@ export const LandingLayout = () => {
           })}
         >
           <Text color={"#fff"} fw={500} size={30}>
-            Быстрее зарегистрируйтесь или войдите в свой аккаунт
+            Зарегистрируйтесь или войдите аккаунт
           </Text>
           <Text color={"#fff"}>
             Зарегестрировавшись или войдя в свой аккаунт вы сможете совершать
@@ -152,7 +230,7 @@ export const LandingLayout = () => {
             <Button color={"orange"}>Войти в аккаунт</Button>
           </Group>
         </Box>
-      </Center>
+      </Group>
     </div>
   );
 };

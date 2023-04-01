@@ -18,6 +18,8 @@
     "@tabler/icons-react": "^2.12.0",
     "@types/node": "^18.15.11",
     "compose-function": "^3.0.3",
+    "effector": "^22.7.0",
+    "effector-react": "^22.5.1",
     "embla-carousel-react": "^7.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
