@@ -22,7 +22,9 @@
     "effector-react": "^22.5.1",
     "embla-carousel-react": "^7.1.0",
     "react": "^18.2.0",
+    "react-content-loader": "^6.2.1",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.43.9",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.10.0"
   },

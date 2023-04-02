@@ -6,14 +6,20 @@ import {
   IconPizza,
   IconSearch,
 } from "@tabler/icons-react";
-import PizzaCard from "../../../features/pizza-card/ui/ui";
-import DessertCard from "../../../features/dessert-card/ui/ui";
-import DrinkCard from "../../../features/drink-card/ui/ui";
+import PizzaCard from "../../../entities/pizza-card/ui/ui";
+import DessertCard from "../../../entities/dessert-card/ui/ui";
+import DrinkCard from "../../../entities/drink-card/ui/ui";
+import { SkeletonCard } from "../../../entities/skeleton-card";
 
 export const ProductLayout = () => {
   return (
     <div>
-      <Tabs color="orange" defaultValue="gallery" mt={100}>
+      <Tabs
+        orientation="vertical"
+        color="orange"
+        defaultValue="gallery"
+        mt={100}
+      >
         <Tabs.List ml={10}>
           <Tabs.Tab value="gallery" icon={<IconPizza size="0.8rem" />}>
             Пиццы
@@ -95,24 +101,25 @@ export const ProductLayout = () => {
               spacing={"xl"}
               mb={100}
             >
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
-              <PizzaCard landing={false} commerce={true} />
+              <SkeletonCard />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false} />
             </SimpleGrid>
           </Center>
         </Tabs.Panel>
@@ -160,16 +167,16 @@ export const ProductLayout = () => {
               spacing={"xl"}
               mb={100}
             >
-              <DessertCard landing={false} commerce={true} />
-              <DessertCard landing={false} commerce={true} />
-              <DessertCard landing={false} commerce={true} />
-              <DessertCard landing={false} commerce={true} />
-              <DessertCard landing={false} commerce={true} />
-              <DessertCard landing={false} commerce={true} />
-              <DessertCard landing={false} commerce={true} />
-              <DessertCard landing={false} commerce={true} />
-              <DessertCard landing={false} commerce={true} />
-              <DessertCard landing={false} commerce={true} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
+              <DessertCard landing={false} commerce={true} toCard={false} />
             </SimpleGrid>
           </Center>
         </Tabs.Panel>
@@ -243,13 +250,13 @@ export const ProductLayout = () => {
               spacing={"xl"}
               mb={100}
             >
-              <DrinkCard landing={false} commerce={true} />
-              <DrinkCard landing={false} commerce={true} />
-              <DrinkCard landing={false} commerce={true} />
-              <DrinkCard landing={false} commerce={true} />
-              <DrinkCard landing={false} commerce={true} />
-              <DrinkCard landing={false} commerce={true} />
-              <DrinkCard landing={false} commerce={true} />
+              <DrinkCard landing={false} commerce={true} toCard={false} />
+              <DrinkCard landing={false} commerce={true} toCard={false} />
+              <DrinkCard landing={false} commerce={true} toCard={false} />
+              <DrinkCard landing={false} commerce={true} toCard={false} />
+              <DrinkCard landing={false} commerce={true} toCard={false} />
+              <DrinkCard landing={false} commerce={true} toCard={false} />
+              <DrinkCard landing={false} commerce={true} toCard={false} />
             </SimpleGrid>
           </Center>
         </Tabs.Panel>

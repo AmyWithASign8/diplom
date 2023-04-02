@@ -7,7 +7,6 @@ import {
   Header as ManTineHeader,
   Menu,
   Grid,
-  ColorScheme,
   useMantineTheme,
 } from "@mantine/core";
 import HeaderImg from "../assets/images/favicon.png";
@@ -39,7 +38,11 @@ export const Header = () => {
     { name: "Каталог", icon: <IconPizza />, currentUrl: "/catalog" },
     { name: "Авторизация", icon: <IconUser />, currentUrl: "/user/auth" },
     { name: "Регистрация", icon: <IconUserPlus />, currentUrl: "/user/reg" },
-    { name: "Корзина", icon: <IconShoppingCart />, currentUrl: "/cart" },
+    {
+      name: "Корзина",
+      icon: <IconShoppingCart />,
+      currentUrl: "/user/my-cart",
+    },
     { name: "Мой профиль", icon: <IconUserCircle />, currentUrl: "/about-us" },
     {
       name: "Мои настройки",
@@ -136,7 +139,7 @@ export const Header = () => {
           variant="subtle"
           color="orange"
           component={Link}
-          to={"/cart"}
+          to={"/user/my-cart"}
         >
           Корзина
         </Button>

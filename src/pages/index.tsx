@@ -15,7 +15,7 @@ const Pages = () => {
       <Route path={"/"} element={<MainLayout />}>
         <Route index element={<LandingPage />} />
         <Route path={"about-us"} element={<AboutPage />} />
-        <Route path={"cart"} element={<CartPage />} />
+        <Route path={"user/my-cart"} element={<CartPage />} />
         <Route path={"catalog"} element={<ProductPage />} />
       </Route>
       <Route path={"/user"} element={<AuthLayout />}>

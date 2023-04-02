@@ -12,8 +12,8 @@ import {
 import BgImagePizza from "../assets/images/bg-pizza.jpg";
 import { Carousel } from "@mantine/carousel";
 import { Link } from "react-router-dom";
-import PizzaCard from "../../../../features/pizza-card/ui/ui";
-import { CommentCard } from "../../../../features/comment-card";
+import PizzaCard from "../../../../entities/pizza-card/ui/ui";
+import { CommentCard } from "../../../../entities/comment-card";
 
 export const LandingLayout = () => {
   return (
@@ -111,31 +111,31 @@ export const LandingLayout = () => {
           slidesToScroll={3}
         >
           <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} />
+            <PizzaCard landing={true} commerce={false} toCard={false} />
           </Carousel.Slide>
           <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} />
+            <PizzaCard landing={true} commerce={false} toCard={false} />
           </Carousel.Slide>
           <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} />
+            <PizzaCard landing={true} commerce={false} toCard={false} />
           </Carousel.Slide>
           <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} />
+            <PizzaCard landing={true} commerce={false} toCard={false} />
           </Carousel.Slide>
           <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} />
+            <PizzaCard landing={true} commerce={false} toCard={false} />
           </Carousel.Slide>
           <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} />
+            <PizzaCard landing={true} commerce={false} toCard={false} />
           </Carousel.Slide>
           <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} />
+            <PizzaCard landing={true} commerce={false} toCard={false} />
           </Carousel.Slide>
           <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} />
+            <PizzaCard landing={true} commerce={false} toCard={false} />
           </Carousel.Slide>
           <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} />
+            <PizzaCard landing={true} commerce={false} toCard={false} />
           </Carousel.Slide>
         </Carousel>
       </Group>
