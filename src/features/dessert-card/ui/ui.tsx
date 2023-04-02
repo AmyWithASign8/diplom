@@ -3,30 +3,30 @@ import { Badge, Button, Card, Group, Image, Text } from "@mantine/core";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
-interface PizzaCardInterface {
+interface DessertCardInterface {
   landing: boolean | undefined;
   commerce: boolean | undefined;
 }
-const PizzaCard: FC<PizzaCardInterface> = (props) => {
+const DessertCard: FC<DessertCardInterface> = (props) => {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>
         <Image
           height={300}
           width={300}
-          src="https://dodopizza.azureedge.net/static/Img/Products/f035c7f46c0844069722f2bb3ee9f113_584x584.jpeg"
+          src="https://dodopizza-a.akamaihd.net/static/Img/Products/aaaf00a849a14804ba9264dc7838021e_292x292.webp"
           alt="Norway"
         />
       </Card.Section>
 
       <Group position="apart" mt="md" mb="xs">
         <Text size={18} fw={500}>
-          Пепперони Фреш с перцем
+          Сырники с малиновым вареньем
         </Text>
       </Group>
       <Text maw={260} size={14}>
-        Пикантная пепперони, увеличенная порция моцареллы, томаты, фирменный
-        томатный соус
+        Любимый десерт многих наших гостей — румяные сырники из печи. Такие
+        нежные, в меру сладкие и напоминающие детство
       </Text>
       {props.landing && (
         <Button
@@ -53,7 +53,7 @@ const PizzaCard: FC<PizzaCardInterface> = (props) => {
               variant="gradient"
               gradient={{ from: "orange", to: "red" }}
             >
-              Тип пиццы
+              Десерт
             </Badge>
             <Badge
               sx={() => ({
@@ -63,7 +63,7 @@ const PizzaCard: FC<PizzaCardInterface> = (props) => {
               variant="gradient"
               gradient={{ from: "orange", to: "red" }}
             >
-              от 500 RUB
+              289 RUB
             </Badge>
           </Group>
           <Button
@@ -82,4 +82,4 @@ const PizzaCard: FC<PizzaCardInterface> = (props) => {
   );
 };
 
-export default PizzaCard;
+export default DessertCard;

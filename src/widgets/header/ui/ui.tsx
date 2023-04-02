@@ -27,6 +27,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useStore } from "effector-react/compat";
 import { $theme, switchTheme } from "../../../app/models/themeStore";
+import { notifications } from "@mantine/notifications";
 
 export const Header = () => {
   const mantineTheme = useMantineTheme();
@@ -36,8 +37,8 @@ export const Header = () => {
   const dataNavigation = [
     { name: "Главная", icon: <IconHome2 />, currentUrl: "/" },
     { name: "Каталог", icon: <IconPizza />, currentUrl: "/catalog" },
-    { name: "Авторизация", icon: <IconUser />, currentUrl: "/auth" },
-    { name: "Регистрация", icon: <IconUserPlus />, currentUrl: "/reg" },
+    { name: "Авторизация", icon: <IconUser />, currentUrl: "/user/auth" },
+    { name: "Регистрация", icon: <IconUserPlus />, currentUrl: "/user/reg" },
     { name: "Корзина", icon: <IconShoppingCart />, currentUrl: "/cart" },
     { name: "Мой профиль", icon: <IconUserCircle />, currentUrl: "/about-us" },
     {
@@ -48,6 +49,21 @@ export const Header = () => {
     { name: "О нас", icon: <IconInfoCircle />, currentUrl: "/about-us" },
   ];
   const urll = useLocation();
+  const switchThemeAndShowNotification = () => {
+    switchTheme(altTheme);
+    notifications.show({
+      icon:
+        altTheme === "light" ? (
+          <IconSun color={mantineTheme.colors.yellow[4]} size={60} />
+        ) : (
+          <IconMoonStars />
+        ),
+      title: `Тема переключена`,
+      message: `Установлена ${
+        altTheme === "light" ? "светлая" : "темная"
+      } тема приложения`,
+    });
+  };
   return (
     <ManTineHeader
       height={80}
@@ -134,7 +150,7 @@ export const Header = () => {
               <IconSun color={mantineTheme.colors.yellow[4]} />
             )
           }
-          onClick={() => switchTheme(altTheme)}
+          onClick={() => switchThemeAndShowNotification()}
         >
           Сменить тему
         </Button>

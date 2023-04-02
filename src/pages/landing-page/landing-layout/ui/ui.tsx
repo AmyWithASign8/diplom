@@ -103,7 +103,7 @@ export const LandingLayout = () => {
         <Carousel
           mr={"7%"}
           withIndicators
-          height={400}
+          height={"100%"}
           slideSize="27.333333%"
           slideGap="md"
           loop
@@ -162,7 +162,7 @@ export const LandingLayout = () => {
         <Carousel
           mr={"7%"}
           withIndicators
-          height={400}
+          height={"100%"}
           slideSize="27.333333%"
           slideGap="md"
           loop

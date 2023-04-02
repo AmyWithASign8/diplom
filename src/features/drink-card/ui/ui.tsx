@@ -3,30 +3,29 @@ import { Badge, Button, Card, Group, Image, Text } from "@mantine/core";
 import { IconShoppingCart } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
-interface PizzaCardInterface {
+interface DrinkCardInterface {
   landing: boolean | undefined;
   commerce: boolean | undefined;
 }
-const PizzaCard: FC<PizzaCardInterface> = (props) => {
+const DrinkCard: FC<DrinkCardInterface> = (props) => {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
       <Card.Section>
         <Image
           height={300}
           width={300}
-          src="https://dodopizza.azureedge.net/static/Img/Products/f035c7f46c0844069722f2bb3ee9f113_584x584.jpeg"
+          src="https://dodopizza-a.akamaihd.net/static/Img/Products/b3e4267e06334a428dcc9f1f10a72f34_292x292.webp"
           alt="Norway"
         />
       </Card.Section>
 
       <Group position="apart" mt="md" mb="xs">
         <Text size={18} fw={500}>
-          Пепперони Фреш с перцем
+          Кофе Американо
         </Text>
       </Group>
       <Text maw={260} size={14}>
-        Пикантная пепперони, увеличенная порция моцареллы, томаты, фирменный
-        томатный соус
+        Пара глотков горячего Американо, и вы будете готовы покорять этот день
       </Text>
       {props.landing && (
         <Button
@@ -53,7 +52,7 @@ const PizzaCard: FC<PizzaCardInterface> = (props) => {
               variant="gradient"
               gradient={{ from: "orange", to: "red" }}
             >
-              Тип пиццы
+              Тип напитка
             </Badge>
             <Badge
               sx={() => ({
@@ -63,7 +62,7 @@ const PizzaCard: FC<PizzaCardInterface> = (props) => {
               variant="gradient"
               gradient={{ from: "orange", to: "red" }}
             >
-              от 500 RUB
+              99 RUB
             </Badge>
           </Group>
           <Button
@@ -82,4 +81,4 @@ const PizzaCard: FC<PizzaCardInterface> = (props) => {
   );
 };
 
-export default PizzaCard;
+export default DrinkCard;
