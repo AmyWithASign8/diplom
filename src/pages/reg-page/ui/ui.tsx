@@ -15,7 +15,7 @@ export const RegistrationLayout = () => {
     <BackgroundImage src={BgImg}>
       <Center>
         <Box
-          bg={"rgba(0, 0, 0, 0.5)"}
+          bg={"rgba(0, 0, 0, 0.8)"}
           mt={"7%"}
           mb={"3.4%"}
           sx={() => ({

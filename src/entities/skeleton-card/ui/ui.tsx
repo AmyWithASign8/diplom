@@ -4,7 +4,6 @@ import { Skeleton } from "@mantine/core";
 
 export const SkeletonCard = () => (
   <div>
-    <Skeleton height={300} mb="md" radius={"md"} />
-    <Skeleton height={220} radius="md" />
+    <Skeleton height={500} mb="md" radius={"md"} />
   </div>
 );
