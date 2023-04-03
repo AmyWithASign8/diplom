@@ -1,6 +1,6 @@
 import React from "react";
-import {Center, Divider, Group, Stack, Tabs, Text} from "@mantine/core";
-import {IconHistory, IconInfoCircle} from "@tabler/icons-react";
+import {Alert, Button, Center, Divider, Group, Popover, Stack, Tabs, Text, TextInput} from "@mantine/core";
+import {IconAlertCircle, IconHistory, IconInfoCircle, IconSettings, IconTrash} from "@tabler/icons-react";
 
 export const ViewerLayout = () => {
   return <div>
@@ -12,7 +12,7 @@ export const ViewerLayout = () => {
 
           <Tabs
               color="orange"
-              defaultValue="gallery"
+              defaultValue="info"
           >
             <Tabs.List ml={10}>
               <Tabs.Tab value="info" icon={<IconInfoCircle size="0.8rem" />}>
@@ -20,6 +20,9 @@ export const ViewerLayout = () => {
               </Tabs.Tab>
               <Tabs.Tab value="history" icon={<IconHistory size="0.8rem" />}>
                 История заказов
+              </Tabs.Tab>
+              <Tabs.Tab value="settings" icon={<IconSettings size="0.8rem" />}>
+                Настройки профиля
               </Tabs.Tab>
             </Tabs.List>
 
@@ -83,8 +86,35 @@ export const ViewerLayout = () => {
               </Stack>
               <Divider mt={30} size={'xl'} mb={90}/>
             </Tabs.Panel>
+            <Tabs.Panel value={'settings'} pt={'xs'}>
+                <Stack>
+                  <Group>
+                    <Text size={20}>Изменить имя профиля</Text>
+                    <TextInput w={300}/>
+                  </Group>
+                  <Group>
+                    <Text size={20}>Изменить пароль</Text>
+                    <Popover width={300} trapFocus position="bottom" withArrow shadow="md">
+                      <Popover.Target>
+                        <Button color={'orange'} variant={'subtle'}>Нажмите чтобы сменить пароль</Button>
+                      </Popover.Target>
+                      <Popover.Dropdown>
+                        <TextInput label="Ваш пароль" size="xs" />
+                        <TextInput label="Новый пароль" size="xs" mt="xs" />
+                        <Center>
+                          <Button mt={10} color={'orange'} variant={'subtle'}>Сменить пароль</Button>
+                        </Center>
+                      </Popover.Dropdown>
+                    </Popover>
+                  </Group>
+                  <Button leftIcon={<IconTrash/>} color={'red'} w={300} mt={100}>Удалить мой аккаунт</Button>
+                </Stack>
+            </Tabs.Panel>
+            </Tabs>
 
-          </Tabs>
+          <Alert icon={<IconAlertCircle size="1rem" />} title="Внимание!" color="orange" >
+            Вся ваша статистика анонимна, другие пользователи не смогу никак ее посмотреть! В оставленных вами отзывах на странице "Отзывы", другие пользователи видят только название вашей электронной почты.
+          </Alert>
         </Stack>
     </Center>
   </div>;

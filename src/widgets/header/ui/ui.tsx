@@ -13,7 +13,7 @@ import HeaderImg from "../assets/images/favicon.png";
 import {
   IconHome2,
   IconInfoCircle,
-  IconLocation,
+  IconLocation, IconMessages,
   IconMoonStars,
   IconPizza,
   IconSettings,
@@ -45,9 +45,9 @@ export const Header = () => {
     },
     { name: "Мой профиль", icon: <IconUserCircle />, currentUrl: "/user/my-profile" },
     {
-      name: "Мои настройки",
-      icon: <IconSettings />,
-      currentUrl: "/user/profile-settings",
+      name: "Отзывы",
+      icon: <IconMessages />,
+      currentUrl: "/reviews",
     },
     { name: "О нас", icon: <IconInfoCircle />, currentUrl: "/about-us" },
   ];
