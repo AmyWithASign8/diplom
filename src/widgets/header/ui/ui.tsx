@@ -43,11 +43,11 @@ export const Header = () => {
       icon: <IconShoppingCart />,
       currentUrl: "/user/my-cart",
     },
-    { name: "Мой профиль", icon: <IconUserCircle />, currentUrl: "/about-us" },
+    { name: "Мой профиль", icon: <IconUserCircle />, currentUrl: "/user/my-profile" },
     {
       name: "Мои настройки",
       icon: <IconSettings />,
-      currentUrl: "/about-us",
+      currentUrl: "/user/profile-settings",
     },
     { name: "О нас", icon: <IconInfoCircle />, currentUrl: "/about-us" },
   ];
