@@ -7,7 +7,7 @@ import {
   Header as ManTineHeader,
   Menu,
   Grid,
-  useMantineTheme,
+  useMantineTheme, Stack,
 } from "@mantine/core";
 import HeaderImg from "../assets/images/favicon.png";
 import {
@@ -131,8 +131,11 @@ export const Header = () => {
             </Grid>
           </Menu.Dropdown>
         </Menu>
-        <Button leftIcon={<IconUser />} variant="subtle" color="orange">
-          Действия пользователя
+        <Button component={Link} to={'/catalog'} leftIcon={<IconPizza />} variant="subtle" color="orange">
+          Каталог
+        </Button>
+        <Button component={Link} to={'/user/my-profile'} leftIcon={<IconUserCircle />} variant="subtle" color="orange">
+          Мой профиль
         </Button>
         <Button
           leftIcon={<IconShoppingCart />}
@@ -143,6 +146,22 @@ export const Header = () => {
         >
           Корзина
         </Button>
+        <Menu>
+          <Menu.Target>
+            <Button leftIcon={<IconUser />} variant="subtle" color="orange">
+              Авторизация
+            </Button>
+          </Menu.Target>
+          <Menu.Dropdown>
+           <Stack>
+             <Button component={Link} to={'/user/auth'} leftIcon={<IconUser />} variant="subtle" color="orange">
+               Войти в аккаунт
+             </Button><Button component={Link} to={'/user/reg'} leftIcon={<IconUserPlus />} variant="subtle" color="orange">
+             Регистрация
+           </Button>
+           </Stack>
+          </Menu.Dropdown>
+        </Menu>
         <Button
           color={theme === "light" ? "blue" : "orange"}
           variant={"subtle"}
