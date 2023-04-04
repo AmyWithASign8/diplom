@@ -170,16 +170,16 @@ export const LandingLayout = () => {
           slidesToScroll={3}
         >
           <Carousel.Slide>
-            <CommentCard />
+            <CommentCard landing={true} maxWidth={400}/>
           </Carousel.Slide>
           <Carousel.Slide>
-            <CommentCard />
+            <CommentCard landing={true} maxWidth={400}/>
           </Carousel.Slide>
           <Carousel.Slide>
-            <CommentCard />
+            <CommentCard landing={true} maxWidth={400}/>
           </Carousel.Slide>
           <Carousel.Slide>
-            <CommentCard />
+            <CommentCard landing={true} maxWidth={400}/>
           </Carousel.Slide>
         </Carousel>
       </Group>
