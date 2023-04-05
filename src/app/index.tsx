@@ -6,6 +6,7 @@ import { MantineProvider } from "@mantine/core";
 import { useStore } from "effector-react/compat";
 import { $theme } from "./models/themeStore";
 import { Notifications } from "@mantine/notifications";
+import {ModalsProvider} from "@mantine/modals";
 
 const App = () => {
   const theme = useStore($theme);
@@ -17,7 +18,9 @@ const App = () => {
         theme={{ colorScheme: theme }}
       >
         <Notifications />
-        <Pages />
+        <ModalsProvider>
+            <Pages />
+        </ModalsProvider>
       </MantineProvider>
     </div>
   );

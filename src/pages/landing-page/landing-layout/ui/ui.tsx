@@ -170,16 +170,39 @@ export const LandingLayout = () => {
           slidesToScroll={3}
         >
           <Carousel.Slide>
-            <CommentCard landing={true} maxWidth={400}/>
+            <Link to={'/reviews'}>
+              <CommentCard landing={true} maxWidth={400}/>
+            </Link>
           </Carousel.Slide>
           <Carousel.Slide>
-            <CommentCard landing={true} maxWidth={400}/>
+            <Link to={'/reviews'}>
+              <CommentCard landing={true} maxWidth={400}/>
+            </Link>
           </Carousel.Slide>
           <Carousel.Slide>
-            <CommentCard landing={true} maxWidth={400}/>
+            <Link to={'/reviews'}>
+              <CommentCard landing={true} maxWidth={400}/>
+            </Link>
           </Carousel.Slide>
           <Carousel.Slide>
-            <CommentCard landing={true} maxWidth={400}/>
+            <Link to={'/reviews'}>
+              <CommentCard landing={true} maxWidth={400}/>
+            </Link>
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <Link to={'/reviews'}>
+              <CommentCard landing={true} maxWidth={400}/>
+            </Link>
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <Link to={'/reviews'}>
+              <CommentCard landing={true} maxWidth={400}/>
+            </Link>
+          </Carousel.Slide>
+          <Carousel.Slide>
+            <Link to={'/reviews'}>
+              <CommentCard landing={true} maxWidth={400}/>
+            </Link>
           </Carousel.Slide>
         </Carousel>
       </Group>
@@ -198,14 +221,14 @@ export const LandingLayout = () => {
           </Text>
           <Text color={"#fff"}>
             Вы можете просмотреть наш каталог товаров без регистрации, у нас
-            имеется более 100 видов пицц! А так же можете прочитать комментарии
+            имеется более 100 видов пицц! А так же можете прочитать отзывы
             к нашему сайту
           </Text>
           <Group position={"center"} mt={40}>
             <Button component={Link} to={"/catalog"} color={"orange"}>
               Каталог товаров
             </Button>
-            <Button color={"orange"}>Комментарии</Button>
+            <Button color={"orange"} component={Link} to={'/reviews'}>Отзывы</Button>
           </Group>
         </Box>
 
@@ -226,8 +249,8 @@ export const LandingLayout = () => {
             покупки, а так же просматривать историю заказов
           </Text>
           <Group position={"center"} mt={40}>
-            <Button color={"orange"}>Регистрация</Button>
-            <Button color={"orange"}>Войти в аккаунт</Button>
+            <Button color={"orange"} component={Link} to={'/user/reg'}>Регистрация</Button>
+            <Button color={"orange"} component={Link} to={'/user/auth'}>Войти в аккаунт</Button>
           </Group>
         </Box>
       </Group>

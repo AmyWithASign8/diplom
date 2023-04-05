@@ -1,5 +1,5 @@
 import React from "react";
-import {Center, SimpleGrid, Stack, Text} from "@mantine/core";
+import {Button, Center, Group, SimpleGrid, Stack, Text} from "@mantine/core";
 import PizzaCard from "../../../entities/pizza-card/ui/ui";
 import DessertCard from "../../../entities/dessert-card/ui/ui";
 import DrinkCard from "../../../entities/drink-card/ui/ui";
@@ -7,12 +7,15 @@ import DrinkCard from "../../../entities/drink-card/ui/ui";
 export const CartLayout = () => {
   return (
     <div>
-      <Center>
-        <Text size={40} mt={"5%"}>
-          Моя корзина
-        </Text>
+      <Center mt={"5%"}>
+        <Group position={"apart"} w={600}>
+            <Text size={40} >
+                Моя корзина
+            </Text>
+            <Button color={'red'}>Очистить корзину</Button>
+        </Group>
       </Center>
-      <Center>
+      <Center mt={'3%'}>
         <Stack sx={() => ({
             display: 'flex'
         })}>
