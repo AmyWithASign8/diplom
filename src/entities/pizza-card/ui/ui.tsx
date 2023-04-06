@@ -1,7 +1,8 @@
 import React, { FC } from "react";
-import {Badge, Button, Card, Group, Image, Stack, Text} from "@mantine/core";
+import {Badge, Button, Card, Chip, Group, Image, Modal, Stack, Text} from "@mantine/core";
 import { IconShoppingCart, IconTrash } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
+import {useDisclosure} from "@mantine/hooks";
 
 export interface CardInterface {
   landing: boolean | undefined;
@@ -15,8 +16,52 @@ const PizzaCard: FC<CardInterface> = (props) => {
     else if (countProduct === 1) setCountProduct(countProduct);
     else setCountProduct(countProduct - 1);
   };
+  const [opened, { open, close }] = useDisclosure(false);
+  const [valueOfSize, setValueOfSize] = React.useState<string>('medium')
+  const [valueOfPastry, setValueOfPastry] = React.useState<string>('traditional')
+  React.useEffect(() => {
+    if (valueOfSize === 'small') setValueOfPastry('traditional')
+  },[valueOfSize])
   return (
       <div style={{flex: 1}}>
+        <Modal opened={opened} onClose={close} title="Добавление товара в корзину" centered size={'55%'}>
+          <Group>
+            <Image
+                radius={20}
+                height={500}
+                width={500}
+                src="https://dodopizza.azureedge.net/static/Img/Products/f035c7f46c0844069722f2bb3ee9f113_584x584.jpeg"
+                alt="Norway"
+            />
+            <div>
+              <Stack justify={'flex-start'} mb={'30%'}>
+                <Text size={20}>Пепперони Фреш с перцем</Text>
+                <Text maw={400} size={14}>
+                  Пикантная пепперони, увеличенная порция моцареллы, томаты, фирменный
+                  томатный соус
+                </Text>
+                <Text size={15}>{valueOfSize === 'small' ? '25' : valueOfSize === 'medium' ? '30' : '35'} см, {valueOfPastry === 'traditional' ? 'традиционное' : 'тонкое'} тесто, </Text>
+                <Chip.Group multiple={false} value={valueOfSize} onChange={setValueOfSize}>
+                  <Group position="center" >
+                    <Chip color="orange" variant="filled" value="small">Маленькая</Chip>
+                    <Chip color="orange" variant="filled" value="medium">Средняя</Chip>
+                    <Chip color="orange" variant="filled" value="big">Большая</Chip>
+                  </Group>
+                </Chip.Group>
+                <Chip.Group multiple={false} value={valueOfPastry} onChange={setValueOfPastry}>
+                  <Group position="center">
+                    <Chip color="orange" variant="filled" value="traditional">Традиционное</Chip>
+                    <Chip color="orange" variant="filled" value="thin" disabled={valueOfSize === 'small'}>Тонкое</Chip>
+                  </Group>
+                </Chip.Group>
+              </Stack>
+              <Stack>
+                <Text>Итоговая стоимость: 700 RUB</Text>
+                <Button leftIcon={<IconShoppingCart/>} color='orange'>В корзину</Button>
+              </Stack>
+            </div>
+          </Group>
+        </Modal>
         {props.toCard &&
             <Group>
               <Image
@@ -114,6 +159,7 @@ const PizzaCard: FC<CardInterface> = (props) => {
                     fullWidth
                     mt="md"
                     radius="md"
+                    onClick={open}
                 >
                   В корзину
                 </Button>

@@ -1,8 +1,9 @@
 import React, { FC } from "react";
-import {Badge, Button, Card, Group, Image, Stack, Text} from "@mantine/core";
+import {Badge, Button, Card, Group, Image, Modal, Stack, Text} from "@mantine/core";
 import { IconShoppingCart, IconTrash } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { CardInterface } from "../../pizza-card";
+import {useDisclosure} from "@mantine/hooks";
 
 const DessertCard: FC<CardInterface> = (props) => {
   const [countProduct, setCountProduct] = React.useState<number>(1);
@@ -11,8 +12,34 @@ const DessertCard: FC<CardInterface> = (props) => {
     else if (countProduct === 1) setCountProduct(countProduct);
     else setCountProduct(countProduct - 1);
   };
+  const [opened, { open, close }] = useDisclosure(false);
   return (
     <div>
+      <Modal opened={opened} onClose={close} title="Добавление товара в корзину" centered size={'55%'}>
+        <Group>
+          <Image
+              radius={20}
+              height={500}
+              width={500}
+              src="https://dodopizza-a.akamaihd.net/static/Img/Products/aaaf00a849a14804ba9264dc7838021e_292x292.webp"
+              alt="Norway"
+          />
+          <div>
+            <Stack justify={'flex-start'} mb={'40%'}>
+              <Text size={20}>Сырники с малиновым вареньем</Text>
+              <Text maw={390} size={14}>
+                Любимый десерт многих наших гостей — румяные сырники из печи. Такие
+                нежные, в меру сладкие и напоминающие детство
+              </Text>
+              <Text size={15}>4 шт.</Text>
+            </Stack>
+            <Stack>
+              <Text>Итоговая стоимость: 700 RUB</Text>
+              <Button leftIcon={<IconShoppingCart/>} color='orange'>В корзину</Button>
+            </Stack>
+          </div>
+        </Group>
+      </Modal>
         {props.toCard &&
             <Group>
                 <Image
@@ -159,6 +186,7 @@ const DessertCard: FC<CardInterface> = (props) => {
                             fullWidth
                             mt="md"
                             radius="md"
+                            onClick={open}
                         >
                             В корзину
                         </Button>

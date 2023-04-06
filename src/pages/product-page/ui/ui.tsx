@@ -1,5 +1,5 @@
 import React from "react";
-import { Center, Group, Input, Select, SimpleGrid, Tabs } from "@mantine/core";
+import {Center, Group, Input, Modal, Select, SimpleGrid, Tabs} from "@mantine/core";
 import {
   IconBottle,
   IconCake,
@@ -12,8 +12,10 @@ import DrinkCard from "../../../entities/drink-card/ui/ui";
 import { SkeletonCard } from "../../../entities/skeleton-card";
 
 export const ProductLayout = () => {
+
   return (
     <div>
+
       <Tabs
         orientation="vertical"
         color="orange"
@@ -102,7 +104,7 @@ export const ProductLayout = () => {
               mb={100}
             >
               <SkeletonCard />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
+              <PizzaCard landing={false} commerce={true} toCard={false}/>
               <PizzaCard landing={false} commerce={true} toCard={false} />
               <PizzaCard landing={false} commerce={true} toCard={false} />
               <PizzaCard landing={false} commerce={true} toCard={false} />

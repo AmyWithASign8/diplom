@@ -1,8 +1,9 @@
 import React, { FC } from "react";
-import {Badge, Button, Card, Group, Image, Stack, Text} from "@mantine/core";
+import {Badge, Button, Card, Group, Image, Stack, Text, Modal, Chip} from "@mantine/core";
 import { IconShoppingCart, IconTrash } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { CardInterface } from "../../pizza-card";
+import {useDisclosure} from "@mantine/hooks";
 
 const DrinkCard: FC<CardInterface> = (props) => {
   const [countProduct, setCountProduct] = React.useState<number>(1);
@@ -11,8 +12,30 @@ const DrinkCard: FC<CardInterface> = (props) => {
     else if (countProduct === 1) setCountProduct(countProduct);
     else setCountProduct(countProduct - 1);
   };
+  const [opened, { open, close }] = useDisclosure(false);
   return (
       <div>
+        <Modal opened={opened} onClose={close} title="Добавление товара в корзину" centered size={'55%'}>
+          <Group>
+            <Image
+                radius={20}
+                height={500}
+                width={500}
+                src="https://dodopizza-a.akamaihd.net/static/Img/Products/b3e4267e06334a428dcc9f1f10a72f34_292x292.webp"
+                alt="Norway"
+            />
+            <div>
+              <Stack justify={'flex-start'} mb={'100%'}>
+                <Text size={20}>Кофе Американо</Text>
+                <Text size={15}>0,5 л.</Text>
+              </Stack>
+              <Stack>
+                <Text>Итоговая стоимость: 700 RUB</Text>
+                <Button leftIcon={<IconShoppingCart/>} color='orange'>В корзину</Button>
+              </Stack>
+            </div>
+          </Group>
+        </Modal>
           {props.toCard &&
               <Group>
                   <Image
@@ -111,6 +134,7 @@ const DrinkCard: FC<CardInterface> = (props) => {
                               fullWidth
                               mt="md"
                               radius="md"
+                              onClick={open}
                           >
                               В корзину
                           </Button>
