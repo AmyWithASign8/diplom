@@ -108,7 +108,7 @@ export const LandingLayout = () => {
           slideGap="md"
           loop
           align="start"
-          slidesToScroll={3}
+          slidesToScroll={1}
         >
           <Carousel.Slide>
             <PizzaCard landing={true} commerce={false} toCard={false} />
@@ -167,41 +167,41 @@ export const LandingLayout = () => {
           slideGap="md"
           loop
           align="start"
-          slidesToScroll={3}
+          slidesToScroll={1}
         >
           <Carousel.Slide>
-            <Link to={'/reviews'}>
-              <CommentCard landing={true} maxWidth={400}/>
+            <Link to={"/reviews"}>
+              <CommentCard landing={true} maxWidth={400} />
             </Link>
           </Carousel.Slide>
           <Carousel.Slide>
-            <Link to={'/reviews'}>
-              <CommentCard landing={true} maxWidth={400}/>
+            <Link to={"/reviews"}>
+              <CommentCard landing={true} maxWidth={400} />
             </Link>
           </Carousel.Slide>
           <Carousel.Slide>
-            <Link to={'/reviews'}>
-              <CommentCard landing={true} maxWidth={400}/>
+            <Link to={"/reviews"}>
+              <CommentCard landing={true} maxWidth={400} />
             </Link>
           </Carousel.Slide>
           <Carousel.Slide>
-            <Link to={'/reviews'}>
-              <CommentCard landing={true} maxWidth={400}/>
+            <Link to={"/reviews"}>
+              <CommentCard landing={true} maxWidth={400} />
             </Link>
           </Carousel.Slide>
           <Carousel.Slide>
-            <Link to={'/reviews'}>
-              <CommentCard landing={true} maxWidth={400}/>
+            <Link to={"/reviews"}>
+              <CommentCard landing={true} maxWidth={400} />
             </Link>
           </Carousel.Slide>
           <Carousel.Slide>
-            <Link to={'/reviews'}>
-              <CommentCard landing={true} maxWidth={400}/>
+            <Link to={"/reviews"}>
+              <CommentCard landing={true} maxWidth={400} />
             </Link>
           </Carousel.Slide>
           <Carousel.Slide>
-            <Link to={'/reviews'}>
-              <CommentCard landing={true} maxWidth={400}/>
+            <Link to={"/reviews"}>
+              <CommentCard landing={true} maxWidth={400} />
             </Link>
           </Carousel.Slide>
         </Carousel>
@@ -221,14 +221,16 @@ export const LandingLayout = () => {
           </Text>
           <Text color={"#fff"}>
             Вы можете просмотреть наш каталог товаров без регистрации, у нас
-            имеется более 100 видов пицц! А так же можете прочитать отзывы
-            к нашему сайту
+            имеется более 100 видов пицц! А так же можете прочитать отзывы к
+            нашему сайту
           </Text>
           <Group position={"center"} mt={40}>
             <Button component={Link} to={"/catalog"} color={"orange"}>
               Каталог товаров
             </Button>
-            <Button color={"orange"} component={Link} to={'/reviews'}>Отзывы</Button>
+            <Button color={"orange"} component={Link} to={"/reviews"}>
+              Отзывы
+            </Button>
           </Group>
         </Box>
 
@@ -249,8 +251,12 @@ export const LandingLayout = () => {
             покупки, а так же просматривать историю заказов
           </Text>
           <Group position={"center"} mt={40}>
-            <Button color={"orange"} component={Link} to={'/user/reg'}>Регистрация</Button>
-            <Button color={"orange"} component={Link} to={'/user/auth'}>Войти в аккаунт</Button>
+            <Button color={"orange"} component={Link} to={"/user/reg"}>
+              Регистрация
+            </Button>
+            <Button color={"orange"} component={Link} to={"/user/auth"}>
+              Войти в аккаунт
+            </Button>
           </Group>
         </Box>
       </Group>

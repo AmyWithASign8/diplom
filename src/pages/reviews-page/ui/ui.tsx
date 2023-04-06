@@ -75,7 +75,7 @@ export const ReviewsLayout = () => {
             minRows={6}
             maxRows={10}
           />
-          <Text mt={10}>Поставте оценку:</Text>
+          <Text mt={10}>Поставте оценку (от 0 до 5):</Text>
           <Group>
             <NumberInput
               error={ValidateFunc(errors.rating)}
@@ -98,6 +98,7 @@ export const ReviewsLayout = () => {
               defaultValue={0}
               size={"xl"}
               value={rateValue}
+              readOnly
             />
           </Group>
           <Button

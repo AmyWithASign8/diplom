@@ -5,6 +5,7 @@ import {
   Center,
   Divider,
   Group,
+  Modal,
   Popover,
   Stack,
   Tabs,
@@ -18,10 +19,26 @@ import {
   IconSettings,
   IconTrash,
 } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
 
 export const ViewerLayout = () => {
+  const [opened, { open, close }] = useDisclosure(false);
   return (
     <div>
+      <Modal opened={opened} onClose={close} title="Удаление аккаунта" centered>
+        <Text>
+          Вы уверены что хотите удалить аккаунт? Удалив аккаунт вы никак не
+          сможете его восстановить!
+        </Text>
+        <Group position={"center"} mt={"5%"}>
+          <Button color={"green"} variant={"light"}>
+            Да
+          </Button>
+          <Button onClick={close} color={"red"} variant={"light"}>
+            Отмена
+          </Button>
+        </Group>
+      </Modal>
       <Text ml={"8%"} mt={"5%"} fw={500} size={40} mr={100}>
         Мой профиль:
       </Text>
@@ -171,7 +188,13 @@ export const ViewerLayout = () => {
                     </Popover.Dropdown>
                   </Popover>
                 </Group>
-                <Button leftIcon={<IconTrash />} color={"red"} w={300} mt={100}>
+                <Button
+                  onClick={open}
+                  leftIcon={<IconTrash />}
+                  color={"red"}
+                  w={300}
+                  mt={100}
+                >
                   Удалить мой аккаунт
                 </Button>
               </Stack>
