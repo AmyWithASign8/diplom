@@ -43,12 +43,34 @@ const DessertCard: FC<CardInterface> = (props) => {
           />
           <div>
             <Stack justify={"flex-start"} mb={"40%"}>
-              <Text size={20}>Сырники с малиновым вареньем</Text>
-              <Text maw={390} size={14}>
-                Любимый десерт многих наших гостей — румяные сырники из печи.
-                Такие нежные, в меру сладкие и напоминающие детство
-              </Text>
-              <Text size={15}>4 шт.</Text>
+              <Stack
+                p={"3%"}
+                sx={() => ({
+                  borderRadius: 20,
+                })}
+                bg={
+                  currentTheme.colorScheme === "light"
+                    ? "rgba(0, 0, 0, 0.1)"
+                    : "rgba(255, 255, 255, 0.1)"
+                }
+              >
+                <Text
+                  size={20}
+                  fw={500}
+                  color={
+                    currentTheme.colorScheme === "light" ? "black" : "white"
+                  }
+                >
+                  Сырники с малиновым вареньем
+                </Text>
+                <Text maw={390} size={14}>
+                  Любимый десерт многих наших гостей — румяные сырники из печи.
+                  Такие нежные, в меру сладкие и напоминающие детство
+                </Text>
+              </Stack>
+              <Badge color={"orange"} variant={"light"}>
+                4 шт.
+              </Badge>
             </Stack>
             <Stack>
               <Text>Итоговая стоимость: 700 RUB</Text>

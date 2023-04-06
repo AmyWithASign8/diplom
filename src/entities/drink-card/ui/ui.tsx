@@ -44,8 +44,34 @@ const DrinkCard: FC<CardInterface> = (props) => {
           />
           <div>
             <Stack justify={"flex-start"} mb={"100%"}>
-              <Text size={20}>Кофе Американо</Text>
-              <Text size={15}>0,5 л.</Text>
+              <Stack
+                p={"3%"}
+                sx={() => ({
+                  borderRadius: 20,
+                })}
+                bg={
+                  currentTheme.colorScheme === "light"
+                    ? "rgba(0, 0, 0, 0.1)"
+                    : "rgba(255, 255, 255, 0.1)"
+                }
+              >
+                <Text
+                  size={20}
+                  fw={500}
+                  color={
+                    currentTheme.colorScheme === "light" ? "black" : "white"
+                  }
+                >
+                  Кофе Американо
+                </Text>
+                <Text maw={260} size={14}>
+                  Пара глотков горячего Американо, и вы будете готовы покорять
+                  этот день
+                </Text>
+              </Stack>
+              <Badge variant={"light"} color={"orange"}>
+                0,5 л.
+              </Badge>
             </Stack>
             <Stack>
               <Text>Итоговая стоимость: 700 RUB</Text>

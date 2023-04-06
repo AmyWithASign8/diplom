@@ -54,34 +54,58 @@ const PizzaCard: FC<CardInterface> = (props) => {
           />
           <div>
             <Stack justify={"flex-start"} mb={"30%"}>
-              <Text size={20}>Пепперони Фреш с перцем</Text>
-              <Text maw={400} size={14}>
-                Пикантная пепперони, увеличенная порция моцареллы, томаты,
-                фирменный томатный соус
-              </Text>
-              <Text size={15}>
-                {valueOfSize === "small"
-                  ? "25"
-                  : valueOfSize === "medium"
-                  ? "30"
-                  : "35"}{" "}
-                см,{" "}
-                {valueOfPastry === "traditional" ? "традиционное" : "тонкое"}{" "}
-                тесто,{" "}
-              </Text>
+              <Stack
+                p={"3%"}
+                sx={() => ({
+                  borderRadius: 20,
+                })}
+                bg={
+                  currentTheme.colorScheme === "light"
+                    ? "rgba(0, 0, 0, 0.1)"
+                    : "rgba(255, 255, 255, 0.1)"
+                }
+              >
+                <Text
+                  size={20}
+                  fw={500}
+                  color={
+                    currentTheme.colorScheme === "light" ? "black" : "white"
+                  }
+                >
+                  Пепперони Фреш с перцем
+                </Text>
+                <Text maw={400} size={14}>
+                  Пикантная пепперони, увеличенная порция моцареллы, томаты,
+                  фирменный томатный соус
+                </Text>
+              </Stack>
+              <Group position={"center"}>
+                <Badge color={"orange"}>
+                  {valueOfSize === "small"
+                    ? "25"
+                    : valueOfSize === "medium"
+                    ? "30"
+                    : "35"}{" "}
+                  см.
+                </Badge>
+                <Badge color={"orange"}>
+                  {valueOfPastry === "traditional" ? "традиционное" : "тонкое"}{" "}
+                  тесто
+                </Badge>
+              </Group>
               <Chip.Group
                 multiple={false}
                 value={valueOfSize}
                 onChange={setValueOfSize}
               >
                 <Group position="center">
-                  <Chip color="orange" variant="filled" value="small">
+                  <Chip color="orange.5" variant="filled" value="small">
                     Маленькая
                   </Chip>
-                  <Chip color="orange" variant="filled" value="medium">
+                  <Chip color="orange.7" variant="filled" value="medium">
                     Средняя
                   </Chip>
-                  <Chip color="orange" variant="filled" value="big">
+                  <Chip color="orange.9" variant="filled" value="big">
                     Большая
                   </Chip>
                 </Group>
@@ -92,11 +116,11 @@ const PizzaCard: FC<CardInterface> = (props) => {
                 onChange={setValueOfPastry}
               >
                 <Group position="center">
-                  <Chip color="orange" variant="filled" value="traditional">
+                  <Chip color="orange.8" variant="filled" value="traditional">
                     Традиционное
                   </Chip>
                   <Chip
-                    color="orange"
+                    color="orange.6"
                     variant="filled"
                     value="thin"
                     disabled={valueOfSize === "small"}

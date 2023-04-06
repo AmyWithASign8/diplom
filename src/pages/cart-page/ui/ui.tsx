@@ -18,12 +18,7 @@ export const CartLayout = () => {
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <div>
-      <Modal
-        opened={opened}
-        onClose={close}
-        title="Добавление товара в корзину"
-        centered
-      >
+      <Modal opened={opened} onClose={close} title="Очистить корзину" centered>
         <Text>Вы уверены что хотите очистить корзину?</Text>
         <Group position={"center"} mt={"5%"}>
           <Button color={"green"} variant={"light"}>
