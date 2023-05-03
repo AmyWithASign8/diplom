@@ -2,7 +2,10 @@ import React, { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import { MainLayout } from "../layouts/main-layout";
 import { AuthLayout } from "../layouts/auth-layout";
-const AdminPanelPage = lazy(() => import("./admin-panel-page"));
+import {AdminPanelLayout} from "../layouts/admin-panel-layout";
+
+const AdminPanelAddProductPage = lazy(() => import('./admin/add-product'))
+const AdminPanelMainPage = lazy(() => import("./admin/admin-panel-main"));
 const ViewerPage = lazy(() => import("./viewer-page"));
 const ReviewsPage = lazy(() => import("./reviews-page"));
 const LandingPage = lazy(() => import("./landing-page"));
@@ -27,7 +30,10 @@ const Pages = () => {
         <Route path={"auth"} element={<AuthPage />} />
         <Route path={"reg"} element={<RegistrationPage />} />
       </Route>
-      <Route path={"/admin-panel"} element={<AdminPanelPage />} />
+      <Route path={'/admin-panel'} element={<AdminPanelLayout/>}>
+          <Route index element={<AdminPanelMainPage />} />
+          <Route path={'add-product'} element={<AdminPanelAddProductPage/>}/>
+      </Route>
     </Routes>
   );
 };

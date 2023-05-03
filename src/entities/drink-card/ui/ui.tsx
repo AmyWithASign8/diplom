@@ -43,7 +43,7 @@ const DrinkCard: FC<CardInterface> = (props) => {
             alt="Norway"
           />
           <div>
-            <Stack justify={"flex-start"} mb={"100%"}>
+            <Stack justify={"flex-start"} mb={"80%"}>
               <Stack
                 p={"3%"}
                 sx={() => ({
@@ -74,8 +74,8 @@ const DrinkCard: FC<CardInterface> = (props) => {
               </Badge>
             </Stack>
             <Stack>
-              <Text>Итоговая стоимость: 700 RUB</Text>
-              <Button leftIcon={<IconShoppingCart />} color="orange">
+              <Text size={20} fw={500}>Итоговая стоимость: 700 RUB</Text>
+              <Button radius={'xl'} leftIcon={<IconShoppingCart />} color="orange">
                 В корзину
               </Button>
             </Stack>

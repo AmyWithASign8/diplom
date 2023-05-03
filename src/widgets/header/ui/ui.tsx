@@ -7,13 +7,16 @@ import {
   Header as ManTineHeader,
   Menu,
   Grid,
-  useMantineTheme, Stack,
+  useMantineTheme,
+  Stack,
 } from "@mantine/core";
 import HeaderImg from "../assets/images/favicon.png";
 import {
+  IconAdjustmentsCog,
   IconHome2,
   IconInfoCircle,
-  IconLocation, IconMessages,
+  IconLocation,
+  IconMessages,
   IconMoonStars,
   IconPizza,
   IconSettings,
@@ -43,7 +46,11 @@ export const Header = () => {
       icon: <IconShoppingCart />,
       currentUrl: "/user/my-cart",
     },
-    { name: "Мой профиль", icon: <IconUserCircle />, currentUrl: "/user/my-profile" },
+    {
+      name: "Мой профиль",
+      icon: <IconUserCircle />,
+      currentUrl: "/user/my-profile",
+    },
     {
       name: "Отзывы",
       icon: <IconMessages />,
@@ -131,10 +138,22 @@ export const Header = () => {
             </Grid>
           </Menu.Dropdown>
         </Menu>
-        <Button component={Link} to={'/catalog'} leftIcon={<IconPizza />} variant="subtle" color="orange">
+        <Button
+          component={Link}
+          to={"/catalog"}
+          leftIcon={<IconPizza />}
+          variant="subtle"
+          color="orange"
+        >
           Каталог
         </Button>
-        <Button component={Link} to={'/user/my-profile'} leftIcon={<IconUserCircle />} variant="subtle" color="orange">
+        <Button
+          component={Link}
+          to={"/user/my-profile"}
+          leftIcon={<IconUserCircle />}
+          variant="subtle"
+          color="orange"
+        >
           Мой профиль
         </Button>
         <Button
@@ -153,15 +172,37 @@ export const Header = () => {
             </Button>
           </Menu.Target>
           <Menu.Dropdown>
-           <Stack>
-             <Button component={Link} to={'/user/auth'} leftIcon={<IconUser />} variant="subtle" color="orange">
-               Войти в аккаунт
-             </Button><Button component={Link} to={'/user/reg'} leftIcon={<IconUserPlus />} variant="subtle" color="orange">
-             Регистрация
-           </Button>
-           </Stack>
+            <Stack>
+              <Button
+                component={Link}
+                to={"/user/auth"}
+                leftIcon={<IconUser />}
+                variant="subtle"
+                color="orange"
+              >
+                Войти в аккаунт
+              </Button>
+              <Button
+                component={Link}
+                to={"/user/reg"}
+                leftIcon={<IconUserPlus />}
+                variant="subtle"
+                color="orange"
+              >
+                Регистрация
+              </Button>
+            </Stack>
           </Menu.Dropdown>
         </Menu>
+        <Button
+          component={Link}
+          to={"/admin-panel"}
+          color={"orange"}
+          variant={"subtle"}
+          leftIcon={<IconAdjustmentsCog />}
+        >
+          Админ. панель
+        </Button>
         <Button
           color={theme === "light" ? "blue" : "orange"}
           variant={"subtle"}
