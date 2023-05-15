@@ -20,8 +20,13 @@ import {
   IconTrash,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import { useStore } from "effector-react/compat";
+import { $user } from "../../../app/models/userStore";
+import { $isAuth } from "../../../app/models/isAuthStore";
 
 export const ViewerLayout = () => {
+  const user = useStore($user);
+  const isAuth = useStore($isAuth);
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <div>
@@ -67,7 +72,7 @@ export const ViewerLayout = () => {
                   >
                     Электронная почта: . . . . . . . .
                   </Text>
-                  <Text size={20}>danil@gmail.com</Text>
+                  <Text size={20}>{user?.email}</Text>
                 </Group>
                 <Group>
                   <Text
@@ -77,28 +82,28 @@ export const ViewerLayout = () => {
                   >
                     Пароль: . . . . . . . . . . . . . . . . . . .
                   </Text>
-                  <Text size={20}>danil@gmail.com</Text>
+                  <Text size={20}>{user?.password}</Text>
                 </Group>
-                <Group>
-                  <Text
-                    variant="gradient"
-                    gradient={{ from: "yellow", to: "orange", deg: 45 }}
-                    size={20}
-                  >
-                    Количество заказов: . . . . . . .
-                  </Text>
-                  <Text size={20}>80</Text>
-                </Group>
-                <Group>
-                  <Text
-                    variant="gradient"
-                    gradient={{ from: "yellow", to: "orange", deg: 45 }}
-                    size={20}
-                  >
-                    Всего потрачено: . . . . . . . . . .
-                  </Text>
-                  <Text size={20}>8000 RUB</Text>
-                </Group>
+                {/*  <Group>*/}
+                {/*    <Text*/}
+                {/*      variant="gradient"*/}
+                {/*      gradient={{ from: "yellow", to: "orange", deg: 45 }}*/}
+                {/*      size={20}*/}
+                {/*    >*/}
+                {/*      Количество заказов: . . . . . . .*/}
+                {/*    </Text>*/}
+                {/*    <Text size={20}>80</Text>*/}
+                {/*  </Group>*/}
+                {/*  <Group>*/}
+                {/*    <Text*/}
+                {/*      variant="gradient"*/}
+                {/*      gradient={{ from: "yellow", to: "orange", deg: 45 }}*/}
+                {/*      size={20}*/}
+                {/*    >*/}
+                {/*      Всего потрачено: . . . . . . . . . .*/}
+                {/*    </Text>*/}
+                {/*    <Text size={20}>8000 RUB</Text>*/}
+                {/*  </Group>*/}
                 <Group>
                   <Text
                     variant="gradient"
@@ -109,16 +114,16 @@ export const ViewerLayout = () => {
                   </Text>
                   <Text size={20}>26.04.2023 года</Text>
                 </Group>
-                <Group>
-                  <Text
-                    variant="gradient"
-                    gradient={{ from: "yellow", to: "orange", deg: 45 }}
-                    size={20}
-                  >
-                    Любимое блюдо: . . . . . . . . . .
-                  </Text>
-                  <Text size={20}>Сырная пицца(53 заказа)</Text>
-                </Group>
+                {/*  <Group>*/}
+                {/*    <Text*/}
+                {/*      variant="gradient"*/}
+                {/*      gradient={{ from: "yellow", to: "orange", deg: 45 }}*/}
+                {/*      size={20}*/}
+                {/*    >*/}
+                {/*      Любимое блюдо: . . . . . . . . . .*/}
+                {/*    </Text>*/}
+                {/*    <Text size={20}>Сырная пицца(53 заказа)</Text>*/}
+                {/*  </Group>*/}
               </Stack>
             </Tabs.Panel>
             <Tabs.Panel value="history" pt="xs">
@@ -160,8 +165,9 @@ export const ViewerLayout = () => {
             <Tabs.Panel value={"settings"} pt={"xs"}>
               <Stack>
                 <Group>
-                  <Text size={20}>Изменить имя профиля</Text>
-                  <TextInput w={300} />
+                  <Text size={20}>Изменить почту профиля</Text>
+                  <TextInput w={300} placeholder={user?.email} />
+                  <Button color={"orange"}>Сохранить изменения</Button>
                 </Group>
                 <Group>
                   <Text size={20}>Изменить пароль</Text>
@@ -181,7 +187,7 @@ export const ViewerLayout = () => {
                       <TextInput label="Ваш пароль" size="xs" />
                       <TextInput label="Новый пароль" size="xs" mt="xs" />
                       <Center>
-                        <Button mt={10} color={"orange"} variant={"subtle"}>
+                        <Button mt={10} color={"orange"}>
                           Сменить пароль
                         </Button>
                       </Center>

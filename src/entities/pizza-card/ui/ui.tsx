@@ -131,8 +131,20 @@ const PizzaCard: FC<CardInterface> = (props) => {
               </Chip.Group>
             </Stack>
             <Stack>
-              <Text size={20} fw={500}>Итоговая стоимость: {valueOfSize === 'medium' ? 700 : valueOfSize === 'small' ? 700 * 0.5 : 700 * 1.5} RUB</Text>
-              <Button radius={'xl'} leftIcon={<IconShoppingCart />} color="orange">
+              <Text size={20} fw={500}>
+                Итоговая стоимость:{" "}
+                {valueOfSize === "medium"
+                  ? 700
+                  : valueOfSize === "small"
+                  ? 700 * 0.5
+                  : 700 * 1.5}{" "}
+                RUB
+              </Text>
+              <Button
+                radius={"xl"}
+                leftIcon={<IconShoppingCart />}
+                color="orange"
+              >
                 В корзину
               </Button>
             </Stack>

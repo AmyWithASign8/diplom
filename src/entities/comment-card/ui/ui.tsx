@@ -1,17 +1,17 @@
-import React, {FC} from "react";
+import React, { FC } from "react";
 import { Card, Group, Rating, Text } from "@mantine/core";
-import {IconUserCircle} from "@tabler/icons-react";
+import { IconUserCircle } from "@tabler/icons-react";
 
 interface CommentCardInterface {
-  landing: boolean,
-  maxWidth: number
+  landing: boolean;
+  maxWidth: number;
 }
-export const CommentCard:FC<CommentCardInterface> = (props) => {
+export const CommentCard: FC<CommentCardInterface> = (props) => {
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder maw={props.maxWidth}>
       <Group position={"apart"}>
         <Group>
-          {!props.landing && <IconUserCircle size={35}/>}
+          {!props.landing && <IconUserCircle size={35} />}
           <Text td={"underline"} weight={700} size={20}>
             Данил Бычков
           </Text>

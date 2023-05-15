@@ -1,59 +1,100 @@
 import React, { FC } from "react";
-import {Button, Center, Input, PasswordInput, Text, TextInput} from "@mantine/core";
+import { Button, Center, PasswordInput, Text, TextInput } from "@mantine/core";
 import { IconAt, IconLock } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
-import {SubmitHandler, useForm} from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { login, registration } from "../../../shared/api/queries";
+import { useStore } from "effector-react/compat";
+import { $user, setUser } from "../../../app/models/userStore";
+import { $isAuth, switchAuth } from "../../../app/models/isAuthStore";
 
 interface AuthFormInterface {
   auth: boolean;
   reg: boolean;
 }
-interface IFormInput{
-    email: string,
-    password: string
+interface IFormInput {
+  email: string;
+  password: string;
 }
 export const AuthForm: FC<AuthFormInterface> = ({ auth, reg }) => {
-    const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },
-    } = useForm<IFormInput>();
-    const onSubmit: SubmitHandler<IFormInput> = data => console.log(data);
-    const ValidateFunc = (validateInput: any) => {
-        if (validateInput?.ref.name === 'email'){
-            if (validateInput?.type === 'required') return 'Это поле не может быть пустым'
-            if (validateInput?.type === 'maxLength') return 'Email должен содержать менее 20 символов'
-            if (validateInput?.type === 'pattern') return 'Неккоректный email, пример: example@gmail.com'
-        }else if (validateInput?.ref.name === 'password') {
-            if (validateInput?.type === 'required') return 'Это поле не может быть пустым'
-            if (validateInput?.type === 'maxLength') return 'Пароль должен содержать менее 20 символов'
-            if (validateInput?.type === 'minLength') return 'Пароль должен содержать не менее 6 символов'
-            if (validateInput?.type === 'pattern') return 'Пароль должен содержать только латинские символы'
-        }
+  const user = useStore($user);
+  const isAuth = useStore($isAuth);
+  console.log("Хуй", user);
+  console.log("Пизда", isAuth);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      if (auth && !reg) {
+        const response: any = await login(data.email, data.password);
+        setUser(response);
+        switchAuth(true);
+        localStorage.setItem("user", JSON.stringify(response));
+        localStorage.setItem("isAuth", String(isAuth));
+      }
+      if (!auth && reg) {
+        const response: any = await registration(data.email, data.password);
+        console.log(response);
+        setUser(response);
+        switchAuth(true);
+        localStorage.setItem("user", JSON.stringify(response));
+        localStorage.setItem("isAuth", String(isAuth));
+      }
+    } catch (e) {}
+  };
+  const ValidateFunc = (validateInput: any) => {
+    if (validateInput?.ref.name === "email") {
+      if (validateInput?.type === "required")
+        return "Это поле не может быть пустым";
+      if (validateInput?.type === "maxLength")
+        return "Email должен содержать менее 40 символов";
+      if (validateInput?.type === "pattern")
+        return "Неккоректный email, пример: example@gmail.com";
+    } else if (validateInput?.ref.name === "password") {
+      if (validateInput?.type === "required")
+        return "Это поле не может быть пустым";
+      if (validateInput?.type === "maxLength")
+        return "Пароль должен содержать менее 40 символов";
+      if (validateInput?.type === "minLength")
+        return "Пароль должен содержать не менее 6 символов";
+      if (validateInput?.type === "pattern")
+        return "Пароль должен содержать только латинские символы и хотя бы 1";
     }
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <TextInput
-          error={ValidateFunc(errors.email)}
+        error={ValidateFunc(errors.email)}
         icon={<IconAt />}
         placeholder="Введите ваш email"
         sx={() => ({
           width: 500,
         })}
         mb={10}
-          {...register("email", {required: true ,maxLength: 20, pattern: /[^А-Яа-я0-9]^\S+@\S+$/})}
+        {...register("email", {
+          required: true,
+          maxLength: 40,
+          pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/,
+        })}
       />
       <PasswordInput
-          error={ValidateFunc(errors.password)}
-          {...register("password", {required: true,minLength: 6, maxLength: 20, pattern: /[^А-Яа-я0-9]/})}
+        error={ValidateFunc(errors.password)}
+        {...register("password", {
+          required: true,
+          minLength: 6,
+          maxLength: 40,
+          pattern: /[^А-Яа-я0-9]/,
+        })}
         placeholder="Введите ваш пароль"
         icon={<IconLock size="1rem" />}
       />
       <Center>
         {auth && (
           <Button
-              type={'submit'}
+            type={"submit"}
             variant={"gradient"}
             gradient={{ from: "yellow", to: "orange", deg: 45 }}
             mt={30}
@@ -63,7 +104,7 @@ export const AuthForm: FC<AuthFormInterface> = ({ auth, reg }) => {
         )}
         {reg && (
           <Button
-              type={'submit'}
+            type={"submit"}
             variant={"gradient"}
             gradient={{ from: "yellow", to: "orange", deg: 45 }}
             mt={30}

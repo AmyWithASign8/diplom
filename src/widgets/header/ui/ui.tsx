@@ -19,7 +19,6 @@ import {
   IconMessages,
   IconMoonStars,
   IconPizza,
-  IconSettings,
   IconShoppingCart,
   IconSun,
   IconUser,
@@ -30,34 +29,63 @@ import { Link, useLocation } from "react-router-dom";
 import { useStore } from "effector-react/compat";
 import { $theme, switchTheme } from "../../../app/models/themeStore";
 import { notifications } from "@mantine/notifications";
+import { $isAuth } from "../../../app/models/isAuthStore";
+import { $user } from "../../../app/models/userStore";
 
 export const Header = () => {
+  const user = useStore($user);
+  const isAuth = useStore($isAuth);
   const mantineTheme = useMantineTheme();
   const theme = useStore($theme);
   localStorage.setItem("theme", theme);
   const altTheme = theme === "light" ? "dark" : "light";
-  const dataNavigation = [
-    { name: "Главная", icon: <IconHome2 />, currentUrl: "/" },
-    { name: "Каталог", icon: <IconPizza />, currentUrl: "/catalog" },
-    { name: "Авторизация", icon: <IconUser />, currentUrl: "/user/auth" },
-    { name: "Регистрация", icon: <IconUserPlus />, currentUrl: "/user/reg" },
-    {
-      name: "Корзина",
-      icon: <IconShoppingCart />,
-      currentUrl: "/user/my-cart",
-    },
-    {
-      name: "Мой профиль",
-      icon: <IconUserCircle />,
-      currentUrl: "/user/my-profile",
-    },
-    {
-      name: "Отзывы",
-      icon: <IconMessages />,
-      currentUrl: "/reviews",
-    },
-    { name: "О нас", icon: <IconInfoCircle />, currentUrl: "/about-us" },
-  ];
+  const dataNavigation = isAuth
+    ? [
+        { name: "Главная", icon: <IconHome2 />, currentUrl: "/" },
+        { name: "Каталог", icon: <IconPizza />, currentUrl: "/catalog" },
+        {
+          name: "Корзина",
+          icon: <IconShoppingCart />,
+          currentUrl: "/user/my-cart",
+        },
+        {
+          name: "Мой профиль",
+          icon: <IconUserCircle />,
+          currentUrl: "/user/my-profile",
+        },
+        {
+          name: "Отзывы",
+          icon: <IconMessages />,
+          currentUrl: "/reviews",
+        },
+        { name: "О нас", icon: <IconInfoCircle />, currentUrl: "/about-us" },
+      ]
+    : [
+        { name: "Главная", icon: <IconHome2 />, currentUrl: "/" },
+        { name: "Каталог", icon: <IconPizza />, currentUrl: "/catalog" },
+        { name: "Авторизация", icon: <IconUser />, currentUrl: "/user/auth" },
+        {
+          name: "Регистрация",
+          icon: <IconUserPlus />,
+          currentUrl: "/user/reg",
+        },
+        {
+          name: "Корзина",
+          icon: <IconShoppingCart />,
+          currentUrl: "/user/my-cart",
+        },
+        {
+          name: "Мой профиль",
+          icon: <IconUserCircle />,
+          currentUrl: "/user/my-profile",
+        },
+        {
+          name: "Отзывы",
+          icon: <IconMessages />,
+          currentUrl: "/reviews",
+        },
+        { name: "О нас", icon: <IconInfoCircle />, currentUrl: "/about-us" },
+      ];
   const urll = useLocation();
   const switchThemeAndShowNotification = () => {
     switchTheme(altTheme);
@@ -165,44 +193,48 @@ export const Header = () => {
         >
           Корзина
         </Button>
-        <Menu>
-          <Menu.Target>
-            <Button leftIcon={<IconUser />} variant="subtle" color="orange">
-              Авторизация
-            </Button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Stack>
-              <Button
-                component={Link}
-                to={"/user/auth"}
-                leftIcon={<IconUser />}
-                variant="subtle"
-                color="orange"
-              >
-                Войти в аккаунт
+        {!isAuth && (
+          <Menu>
+            <Menu.Target>
+              <Button leftIcon={<IconUser />} variant="subtle" color="orange">
+                Авторизация
               </Button>
-              <Button
-                component={Link}
-                to={"/user/reg"}
-                leftIcon={<IconUserPlus />}
-                variant="subtle"
-                color="orange"
-              >
-                Регистрация
-              </Button>
-            </Stack>
-          </Menu.Dropdown>
-        </Menu>
-        <Button
-          component={Link}
-          to={"/admin-panel"}
-          color={"orange"}
-          variant={"subtle"}
-          leftIcon={<IconAdjustmentsCog />}
-        >
-          Админ. панель
-        </Button>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Stack>
+                <Button
+                  component={Link}
+                  to={"/user/auth"}
+                  leftIcon={<IconUser />}
+                  variant="subtle"
+                  color="orange"
+                >
+                  Войти в аккаунт
+                </Button>
+                <Button
+                  component={Link}
+                  to={"/user/reg"}
+                  leftIcon={<IconUserPlus />}
+                  variant="subtle"
+                  color="orange"
+                >
+                  Регистрация
+                </Button>
+              </Stack>
+            </Menu.Dropdown>
+          </Menu>
+        )}
+        {user?.role === "ADMIN" && (
+          <Button
+            component={Link}
+            to={"/admin-panel"}
+            color={"orange"}
+            variant={"subtle"}
+            leftIcon={<IconAdjustmentsCog />}
+          >
+            Админ. панель
+          </Button>
+        )}
         <Button
           color={theme === "light" ? "blue" : "orange"}
           variant={"subtle"}
