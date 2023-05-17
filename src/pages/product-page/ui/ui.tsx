@@ -10,9 +10,12 @@ import PizzaCard from "../../../entities/pizza-card/ui/ui";
 import DessertCard from "../../../entities/dessert-card/ui/ui";
 import DrinkCard from "../../../entities/drink-card/ui/ui";
 import { SkeletonCard } from "../../../entities/skeleton-card";
+import {useGetAllProducts} from "../../../shared/api/queries/product/useGetAllProducts";
 
 export const ProductLayout = () => {
-
+  const {data, isSuccess} = useGetAllProducts()
+  console.log(data)
+  if (!isSuccess) return null
   return (
     <div>
 
@@ -103,25 +106,9 @@ export const ProductLayout = () => {
               spacing={"xl"}
               mb={100}
             >
-              <SkeletonCard />
-              <PizzaCard landing={false} commerce={true} toCard={false}/>
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
-              <PizzaCard landing={false} commerce={true} toCard={false} />
+              {data.map((obj) => (
+                  <PizzaCard productData={obj} landing={false} commerce={true} toCard={false}/>
+              ))}
             </SimpleGrid>
           </Center>
         </Tabs.Panel>
@@ -169,16 +156,7 @@ export const ProductLayout = () => {
               spacing={"xl"}
               mb={100}
             >
-              <DessertCard landing={false} commerce={true} toCard={false} />
-              <DessertCard landing={false} commerce={true} toCard={false} />
-              <DessertCard landing={false} commerce={true} toCard={false} />
-              <DessertCard landing={false} commerce={true} toCard={false} />
-              <DessertCard landing={false} commerce={true} toCard={false} />
-              <DessertCard landing={false} commerce={true} toCard={false} />
-              <DessertCard landing={false} commerce={true} toCard={false} />
-              <DessertCard landing={false} commerce={true} toCard={false} />
-              <DessertCard landing={false} commerce={true} toCard={false} />
-              <DessertCard landing={false} commerce={true} toCard={false} />
+              {/*<DessertCard landing={false} commerce={true} toCard={false} />*/}
             </SimpleGrid>
           </Center>
         </Tabs.Panel>
@@ -252,13 +230,7 @@ export const ProductLayout = () => {
               spacing={"xl"}
               mb={100}
             >
-              <DrinkCard landing={false} commerce={true} toCard={false} />
-              <DrinkCard landing={false} commerce={true} toCard={false} />
-              <DrinkCard landing={false} commerce={true} toCard={false} />
-              <DrinkCard landing={false} commerce={true} toCard={false} />
-              <DrinkCard landing={false} commerce={true} toCard={false} />
-              <DrinkCard landing={false} commerce={true} toCard={false} />
-              <DrinkCard landing={false} commerce={true} toCard={false} />
+              {/*<DrinkCard landing={false} commerce={true} toCard={false} />*/}
             </SimpleGrid>
           </Center>
         </Tabs.Panel>

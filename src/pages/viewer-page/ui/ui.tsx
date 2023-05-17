@@ -104,16 +104,16 @@ export const ViewerLayout = () => {
                 {/*    </Text>*/}
                 {/*    <Text size={20}>8000 RUB</Text>*/}
                 {/*  </Group>*/}
-                <Group>
-                  <Text
-                    variant="gradient"
-                    gradient={{ from: "yellow", to: "orange", deg: 45 }}
-                    size={20}
-                  >
-                    На сайте с. . . . . . . . . . . . . . . . .
-                  </Text>
-                  <Text size={20}>26.04.2023 года</Text>
-                </Group>
+                {/*<Group>*/}
+                {/*  <Text*/}
+                {/*    variant="gradient"*/}
+                {/*    gradient={{ from: "yellow", to: "orange", deg: 45 }}*/}
+                {/*    size={20}*/}
+                {/*  >*/}
+                {/*    На сайте с. . . . . . . . . . . . . . . . .*/}
+                {/*  </Text>*/}
+                {/*  <Text size={20}>26.04.2023 года</Text>*/}
+                {/*</Group>*/}
                 {/*  <Group>*/}
                 {/*    <Text*/}
                 {/*      variant="gradient"*/}

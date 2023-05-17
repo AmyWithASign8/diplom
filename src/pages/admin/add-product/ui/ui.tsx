@@ -10,19 +10,23 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
+import {IconAlertCircle, IconCheck, IconPhoto, IconUpload, IconX} from "@tabler/icons-react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import {createProduct} from "../../../../shared/api/queries/product";
+import {showNotification} from "@mantine/notifications";
+import {useGetAllBrands} from "../../../../shared/api/queries/brand/useGetBrands";
 
 interface Inputs {
   title: string;
   description: string;
-  price: number;
-  weight: number;
+  price: any;
+  additional: any;
   type: string;
-  variety: string;
+  brand: string;
 }
 export const AdminAddProductLayout = () => {
-  const [file, setFile] = React.useState<FileWithPath[] | null>(null);
+  const { data, isLoading, isSuccess } = useGetAllBrands();
+  const [file, setFile] = React.useState<FileWithPath | any>(null);
   const {
     register,
     handleSubmit,
@@ -36,19 +40,43 @@ export const AdminAddProductLayout = () => {
       formData.append("title", data.title);
       formData.append("description", data.description);
       formData.append("price", data.price);
-      formData.append("weight", data.weight);
-      formData.append("imageUrl", file);
-      console.log(data, currentProductVariety, currentProductType);
-    } catch (e) {}
+      file.forEach((file: any) => {
+        formData.append("image", file);
+      });
+      formData.append('additional', data.additional)
+      formData.append("type", currentProductType);
+      formData.append("brand", currentProductBrand);
+
+      const response = await createProduct(formData);
+      console.log(response);
+      showNotification({
+        id: "load-data",
+        title: "Создание продукта",
+        message: `Продукт «${data.title}» успешно создан!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconCheck size="1rem" />,
+      });
+    } catch (e) {
+      console.log(file)
+      showNotification({
+        id: "load-data",
+        title: "Ошибка",
+        message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconAlertCircle/>
+      });
+    }
   };
   React.useEffect(() => {
     console.log(file);
   }, [file]);
   const [currentProductType, setCurrentProductType] = React.useState<
-    string | null
+    any
   >(null);
-  const [currentProductVariety, setCurrentProductVariety] = React.useState<
-    string | null
+  const [currentProductBrand, setCurrentProductBrand] = React.useState<
+    any
   >(null);
   const ValidateFunc = (validateInput: any) => {
     if (validateInput?.ref.name === "title") {
@@ -68,15 +96,14 @@ export const AdminAddProductLayout = () => {
         return "Цена не может быть шестизначной или больше";
       if (validateInput?.type === "pattern")
         return "Тут могут использоваться только цифры!";
-    } else if (validateInput?.ref.name === "weight") {
+    } else if (validateInput?.ref.name === "additional") {
       if (validateInput?.type === "required")
         return "Это поле не может быть пустым";
-      if (validateInput?.type === "maxLength")
-        return "Цена не может быть шестизначной или больше";
-      if (validateInput?.type === "pattern")
-        return "Тут могут использоваться только цифры!";
     }
   };
+
+  if (!isSuccess) return null
+  console.log(data[currentProductType])
   return (
     <div>
       <Center>
@@ -180,11 +207,7 @@ export const AdminAddProductLayout = () => {
             onChange={(value) => setCurrentProductType(value)}
             clearable
             placeholder="Выберите тип продукта"
-            data={[
-              { value: "pizza", label: "Пицца" },
-              { value: "dessert", label: "Десерт" },
-              { value: "drink", label: "Напиток" },
-            ]}
+            data={data.map((obj) => ({value: `${obj.id}`, label: `${obj.name}`}))}
             styles={(theme) => ({
               item: {
                 "&[data-selected]": {
@@ -203,34 +226,22 @@ export const AdminAddProductLayout = () => {
             })}
           />
           <TextInput
-            error={ValidateFunc(errors.weight)}
-            {...register("weight", {
+            error={ValidateFunc(errors.additional)}
+            {...register("additional", {
               required: true,
-              pattern: /^[ 0-9]+$/,
-              maxLength: 5,
             })}
             mt={10}
-            placeholder={"99999 ₽"}
             disabled={currentProductType === null && true}
-            label={
-              currentProductType === "pizza"
-                ? "Укажите вес пиццы в граммах"
-                : currentProductType === "dessert"
-                ? "Укажите количество в шт."
-                : currentProductType === "drink"
-                ? "Укажите обьем в мл."
-                : "Укажите тип продукта!"
-            }
-            min={0}
+            label={'Укажите доп. информацию'}
           />
           <Select
-            onChange={(value) => setCurrentProductVariety(value)}
+            onChange={(value) => setCurrentProductBrand(value)}
             label={
-              currentProductType === "pizza"
+              currentProductType === "1"
                 ? "Укажите вид пиццы"
-                : currentProductType === "drink"
+                : currentProductType === "2"
                 ? "Укажите вид напитка"
-                : currentProductType === "dessert"
+                : currentProductType === "3"
                 ? "Укажите вид десерта"
                 : "Выберите сначала тип продукта!"
             }
@@ -242,25 +253,9 @@ export const AdminAddProductLayout = () => {
                 ? "Выберите тип продукта"
                 : "Выберите вид продукта"
             }
-            data={
-              currentProductType === "pizza"
-                ? [
-                    { value: "pizza", label: "Мясная" },
-                    { value: "dessert", label: "Вега" },
-                    { value: "drink", label: "Сырная" },
-                  ]
-                : currentProductType === "drink"
-                ? [
-                    { value: "pizza", label: "Горячие" },
-                    { value: "dessert", label: "Холодные" },
-                    { value: "drink", label: "Коктейли" },
-                  ]
-                : [
-                    { value: "pizza", label: "Печенье" },
-                    { value: "dessert", label: "Пирожоное" },
-                    { value: "drink", label: "Кексы" },
-                  ]
-            }
+            data={currentProductType !== null && data.map((obj) => (
+                obj.id === currentProductType && obj.types.map((obj) => ({value: `${obj.id}`, label: `${obj.name}`}))
+            ))}
             styles={(theme) => ({
               item: {
                 "&[data-selected]": {
@@ -278,14 +273,14 @@ export const AdminAddProductLayout = () => {
               },
             })}
           />
-          {currentProductVariety === null && (
+          {setCurrentProductBrand === null && (
             <Center mt={10}>
               <Text c={"red"}>Все поля должны быть заполнены</Text>
             </Center>
           )}
           <Center>
             <Button
-              disabled={currentProductVariety === null && true}
+              disabled={setCurrentProductBrand === null && true}
               mt={10}
               type={"submit"}
             >

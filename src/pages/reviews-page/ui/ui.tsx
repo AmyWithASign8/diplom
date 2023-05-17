@@ -17,6 +17,8 @@ import { IconPencil } from "@tabler/icons-react";
 import { modals } from "@mantine/modals";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDisclosure } from "@mantine/hooks";
+import { useStore } from "effector-react/compat";
+import { $isAuth } from "../../../app/models/isAuthStore";
 
 interface IFormInput {
   title: string;
@@ -25,6 +27,7 @@ interface IFormInput {
 }
 
 export const ReviewsLayout = () => {
+  const isAuth = useStore($isAuth);
   const [opened, { open, close }] = useDisclosure(false);
   const {
     register,
@@ -56,62 +59,77 @@ export const ReviewsLayout = () => {
   const [rateValue, setRateValue] = React.useState<number | any>(0);
   return (
     <div>
-      <Modal opened={opened} onClose={close} title="Создание отзыва" centered>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <TextInput
-            error={ValidateFunc(errors.title)}
-            {...register("title", { required: true, maxLength: 100 })}
-            label="Заголовок отзыва"
-            placeholder="Введите заголовок отзыва"
-            data-autofocus
-            withAsterisk
-          />
-          <Textarea
-            error={ValidateFunc(errors.description)}
-            {...register("description", { required: true, maxLength: 2000 })}
-            placeholder="Введите описание отзыва"
-            label="Описание отзыва"
-            withAsterisk
-            minRows={6}
-            maxRows={10}
-          />
-          <Text mt={10}>Поставте оценку (от 0 до 5):</Text>
-          <Group>
-            <NumberInput
-              error={ValidateFunc(errors.rating)}
-              {...register("rating", {
-                valueAsNumber: true,
-                maxLength: 5,
-                minLength: 0,
-              })}
-              placeholder="Your age"
-              defaultValue={0.0}
-              precision={1}
-              step={0.5}
-              max={5}
-              min={0}
-              value={rateValue}
-              onChange={(value) => setRateValue(value)}
+      {isAuth ? (
+        <Modal opened={opened} onClose={close} title="Создание отзыва" centered>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <TextInput
+              error={ValidateFunc(errors.title)}
+              {...register("title", { required: true, maxLength: 100 })}
+              label="Заголовок отзыва"
+              placeholder="Введите заголовок отзыва"
+              data-autofocus
+              withAsterisk
             />
-            <Rating
-              fractions={2}
-              defaultValue={0}
-              size={"xl"}
-              value={rateValue}
-              readOnly
+            <Textarea
+              error={ValidateFunc(errors.description)}
+              {...register("description", { required: true, maxLength: 2000 })}
+              placeholder="Введите описание отзыва"
+              label="Описание отзыва"
+              withAsterisk
+              minRows={6}
+              maxRows={10}
             />
-          </Group>
-          <Button
-            type={"submit"}
-            leftIcon={<IconPencil />}
-            color={"orange"}
-            fullWidth
-            mt="md"
-          >
-            Создать
-          </Button>
-        </form>
-      </Modal>
+            <Text mt={10}>Поставте оценку (от 0 до 5):</Text>
+            <Group>
+              <NumberInput
+                error={ValidateFunc(errors.rating)}
+                {...register("rating", {
+                  valueAsNumber: true,
+                  maxLength: 5,
+                  minLength: 0,
+                })}
+                placeholder="Your age"
+                defaultValue={0.0}
+                precision={1}
+                step={0.5}
+                max={5}
+                min={0}
+                value={rateValue}
+                onChange={(value) => setRateValue(value)}
+              />
+              <Rating
+                fractions={2}
+                defaultValue={0}
+                size={"xl"}
+                value={rateValue}
+                readOnly
+              />
+            </Group>
+            <Button
+              type={"submit"}
+              leftIcon={<IconPencil />}
+              color={"orange"}
+              fullWidth
+              mt="md"
+            >
+              Создать
+            </Button>
+          </form>
+        </Modal>
+      ) : (
+        <Modal opened={opened} onClose={close} title="Создание отзыва" centered>
+          <Center>
+            <Stack>
+              <Text size={20} fw={500}>
+                Сначала авторизуйтесь!
+              </Text>
+              <Button color={"orange"} onClick={close}>
+                Ок
+              </Button>
+            </Stack>
+          </Center>
+        </Modal>
+      )}
       <Group mt={100} ml={"25%"} position={"apart"} w={"47%"}>
         <Text size={30} fw={500}>
           Отзывы

@@ -1,12 +1,13 @@
 import { $authHost, $host } from "../../http";
 import jwtDecode from "jwt-decode";
 import { IUser, setUser } from "../../../../app/models/userStore";
+import { switchAuth } from "../../../../app/models/isAuthStore";
 
 export const registration = async (email: string, password: string) => {
   const { data } = await $host.post("api/user/create", {
     email,
     password,
-    role: "ADMIN",
+    role: "USER",
   });
   localStorage.setItem("token", data.token);
   return jwtDecode(data.token);
@@ -19,8 +20,13 @@ export const login = async (email: string, password: string) => {
 };
 
 export const check = async () => {
-  const { data } = await $authHost.get("api/user/auth");
-  localStorage.setItem("token", data.token);
-  const user = jwtDecode<IUser>(data.token);
-  setUser(user);
+  try {
+    const { data } = await $authHost.get("api/user/auth");
+    localStorage.setItem("token", data.token);
+    const user = jwtDecode<IUser>(data.token);
+    setUser(user);
+  } catch (e) {
+    setUser(null);
+    switchAuth(false);
+  }
 };

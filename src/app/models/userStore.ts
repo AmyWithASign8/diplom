@@ -8,7 +8,7 @@ export interface IUser {
   password: string;
   role: string;
 }
-export const setUser = createEvent<IUser>();
+export const setUser = createEvent<IUser | null>();
 export const logout = createEvent();
 
 export const $user = createStore<IUser | null>(null);

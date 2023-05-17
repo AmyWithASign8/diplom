@@ -1,5 +1,12 @@
 import React, { FC } from "react";
-import { Button, Center, PasswordInput, Text, TextInput } from "@mantine/core";
+import {
+  Button,
+  Center,
+  Modal,
+  PasswordInput,
+  Text,
+  TextInput,
+} from "@mantine/core";
 import { IconAt, IconLock } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -7,6 +14,8 @@ import { login, registration } from "../../../shared/api/queries";
 import { useStore } from "effector-react/compat";
 import { $user, setUser } from "../../../app/models/userStore";
 import { $isAuth, switchAuth } from "../../../app/models/isAuthStore";
+import { useDisclosure } from "@mantine/hooks";
+import { modals } from "@mantine/modals";
 
 interface AuthFormInterface {
   auth: boolean;
@@ -43,7 +52,29 @@ export const AuthForm: FC<AuthFormInterface> = ({ auth, reg }) => {
         localStorage.setItem("user", JSON.stringify(response));
         localStorage.setItem("isAuth", String(isAuth));
       }
-    } catch (e) {}
+    } catch (e) {
+      modals.open({
+        centered: true,
+        title: "Произошла ошибка!",
+        children: (
+          <>
+            <Text size={17}>
+              Произошла ошибка авторизации! Возможно вы ввели неверные данные
+              или произошла ошибка у нас на сервере! В регистрации возможно что
+              такая почта уже зарегестрирована!
+            </Text>
+            <Button
+              color={"red"}
+              fullWidth
+              onClick={() => modals.closeAll()}
+              mt="md"
+            >
+              Ок
+            </Button>
+          </>
+        ),
+      });
+    }
   };
   const ValidateFunc = (validateInput: any) => {
     if (validateInput?.ref.name === "email") {
@@ -65,84 +96,86 @@ export const AuthForm: FC<AuthFormInterface> = ({ auth, reg }) => {
     }
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <TextInput
-        error={ValidateFunc(errors.email)}
-        icon={<IconAt />}
-        placeholder="Введите ваш email"
-        sx={() => ({
-          width: 500,
-        })}
-        mb={10}
-        {...register("email", {
-          required: true,
-          maxLength: 40,
-          pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/,
-        })}
-      />
-      <PasswordInput
-        error={ValidateFunc(errors.password)}
-        {...register("password", {
-          required: true,
-          minLength: 6,
-          maxLength: 40,
-          pattern: /[^А-Яа-я0-9]/,
-        })}
-        placeholder="Введите ваш пароль"
-        icon={<IconLock size="1rem" />}
-      />
-      <Center>
+    <>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextInput
+          error={ValidateFunc(errors.email)}
+          icon={<IconAt />}
+          placeholder="Введите ваш email"
+          sx={() => ({
+            width: 500,
+          })}
+          mb={10}
+          {...register("email", {
+            required: true,
+            maxLength: 40,
+            pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/,
+          })}
+        />
+        <PasswordInput
+          error={ValidateFunc(errors.password)}
+          {...register("password", {
+            required: true,
+            minLength: 6,
+            maxLength: 40,
+            pattern: /[^А-Яа-я0-9]/,
+          })}
+          placeholder="Введите ваш пароль"
+          icon={<IconLock size="1rem" />}
+        />
+        <Center>
+          {auth && (
+            <Button
+              type={"submit"}
+              variant={"gradient"}
+              gradient={{ from: "yellow", to: "orange", deg: 45 }}
+              mt={30}
+            >
+              Войти
+            </Button>
+          )}
+          {reg && (
+            <Button
+              type={"submit"}
+              variant={"gradient"}
+              gradient={{ from: "yellow", to: "orange", deg: 45 }}
+              mt={30}
+            >
+              Зарегестрироваться
+            </Button>
+          )}
+        </Center>
         {auth && (
-          <Button
-            type={"submit"}
-            variant={"gradient"}
-            gradient={{ from: "yellow", to: "orange", deg: 45 }}
-            mt={30}
-          >
-            Войти
-          </Button>
+          <Center>
+            <Text color={"white"} fw={500} mr={5}>
+              У вас еще нет аккаунта? Тогда вам нужно{" "}
+            </Text>
+            <Text
+              component={Link}
+              to={"/user/reg"}
+              color={"orange"}
+              td={"underline"}
+            >
+              Зарегистрироваться
+            </Text>
+          </Center>
         )}
         {reg && (
-          <Button
-            type={"submit"}
-            variant={"gradient"}
-            gradient={{ from: "yellow", to: "orange", deg: 45 }}
-            mt={30}
-          >
-            Зарегестрироваться
-          </Button>
+          <Center>
+            <Text color={"white"} fw={500} mr={5}>
+              У вас уже есть аккаунт? Тогда вам нужно{" "}
+            </Text>
+            <Text
+              component={Link}
+              to={"/user/auth"}
+              color={"orange"}
+              td={"underline"}
+            >
+              Войти
+            </Text>
+          </Center>
         )}
-      </Center>
-      {auth && (
-        <Center>
-          <Text color={"white"} fw={500} mr={5}>
-            У вас еще нет аккаунта? Тогда вам нужно{" "}
-          </Text>
-          <Text
-            component={Link}
-            to={"/user/reg"}
-            color={"orange"}
-            td={"underline"}
-          >
-            Зарегистрироваться
-          </Text>
-        </Center>
-      )}
-      {reg && (
-        <Center>
-          <Text color={"white"} fw={500} mr={5}>
-            У вас уже есть аккаунт? Тогда вам нужно{" "}
-          </Text>
-          <Text
-            component={Link}
-            to={"/user/auth"}
-            color={"orange"}
-            td={"underline"}
-          >
-            Войти
-          </Text>
-        </Center>
-      )}
-    </form>
+      </form>
+    </>
   );
 };

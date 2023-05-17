@@ -16,6 +16,7 @@ import {
   IconHome2,
   IconInfoCircle,
   IconLocation,
+  IconLogout,
   IconMessages,
   IconMoonStars,
   IconPizza,
@@ -29,8 +30,9 @@ import { Link, useLocation } from "react-router-dom";
 import { useStore } from "effector-react/compat";
 import { $theme, switchTheme } from "../../../app/models/themeStore";
 import { notifications } from "@mantine/notifications";
-import { $isAuth } from "../../../app/models/isAuthStore";
-import { $user } from "../../../app/models/userStore";
+import { $isAuth, switchAuth } from "../../../app/models/isAuthStore";
+import { $user, logout, setUser } from "../../../app/models/userStore";
+import { modals } from "@mantine/modals";
 
 export const Header = () => {
   const user = useStore($user);
@@ -70,16 +72,6 @@ export const Header = () => {
           currentUrl: "/user/reg",
         },
         {
-          name: "Корзина",
-          icon: <IconShoppingCart />,
-          currentUrl: "/user/my-cart",
-        },
-        {
-          name: "Мой профиль",
-          icon: <IconUserCircle />,
-          currentUrl: "/user/my-profile",
-        },
-        {
           name: "Отзывы",
           icon: <IconMessages />,
           currentUrl: "/reviews",
@@ -87,6 +79,21 @@ export const Header = () => {
         { name: "О нас", icon: <IconInfoCircle />, currentUrl: "/about-us" },
       ];
   const urll = useLocation();
+  const openLogoutModal = () =>
+    modals.openConfirmModal({
+      centered: true,
+
+      title: "Подтвердите свое действие",
+      children: <Text size="15">Вы уверены что хотите выйти из акканта?</Text>,
+      labels: { confirm: "Да", cancel: "Отмена" },
+      confirmProps: { color: "red" },
+      onCancel: () => console.log("Cancel"),
+      onConfirm: () => {
+        localStorage.removeItem("token");
+        setUser(null);
+        switchAuth(false);
+      },
+    });
   const switchThemeAndShowNotification = () => {
     switchTheme(altTheme);
     notifications.show({
@@ -175,24 +182,28 @@ export const Header = () => {
         >
           Каталог
         </Button>
-        <Button
-          component={Link}
-          to={"/user/my-profile"}
-          leftIcon={<IconUserCircle />}
-          variant="subtle"
-          color="orange"
-        >
-          Мой профиль
-        </Button>
-        <Button
-          leftIcon={<IconShoppingCart />}
-          variant="subtle"
-          color="orange"
-          component={Link}
-          to={"/user/my-cart"}
-        >
-          Корзина
-        </Button>
+        {isAuth && (
+          <Button
+            component={Link}
+            to={"/user/my-profile"}
+            leftIcon={<IconUserCircle />}
+            variant="subtle"
+            color="orange"
+          >
+            Мой профиль
+          </Button>
+        )}
+        {isAuth && (
+          <Button
+            leftIcon={<IconShoppingCart />}
+            variant="subtle"
+            color="orange"
+            component={Link}
+            to={"/user/my-cart"}
+          >
+            Корзина
+          </Button>
+        )}
         {!isAuth && (
           <Menu>
             <Menu.Target>
@@ -249,6 +260,15 @@ export const Header = () => {
         >
           Сменить тему
         </Button>
+        {isAuth && (
+          <Button
+            color={"red"}
+            leftIcon={<IconLogout />}
+            onClick={() => openLogoutModal()}
+          >
+            Выйти из аккаунта
+          </Button>
+        )}
       </Group>
     </ManTineHeader>
   );

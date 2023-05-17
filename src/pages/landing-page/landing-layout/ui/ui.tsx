@@ -14,8 +14,11 @@ import { Carousel } from "@mantine/carousel";
 import { Link } from "react-router-dom";
 import PizzaCard from "../../../../entities/pizza-card/ui/ui";
 import { CommentCard } from "../../../../entities/comment-card";
+import {useGetAllProducts} from "../../../../shared/api/queries/product/useGetAllProducts";
 
 export const LandingLayout = () => {
+  const {data, isSuccess} = useGetAllProducts()
+  if (!isSuccess) return null
   return (
     <div>
       <BackgroundImage src={BgImagePizza}>
@@ -110,33 +113,11 @@ export const LandingLayout = () => {
           align="start"
           slidesToScroll={1}
         >
-          <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} toCard={false} />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} toCard={false} />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} toCard={false} />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} toCard={false} />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} toCard={false} />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} toCard={false} />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} toCard={false} />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} toCard={false} />
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <PizzaCard landing={true} commerce={false} toCard={false} />
-          </Carousel.Slide>
+          {data.map((obj) => (
+              <Carousel.Slide>
+                <PizzaCard productData={obj} landing={true} commerce={false} toCard={false} />
+              </Carousel.Slide>
+          ))}
         </Carousel>
       </Group>
       <Group mt={"5%"} grow>
