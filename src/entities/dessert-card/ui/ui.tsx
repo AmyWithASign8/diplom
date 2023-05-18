@@ -17,7 +17,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useStore } from "effector-react/compat";
 import { $isAuth } from "../../../app/models/isAuthStore";
 
-const DessertCard: FC<CardInterface> = (props) => {
+const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce}) => {
   const isAuth = useStore($isAuth);
   const [countProduct, setCountProduct] = React.useState<number>(1);
   const plusOrMinusCount = (a: string) => {
@@ -27,6 +27,7 @@ const DessertCard: FC<CardInterface> = (props) => {
   };
   const [opened, { open, close }] = useDisclosure(false);
   const currentTheme = useMantineTheme();
+  if (productData === undefined) return null
   return (
     <div>
       {isAuth ? (
@@ -42,7 +43,7 @@ const DessertCard: FC<CardInterface> = (props) => {
               radius={20}
               height={500}
               width={500}
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/aaaf00a849a14804ba9264dc7838021e_292x292.webp"
+              src={`http://localhost:5000/${productData.image}`}
               alt="Norway"
             />
             <div>
@@ -65,20 +66,19 @@ const DessertCard: FC<CardInterface> = (props) => {
                       currentTheme.colorScheme === "light" ? "black" : "white"
                     }
                   >
-                    Сырники с малиновым вареньем
+                    {productData.title}
                   </Text>
                   <Text maw={390} size={14}>
-                    Любимый десерт многих наших гостей — румяные сырники из
-                    печи. Такие нежные, в меру сладкие и напоминающие детство
+                    {productData.description}
                   </Text>
                 </Stack>
                 <Badge color={"orange"} variant={"light"}>
-                  4 шт.
+                  {productData?.additional}
                 </Badge>
               </Stack>
               <Stack>
                 <Text size={20} fw={500}>
-                  Итоговая стоимость: 700 RUB
+                  Итоговая стоимость: {productData.price} RUB
                 </Text>
                 <Button
                   radius={"xl"}
@@ -108,7 +108,7 @@ const DessertCard: FC<CardInterface> = (props) => {
           </Stack>
         </Modal>
       )}
-      {props.toCard && (
+      {toCard && (
         <Group
           w={1000}
           position={"apart"}
@@ -165,29 +165,28 @@ const DessertCard: FC<CardInterface> = (props) => {
           </Button>
         </Group>
       )}
-      {!props.toCard && (
+      {!toCard && (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
             <Image
               height={300}
               width={300}
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/aaaf00a849a14804ba9264dc7838021e_292x292.webp"
+              src={`http://localhost:5000/${productData.image}`}
               alt="Norway"
             />
           </Card.Section>
 
           <Group position="apart" mt="md" mb="xs">
             <Text size={18} fw={500}>
-              Сырники с малиновым вареньем
+              {productData.title}
             </Text>
           </Group>
-          {!props.toCard && (
+          {!toCard && (
             <Text maw={260} size={14} lineClamp={2}>
-              Любимый десерт многих наших гостей — румяные сырники из печи.
-              Такие нежные, в меру сладкие и напоминающие детство
+              {productData.description}
             </Text>
           )}
-          {props.toCard && (
+          {toCard && (
             <div>
               <Group position={"center"} mt={"5%"}>
                 <Badge
@@ -198,7 +197,7 @@ const DessertCard: FC<CardInterface> = (props) => {
                   variant="gradient"
                   gradient={{ from: "orange", to: "red" }}
                 >
-                  Тип пиццы
+                  {productData.type.name}
                 </Badge>
                 <Badge
                   sx={() => ({
@@ -208,7 +207,7 @@ const DessertCard: FC<CardInterface> = (props) => {
                   variant="gradient"
                   gradient={{ from: "orange", to: "red" }}
                 >
-                  500 RUB
+                  {productData.price} RUB
                 </Badge>
               </Group>
               <Group position={"center"} mt={"5%"}>
@@ -232,7 +231,7 @@ const DessertCard: FC<CardInterface> = (props) => {
               </Group>
             </div>
           )}
-          {props.landing && (
+          {landing && (
             <Button
               component={Link}
               to={"/catalog"}
@@ -246,7 +245,7 @@ const DessertCard: FC<CardInterface> = (props) => {
               Каталог
             </Button>
           )}
-          {props.commerce && (
+          {commerce && (
             <div>
               <Group position={"center"} mt={"5%"}>
                 <Badge
@@ -257,7 +256,7 @@ const DessertCard: FC<CardInterface> = (props) => {
                   variant="gradient"
                   gradient={{ from: "orange", to: "red" }}
                 >
-                  Десерт
+                  {productData.type.name}
                 </Badge>
                 <Badge
                   sx={() => ({
@@ -267,7 +266,7 @@ const DessertCard: FC<CardInterface> = (props) => {
                   variant="gradient"
                   gradient={{ from: "orange", to: "red" }}
                 >
-                  289 RUB
+                  {productData.price} RUB
                 </Badge>
               </Group>
               <Button

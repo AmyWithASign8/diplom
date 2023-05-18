@@ -5,6 +5,8 @@ import { AuthLayout } from "../layouts/auth-layout";
 import { AdminPanelLayout } from "../layouts/admin-panel-layout";
 import { check } from "../shared/api/queries";
 
+const AdminPanelVewAllUsersLayout = lazy(() => import('./admin/view-users'))
+const AdminPanelRemoveProductPage = lazy(() => import('./admin/remove-product'))
 const AdminPanelRemoveProductTypePage = lazy(() => import('./admin/remove-product-type'))
 const AdminPanelAddProductTypePage = lazy(
   () => import("./admin/add-product-type")
@@ -46,6 +48,8 @@ const Pages = () => {
           element={<AdminPanelAddProductTypePage />}
         />
           <Route path={'remove-product-type'} element={<AdminPanelRemoveProductTypePage/>}/>
+          <Route path={'remove-product'} element={<AdminPanelRemoveProductPage/>}/>
+          <Route path={'view-all-users'} element={<AdminPanelVewAllUsersLayout/>}/>
       </Route>
     </Routes>
   );

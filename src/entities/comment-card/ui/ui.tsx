@@ -1,48 +1,34 @@
 import React, { FC } from "react";
 import { Card, Group, Rating, Text } from "@mantine/core";
 import { IconUserCircle } from "@tabler/icons-react";
+import {Review} from "../../../shared/api/queries/review/useGetAllReviews";
 
 interface CommentCardInterface {
-  landing: boolean;
+  landing?: boolean;
   maxWidth: number;
+  reviewData?: Review;
 }
-export const CommentCard: FC<CommentCardInterface> = (props) => {
+export const CommentCard: FC<CommentCardInterface> = ({landing, maxWidth, reviewData}) => {
   return (
-    <Card shadow="sm" padding="lg" radius="md" withBorder maw={props.maxWidth}>
+    <Card shadow="sm" padding="lg" radius="md" withBorder maw={maxWidth}>
       <Group position={"apart"}>
         <Group>
-          {!props.landing && <IconUserCircle size={35} />}
+          {!landing && <IconUserCircle size={35} />}
           <Text td={"underline"} weight={700} size={20}>
-            Данил Бычков
+            {reviewData?.user.email}
           </Text>
+            <Text size={20} c="dimmed">{reviewData?.user.role === 'ADMIN' && 'Администрация'}</Text>
         </Group>
         <Group>
-          {!props.landing && <Text size={20}>Оценка:</Text>}
-          <Rating value={5} fractions={2} size={"md"} readOnly />
+          {!landing && <Text size={20}>Оценка:</Text>}
+          <Rating value={reviewData?.rating} fractions={2} size={"md"} readOnly />
         </Group>
       </Group>
       <Group position="apart" mt="md" mb="xs">
-        <Text weight={500}>Очень хороший сайт!</Text>
+        <Text weight={500}>{reviewData?.title}</Text>
       </Group>
-      <Text lineClamp={props.landing ? 10 : 0}>
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
-        asdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdasasdasdas
+      <Text lineClamp={landing ? 2 : 0}>
+        {reviewData?.description}
       </Text>
     </Card>
   );

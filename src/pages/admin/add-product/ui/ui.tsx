@@ -15,6 +15,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {createProduct} from "../../../../shared/api/queries/product";
 import {showNotification} from "@mantine/notifications";
 import {useGetAllBrands} from "../../../../shared/api/queries/brand/useGetBrands";
+import {useGetAllTypes} from "../../../../shared/api/queries/type/useGetAllTypes";
 
 interface Inputs {
   title: string;
@@ -25,6 +26,7 @@ interface Inputs {
   brand: string;
 }
 export const AdminAddProductLayout = () => {
+  const typeData = useGetAllTypes()
   const { data, isLoading, isSuccess } = useGetAllBrands();
   const [file, setFile] = React.useState<FileWithPath | any>(null);
   const {
@@ -44,8 +46,8 @@ export const AdminAddProductLayout = () => {
         formData.append("image", file);
       });
       formData.append('additional', data.additional)
-      formData.append("type", currentProductType);
-      formData.append("brand", currentProductBrand);
+      formData.append("brandId", currentProductType);
+      formData.append("typeId", currentProductBrand);
 
       const response = await createProduct(formData);
       console.log(response);
@@ -69,15 +71,17 @@ export const AdminAddProductLayout = () => {
       });
     }
   };
-  React.useEffect(() => {
-    console.log(file);
-  }, [file]);
+
   const [currentProductType, setCurrentProductType] = React.useState<
     any
   >(null);
   const [currentProductBrand, setCurrentProductBrand] = React.useState<
     any
   >(null);
+  React.useEffect(() => {
+    console.log('Вот тип айди',currentProductBrand);
+    console.log('Вот бренд айди',currentProductType);
+  }, [currentProductBrand, currentProductType]);
   const ValidateFunc = (validateInput: any) => {
     if (validateInput?.ref.name === "title") {
       if (validateInput?.type === "required")
@@ -103,6 +107,7 @@ export const AdminAddProductLayout = () => {
   };
 
   if (!isSuccess) return null
+  if (!typeData.isSuccess) return null
   console.log(data[currentProductType])
   return (
     <div>
@@ -253,9 +258,7 @@ export const AdminAddProductLayout = () => {
                 ? "Выберите тип продукта"
                 : "Выберите вид продукта"
             }
-            data={currentProductType !== null && data.map((obj) => (
-                obj.id === currentProductType && obj.types.map((obj) => ({value: `${obj.id}`, label: `${obj.name}`}))
-            ))}
+            data={typeData.data.map((obj) => ({value: `${obj.id}`, label: `${obj.name}`}))}
             styles={(theme) => ({
               item: {
                 "&[data-selected]": {

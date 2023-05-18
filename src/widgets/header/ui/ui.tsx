@@ -26,7 +26,7 @@ import {
   IconUserCircle,
   IconUserPlus,
 } from "@tabler/icons-react";
-import { Link, useLocation } from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useStore } from "effector-react/compat";
 import { $theme, switchTheme } from "../../../app/models/themeStore";
 import { notifications } from "@mantine/notifications";
@@ -35,6 +35,7 @@ import { $user, logout, setUser } from "../../../app/models/userStore";
 import { modals } from "@mantine/modals";
 
 export const Header = () => {
+    const navigate = useNavigate()
   const user = useStore($user);
   const isAuth = useStore($isAuth);
   const mantineTheme = useMantineTheme();
@@ -92,6 +93,7 @@ export const Header = () => {
         localStorage.removeItem("token");
         setUser(null);
         switchAuth(false);
+        navigate('/')
       },
     });
   const switchThemeAndShowNotification = () => {

@@ -8,7 +8,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { IconAt, IconLock } from "@tabler/icons-react";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { login, registration } from "../../../shared/api/queries";
 import { useStore } from "effector-react/compat";
@@ -26,6 +26,7 @@ interface IFormInput {
   password: string;
 }
 export const AuthForm: FC<AuthFormInterface> = ({ auth, reg }) => {
+  const navigate = useNavigate()
   const user = useStore($user);
   const isAuth = useStore($isAuth);
   console.log("Хуй", user);
@@ -52,6 +53,7 @@ export const AuthForm: FC<AuthFormInterface> = ({ auth, reg }) => {
         localStorage.setItem("user", JSON.stringify(response));
         localStorage.setItem("isAuth", String(isAuth));
       }
+      navigate('/')
     } catch (e) {
       modals.open({
         centered: true,

@@ -40,6 +40,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData}) 
     if (valueOfSize === "small") setValueOfPastry("traditional");
   }, [valueOfSize]);
   const currentTheme = useMantineTheme();
+  if (productData === undefined) return null
   return (
     <div>
       {isAuth ? (
@@ -194,7 +195,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData}) 
               radius={20}
               height={150}
               width={150}
-              src={`http://localhost:5000/${productData.image}`}
+              src="https://dodopizza-a.akamaihd.net/static/Img/Products/b3e4267e06334a428dcc9f1f10a72f34_292x292.webp"
               alt="Norway"
             />
             <Stack>

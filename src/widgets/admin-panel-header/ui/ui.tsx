@@ -54,7 +54,7 @@ export const AdminPanelHeader = () => {
           <Menu.Dropdown>
             <Stack>
               <Button color={"red"}>Удалить пользователя</Button>
-              <Button>Просмотр пользователей</Button>
+              <Button component={Link} to={'view-all-users'}>Просмотр пользователей</Button>
             </Stack>
           </Menu.Dropdown>
         </Menu>
@@ -75,7 +75,7 @@ export const AdminPanelHeader = () => {
                 Добавить тип продукта
               </Button>
               <Button color={"red"} component={Link} to={'remove-product-type'}>Удалить тип продукта</Button>
-              <Button color={"red"}>Удалить продукт</Button>
+              <Button component={Link} to={'remove-product'} color={"red"}>Удалить продукт</Button>
             </Stack>
           </Menu.Dropdown>
         </Menu>

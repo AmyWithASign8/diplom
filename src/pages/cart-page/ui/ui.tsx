@@ -13,9 +13,12 @@ import DessertCard from "../../../entities/dessert-card/ui/ui";
 import DrinkCard from "../../../entities/drink-card/ui/ui";
 import { IconCreditCard } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import {useGetAllProducts} from "../../../shared/api/queries/product";
 
 export const CartLayout = () => {
+  const {data, isSuccess} = useGetAllProducts()
   const [opened, { open, close }] = useDisclosure(false);
+  if (!isSuccess) return null
   return (
     <div>
       <Modal opened={opened} onClose={close} title="Очистить корзину" centered>
@@ -39,12 +42,9 @@ export const CartLayout = () => {
       </Center>
       <Center mt={"3%"}>
         <SimpleGrid cols={1}>
-          <PizzaCard landing={false} commerce={false} toCard={true} />
-          <PizzaCard landing={false} commerce={false} toCard={true} />
-          <DessertCard landing={false} commerce={false} toCard={true} />
-          <DessertCard landing={false} commerce={false} toCard={true} />
-          <DrinkCard landing={false} commerce={false} toCard={true} />
-          <DrinkCard landing={false} commerce={false} toCard={true} />
+          {data.map((obj) => (
+              obj.brandId === 1 && <PizzaCard productData={obj} landing={false} commerce={false} toCard={true} />
+          ))}
         </SimpleGrid>
       </Center>
       <Group mt={"4%"} ml={"25%"} position={"apart"} w={"50%"}>

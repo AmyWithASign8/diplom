@@ -6,7 +6,7 @@ import {
   Input,
   Modal,
   NumberInput,
-  Rating,
+  Rating, SimpleGrid,
   Stack,
   Text,
   Textarea,
@@ -19,14 +19,19 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useDisclosure } from "@mantine/hooks";
 import { useStore } from "effector-react/compat";
 import { $isAuth } from "../../../app/models/isAuthStore";
+import {useGetAllReviews} from "../../../shared/api/queries/review/useGetAllReviews/useGetAllReviews";
+import {createReview} from "../../../shared/api/queries/review/createReview";
+import {$user} from "../../../app/models/userStore";
+import {QueryClient, useMutation, useQueryClient} from "react-query";
 
 interface IFormInput {
   title: string;
   description: string;
   rating: number;
 }
-
 export const ReviewsLayout = () => {
+  const user = useStore($user)
+  const {data, isSuccess} = useGetAllReviews()
   const isAuth = useStore($isAuth);
   const [opened, { open, close }] = useDisclosure(false);
   const {
@@ -35,7 +40,15 @@ export const ReviewsLayout = () => {
     watch,
     formState: { errors },
   } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+
+      const response = await createReview(data.title, data.description, data.rating, user?.id)
+      window.location.reload()
+    }catch (e) {
+      alert(e)
+    }
+  };
   const ValidateFunc = (validateInput: any) => {
     if (validateInput?.ref.name === "title") {
       if (validateInput?.type === "required")
@@ -57,6 +70,7 @@ export const ReviewsLayout = () => {
     }
   };
   const [rateValue, setRateValue] = React.useState<number | any>(0);
+  if (!isSuccess) return null
   return (
     <div>
       {isAuth ? (
@@ -148,10 +162,9 @@ export const ReviewsLayout = () => {
       </Group>
       <Center mt={100}>
         <Stack>
-          <CommentCard landing={false} maxWidth={900} />
-          <CommentCard landing={false} maxWidth={900} />
-          <CommentCard landing={false} maxWidth={900} />
-          <CommentCard landing={false} maxWidth={900} />
+          {data.map((obj) => (
+              <CommentCard key={obj.id} landing={false} maxWidth={700} reviewData={obj}/>
+          ))}
         </Stack>
       </Center>
     </div>

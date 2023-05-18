@@ -107,7 +107,7 @@ export const ProductLayout = () => {
               mb={100}
             >
               {data.map((obj) => (
-                  <PizzaCard productData={obj} landing={false} commerce={true} toCard={false}/>
+                  obj.brandId === 1 && <PizzaCard productData={obj} landing={false} commerce={true} toCard={false}/>
               ))}
             </SimpleGrid>
           </Center>
@@ -156,7 +156,9 @@ export const ProductLayout = () => {
               spacing={"xl"}
               mb={100}
             >
-              {/*<DessertCard landing={false} commerce={true} toCard={false} />*/}
+              {data.map((obj) => (
+                  obj.brandId === 3 && <DessertCard productData={obj} landing={false} commerce={true} toCard={false}/>
+              ))}
             </SimpleGrid>
           </Center>
         </Tabs.Panel>
@@ -230,7 +232,9 @@ export const ProductLayout = () => {
               spacing={"xl"}
               mb={100}
             >
-              {/*<DrinkCard landing={false} commerce={true} toCard={false} />*/}
+              {data.map((obj) => (
+                  obj.brandId === 2 && <DrinkCard productData={obj} landing={false} commerce={true} toCard={false}/>
+              ))}
             </SimpleGrid>
           </Center>
         </Tabs.Panel>

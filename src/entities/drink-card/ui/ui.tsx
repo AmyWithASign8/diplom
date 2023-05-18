@@ -18,7 +18,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { useStore } from "effector-react/compat";
 import { $isAuth } from "../../../app/models/isAuthStore";
 
-const DrinkCard: FC<CardInterface> = (props) => {
+const DrinkCard: FC<CardInterface> = ({productData, toCard, landing, commerce}) => {
   const isAuth = useStore($isAuth);
   const [countProduct, setCountProduct] = React.useState<number>(1);
   const plusOrMinusCount = (a: string) => {
@@ -28,6 +28,7 @@ const DrinkCard: FC<CardInterface> = (props) => {
   };
   const [opened, { open, close }] = useDisclosure(false);
   const currentTheme = useMantineTheme();
+  if (productData === undefined) return null
   return (
     <div>
       {isAuth ? (
@@ -43,7 +44,7 @@ const DrinkCard: FC<CardInterface> = (props) => {
               radius={20}
               height={500}
               width={500}
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/b3e4267e06334a428dcc9f1f10a72f34_292x292.webp"
+              src={`http://localhost:5000/${productData.image}`}
               alt="Norway"
             />
             <div>
@@ -66,20 +67,19 @@ const DrinkCard: FC<CardInterface> = (props) => {
                       currentTheme.colorScheme === "light" ? "black" : "white"
                     }
                   >
-                    Кофе Американо
+                    {productData.title}
                   </Text>
                   <Text maw={260} size={14}>
-                    Пара глотков горячего Американо, и вы будете готовы покорять
-                    этот день
+                    {productData.description}
                   </Text>
                 </Stack>
                 <Badge variant={"light"} color={"orange"}>
-                  0,5 л.
+                  {productData?.additional}
                 </Badge>
               </Stack>
               <Stack>
                 <Text size={20} fw={500}>
-                  Итоговая стоимость: 700 RUB
+                  Итоговая стоимость: {productData.price} RUB
                 </Text>
                 <Button
                   radius={"xl"}
@@ -109,7 +109,7 @@ const DrinkCard: FC<CardInterface> = (props) => {
           </Stack>
         </Modal>
       )}
-      {props.toCard && (
+      {toCard && (
         <Group
           w={1000}
           position={"apart"}
@@ -166,27 +166,26 @@ const DrinkCard: FC<CardInterface> = (props) => {
           </Button>
         </Group>
       )}
-      {!props.toCard && (
+      {!toCard && (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
             <Image
               height={300}
               width={300}
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/b3e4267e06334a428dcc9f1f10a72f34_292x292.webp"
+              src={`http://localhost:5000/${productData.image}`}
               alt="Norway"
             />
           </Card.Section>
 
           <Group position="apart" mt="md" mb="xs">
             <Text size={18} fw={500}>
-              Кофе Американо
+              {productData.title}
             </Text>
           </Group>
-          <Text maw={260} size={14}>
-            Пара глотков горячего Американо, и вы будете готовы покорять этот
-            день
+          <Text maw={260} size={14} lineClamp={2}>
+            {productData.description}
           </Text>
-          {props.landing && (
+          {landing && (
             <Button
               component={Link}
               to={"/catalog"}
@@ -200,7 +199,7 @@ const DrinkCard: FC<CardInterface> = (props) => {
               Каталог
             </Button>
           )}
-          {props.commerce && (
+          {commerce && (
             <div>
               <Group position={"center"} mt={"5%"}>
                 <Badge
@@ -211,7 +210,7 @@ const DrinkCard: FC<CardInterface> = (props) => {
                   variant="gradient"
                   gradient={{ from: "orange", to: "red" }}
                 >
-                  Тип напитка
+                  {productData.type.name}
                 </Badge>
                 <Badge
                   sx={() => ({
@@ -221,7 +220,7 @@ const DrinkCard: FC<CardInterface> = (props) => {
                   variant="gradient"
                   gradient={{ from: "orange", to: "red" }}
                 >
-                  99 RUB
+                  {productData.price} RUB
                 </Badge>
               </Group>
               <Button

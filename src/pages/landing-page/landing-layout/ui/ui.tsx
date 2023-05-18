@@ -3,8 +3,6 @@ import {
   BackgroundImage,
   Text,
   Box,
-  Center,
-  Image,
   Button,
   Group,
   Stack,
@@ -15,10 +13,14 @@ import { Link } from "react-router-dom";
 import PizzaCard from "../../../../entities/pizza-card/ui/ui";
 import { CommentCard } from "../../../../entities/comment-card";
 import {useGetAllProducts} from "../../../../shared/api/queries/product/useGetAllProducts";
+import {useGetAllReviews} from "../../../../shared/api/queries/review/useGetAllReviews";
 
 export const LandingLayout = () => {
+  const commentData = useGetAllReviews()
+  console.log(commentData)
   const {data, isSuccess} = useGetAllProducts()
   if (!isSuccess) return null
+  if (!commentData.isSuccess) return null
   return (
     <div>
       <BackgroundImage src={BgImagePizza}>
@@ -144,47 +146,19 @@ export const LandingLayout = () => {
           mr={"7%"}
           withIndicators
           height={"100%"}
-          slideSize="27.333333%"
+          slideSize={commentData.data.length === 1 ? '100%' : commentData.data.length === 2 ? '50%' : "27.333333%"}
           slideGap="md"
           loop
           align="start"
           slidesToScroll={1}
         >
-          <Carousel.Slide>
-            <Link to={"/reviews"}>
-              <CommentCard landing={true} maxWidth={400} />
-            </Link>
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <Link to={"/reviews"}>
-              <CommentCard landing={true} maxWidth={400} />
-            </Link>
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <Link to={"/reviews"}>
-              <CommentCard landing={true} maxWidth={400} />
-            </Link>
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <Link to={"/reviews"}>
-              <CommentCard landing={true} maxWidth={400} />
-            </Link>
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <Link to={"/reviews"}>
-              <CommentCard landing={true} maxWidth={400} />
-            </Link>
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <Link to={"/reviews"}>
-              <CommentCard landing={true} maxWidth={400} />
-            </Link>
-          </Carousel.Slide>
-          <Carousel.Slide>
-            <Link to={"/reviews"}>
-              <CommentCard landing={true} maxWidth={400} />
-            </Link>
-          </Carousel.Slide>
+          {commentData.data.map((obj) => (
+              <Carousel.Slide>
+                <Link to={"/reviews"}>
+                  <CommentCard reviewData={obj} landing={true} maxWidth={400}/>
+                </Link>
+              </Carousel.Slide>
+          ))}
         </Carousel>
       </Group>
       <Group mt={150} position={"center"} mb={200}>
