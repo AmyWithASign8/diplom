@@ -36,7 +36,7 @@ const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce}
           onClose={close}
           title="Добавление товара в корзину"
           centered
-          size={"55%"}
+          size={"60%"}
         >
           <Group>
             <Image
@@ -49,6 +49,7 @@ const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce}
             <div>
               <Stack justify={"flex-start"} mb={"40%"}>
                 <Stack
+
                   p={"3%"}
                   sx={() => ({
                     borderRadius: 20,

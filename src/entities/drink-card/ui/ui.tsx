@@ -8,7 +8,6 @@ import {
   Stack,
   Text,
   Modal,
-  Chip,
   useMantineTheme,
 } from "@mantine/core";
 import { IconShoppingCart, IconTrash } from "@tabler/icons-react";
@@ -37,7 +36,7 @@ const DrinkCard: FC<CardInterface> = ({productData, toCard, landing, commerce}) 
           onClose={close}
           title="Добавление товара в корзину"
           centered
-          size={"55%"}
+          size={"60%"}
         >
           <Group>
             <Image
@@ -69,7 +68,7 @@ const DrinkCard: FC<CardInterface> = ({productData, toCard, landing, commerce}) 
                   >
                     {productData.title}
                   </Text>
-                  <Text maw={260} size={14}>
+                  <Text maw={400} size={14}>
                     {productData.description}
                   </Text>
                 </Stack>
