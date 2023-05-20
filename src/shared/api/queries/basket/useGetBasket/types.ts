@@ -19,6 +19,18 @@ export type Basket = {
         size?: number
         paste?: string
         price: number
+        product: {
+            additional: string | null
+            brandId: number
+            createdAt: string
+            description: string
+            id: number
+            image: string
+            price: number
+            title: string
+            typeId: number
+            updatedAt: string
+        }
         createdAt: string
         updatedAt: string
         basketId: number

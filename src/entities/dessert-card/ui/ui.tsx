@@ -10,23 +10,57 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { IconShoppingCart, IconTrash } from "@tabler/icons-react";
+import {IconAlertCircle, IconCheck, IconShoppingCart, IconTrash} from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { CardInterface } from "../../pizza-card";
 import { useDisclosure } from "@mantine/hooks";
 import { useStore } from "effector-react/compat";
 import { $isAuth } from "../../../app/models/isAuthStore";
+import {useCreateBasketProduct} from "../../../shared/api/queries/basket/createBasketProduct";
+import {showNotification} from "@mantine/notifications";
+import {deleteBasketProduct} from "../../../shared/api/queries/basket/deleteBasketProduct";
+import {$user} from "../../../app/models/userStore";
+import {useMutation, useQueryClient} from "react-query";
 
-const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce}) => {
+const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce, cartData}) => {
+  const queryClient = useQueryClient()
+  const user = useStore($user)
   const isAuth = useStore($isAuth);
-  const [countProduct, setCountProduct] = React.useState<number>(1);
-  const plusOrMinusCount = (a: string) => {
-    if (a === "+") setCountProduct(countProduct + 1);
-    else if (countProduct === 1) setCountProduct(countProduct);
-    else setCountProduct(countProduct - 1);
-  };
   const [opened, { open, close }] = useDisclosure(false);
   const currentTheme = useMantineTheme();
+  const mutation = useMutation(() => deleteBasketProduct(cartData?.id), {
+    onSuccess: () => queryClient.invalidateQueries(['getOneBasket'])
+  })
+  const createBasketProduct = async () => {
+    try {
+      await useCreateBasketProduct(productData.title, productData.description, productData.price, user?.id, productData.id)
+      close()
+    }catch (e) {
+      alert(e)
+    }
+  }
+  const deleteProductFromBasket = async () => {
+    try{
+      mutation.mutate()
+      showNotification({
+        id: "load-data",
+        title: "Удаление продукта",
+        message: `${cartData?.title} успешно удален!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconCheck size="1rem" />,
+      });
+    }catch (e) {
+      showNotification({
+        id: "load-data",
+        title: "Ошибка",
+        message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconAlertCircle/>
+      });
+    }
+  }
   if (productData === undefined) return null
   return (
     <div>
@@ -85,6 +119,7 @@ const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce}
                   radius={"xl"}
                   leftIcon={<IconShoppingCart />}
                   color="orange"
+                  onClick={() => createBasketProduct()}
                 >
                   В корзину
                 </Button>
@@ -128,39 +163,23 @@ const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce}
               radius={20}
               height={150}
               width={150}
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/aaaf00a849a14804ba9264dc7838021e_292x292.webp"
+              src={`http://localhost:5000/${cartData?.product.image}`}
               alt="Norway"
             />
             <Stack>
               <Text size={20} maw={255}>
-                Сырники с малиновым вареньем
+                {cartData?.title}
               </Text>
-              <Text size={15}>4 шт.</Text>
+              <Text size={15}>{cartData?.product.additional}</Text>
             </Stack>
           </Group>
-          <Group>
-            <Button onClick={() => plusOrMinusCount("-")} color={"orange"}>
-              -
-            </Button>
-            <Text
-              variant="gradient"
-              gradient={{ from: "yellow", to: "orange", deg: 45 }}
-              size={"lg"}
-              fw={700}
-            >
-              {countProduct}
-            </Text>
-            <Button onClick={() => plusOrMinusCount("+")} color={"orange"}>
-              +
-            </Button>
-          </Group>
-
-          <Text size={20}>777 RUB</Text>
+          <Text size={20}>{cartData?.price} RUB</Text>
           <Button
             variant={"light"}
             leftIcon={<IconTrash />}
             color={"red"}
             bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
+            onClick={() => deleteProductFromBasket()}
           >
             Удалить
           </Button>
@@ -210,25 +229,6 @@ const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce}
                 >
                   {productData.price} RUB
                 </Badge>
-              </Group>
-              <Group position={"center"} mt={"5%"}>
-                <Button onClick={() => plusOrMinusCount("-")} color={"orange"}>
-                  -
-                </Button>
-                <Text
-                  variant="gradient"
-                  gradient={{ from: "yellow", to: "orange", deg: 45 }}
-                  size={"lg"}
-                  fw={700}
-                >
-                  {countProduct}
-                </Text>
-                <Button onClick={() => plusOrMinusCount("+")} color={"orange"}>
-                  +
-                </Button>
-                <Button leftIcon={<IconTrash />} color={"red"}>
-                  Удалить
-                </Button>
               </Group>
             </div>
           )}

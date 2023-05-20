@@ -9,4 +9,6 @@ export const useGetBasket = (id: string | undefined) => useQuery<Basket>('getOne
     }catch (e) {
         alert('Произошла ошибка получения видов продуктов!')
     }
+}, {
+    keepPreviousData: true
 })

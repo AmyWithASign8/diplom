@@ -1,5 +1,5 @@
 import React from "react";
-import {Center, Group, Input, Modal, Select, SimpleGrid, Tabs} from "@mantine/core";
+import {Center, Group, Input, Select, SimpleGrid, Tabs} from "@mantine/core";
 import {
   IconBottle,
   IconCake,
@@ -9,8 +9,7 @@ import {
 import PizzaCard from "../../../entities/pizza-card/ui/ui";
 import DessertCard from "../../../entities/dessert-card/ui/ui";
 import DrinkCard from "../../../entities/drink-card/ui/ui";
-import { SkeletonCard } from "../../../entities/skeleton-card";
-import {useGetAllProducts} from "../../../shared/api/queries/product/useGetAllProducts";
+import {useGetAllProducts} from "../../../shared/api/queries";
 
 export const ProductLayout = () => {
   const {data, isSuccess} = useGetAllProducts()

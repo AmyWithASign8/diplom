@@ -1,14 +1,14 @@
 import React from "react";
 import {
-  Button,
-  Group,
-  Image,
-  Text,
-  Header as ManTineHeader,
-  Menu,
-  Grid,
-  useMantineTheme,
-  Stack,
+    Button,
+    Group,
+    Image,
+    Text,
+    Header as ManTineHeader,
+    Menu,
+    Grid,
+    useMantineTheme,
+    Stack
 } from "@mantine/core";
 import HeaderImg from "../assets/images/favicon.png";
 import {
@@ -31,7 +31,7 @@ import { useStore } from "effector-react/compat";
 import { $theme, switchTheme } from "../../../app/models/themeStore";
 import { notifications } from "@mantine/notifications";
 import { $isAuth, switchAuth } from "../../../app/models/isAuthStore";
-import { $user, logout, setUser } from "../../../app/models/userStore";
+import { $user, logout } from "../../../app/models/userStore";
 import { modals } from "@mantine/modals";
 
 export const Header = () => {
@@ -196,15 +196,15 @@ export const Header = () => {
           </Button>
         )}
         {isAuth && (
-          <Button
-            leftIcon={<IconShoppingCart />}
-            variant="subtle"
-            color="orange"
-            component={Link}
-            to={`/user/my-cart/${user?.id}`}
-          >
-            Корзина
-          </Button>
+              <Button
+                  leftIcon={<IconShoppingCart />}
+                  variant="subtle"
+                  color="orange"
+                  component={Link}
+                  to={`/user/my-cart/${user?.id}`}
+              >
+                  Корзина
+              </Button>
         )}
         {!isAuth && (
           <Menu>

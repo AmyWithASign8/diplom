@@ -11,35 +11,93 @@ import {
   Text,
   useMantineTheme,
 } from "@mantine/core";
-import { IconShoppingCart, IconTrash } from "@tabler/icons-react";
+import {IconAlertCircle, IconCheck, IconShoppingCart, IconTrash} from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { useDisclosure } from "@mantine/hooks";
 import { useStore } from "effector-react/compat";
 import { $isAuth } from "../../../app/models/isAuthStore";
-import {Product} from "../../../shared/api/queries/product/useGetAllProducts";
+import {Product} from "../../../shared/api/queries";
+import {useCreateBasketProduct} from "../../../shared/api/queries/basket/createBasketProduct";
+import {$user} from "../../../app/models/userStore";
+import {deleteBasketProduct} from "../../../shared/api/queries/basket/deleteBasketProduct";
+import {showNotification} from "@mantine/notifications";
+import {useMutation, useQueryClient} from "react-query";
 
 export interface CardInterface {
   landing: boolean | undefined;
   commerce: boolean | undefined;
   toCard: boolean;
-  productData: Product
+  productData: Product | any,
+  cartData?: {
+    id: number
+    title: string
+    description: string
+    size?: number
+    paste?: string
+    price: number
+    product: {
+      additional: string | null
+      brandId: number
+      createdAt: string
+      description: string
+      id: number
+      image: string
+      price: number
+      title: string
+      typeId: number
+      updatedAt: string
+    }
+    createdAt: string
+    updatedAt: string
+    basketId: number
+    productId: number
+  }
 }
-const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData}) => {
+const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, cartData}) => {
+  const queryClient = useQueryClient()
+  const user = useStore($user)
   const isAuth = useStore($isAuth);
-  const [countProduct, setCountProduct] = React.useState<number>(1);
-  const plusOrMinusCount = (a: string) => {
-    if (a === "+") setCountProduct(countProduct + 1);
-    else if (countProduct === 1) setCountProduct(countProduct);
-    else setCountProduct(countProduct - 1);
-  };
   const [opened, { open, close }] = useDisclosure(false);
-  const [valueOfSize, setValueOfSize] = React.useState<string>("medium");
+  const [valueOfSize, setValueOfSize] = React.useState<string>("30");
   const [valueOfPastry, setValueOfPastry] =
-    React.useState<string>("traditional");
+    React.useState<string>("традиционное");
   React.useEffect(() => {
-    if (valueOfSize === "small") setValueOfPastry("traditional");
+    if (valueOfSize === "25") setValueOfPastry("традиционное");
   }, [valueOfSize]);
   const currentTheme = useMantineTheme();
+  const mutation = useMutation(() => deleteBasketProduct(cartData?.id), {
+    onSuccess: () => queryClient.invalidateQueries(['getOneBasket'])
+  })
+  const createBasketProduct = async () => {
+    try {
+      await useCreateBasketProduct(productData.title, productData.description, productData.price, user?.id, productData.id, valueOfSize, valueOfPastry)
+      close()
+    }catch (e) {
+      alert(e)
+    }
+  }
+  const deleteProductFromBasket = async () => {
+    try{
+      mutation.mutate()
+      showNotification({
+        id: "load-data",
+        title: "Удаление продукта",
+        message: `${cartData?.title} успешно удален!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconCheck size="1rem" />,
+      });
+    }catch (e) {
+      showNotification({
+        id: "load-data",
+        title: "Ошибка",
+        message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconAlertCircle/>
+      });
+    }
+  }
   if (productData === undefined) return null
   return (
     <div>
@@ -87,17 +145,11 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData}) 
                 </Stack>
                 <Group position={"center"}>
                   <Badge color={"orange"}>
-                    {valueOfSize === "small"
-                      ? "25"
-                      : valueOfSize === "medium"
-                      ? "30"
-                      : "35"}{" "}
+                    {valueOfSize}{" "}
                     см.
                   </Badge>
                   <Badge color={"orange"}>
-                    {valueOfPastry === "traditional"
-                      ? "традиционное"
-                      : "тонкое"}{" "}
+                    {valueOfPastry}{" "}
                     тесто
                   </Badge>
                 </Group>
@@ -107,13 +159,13 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData}) 
                   onChange={setValueOfSize}
                 >
                   <Group position="center">
-                    <Chip color="orange.5" variant="filled" value="small">
+                    <Chip color="orange.5" variant="filled" value="25">
                       Маленькая
                     </Chip>
-                    <Chip color="orange.7" variant="filled" value="medium">
+                    <Chip color="orange.7" variant="filled" value="30">
                       Средняя
                     </Chip>
-                    <Chip color="orange.9" variant="filled" value="big">
+                    <Chip color="orange.9" variant="filled" value="35">
                       Большая
                     </Chip>
                   </Group>
@@ -124,14 +176,14 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData}) 
                   onChange={setValueOfPastry}
                 >
                   <Group position="center">
-                    <Chip color="orange.8" variant="filled" value="traditional">
+                    <Chip color="orange.8" variant="filled" value="традиционное">
                       Традиционное
                     </Chip>
                     <Chip
                       color="orange.6"
                       variant="filled"
-                      value="thin"
-                      disabled={valueOfSize === "small"}
+                      value="тонкое"
+                      disabled={valueOfSize === "тонкое"}
                     >
                       Тонкое
                     </Chip>
@@ -141,9 +193,9 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData}) 
               <Stack>
                 <Text size={20} fw={500}>
                   Итоговая стоимость:{" "}
-                  {valueOfSize === "medium"
+                  {valueOfSize === "30"
                     ? productData.price * 1.5
-                    : valueOfSize === "small"
+                    : valueOfSize === "25"
                     ? productData.price
                     : productData.price * 2}{" "}
                   RUB
@@ -152,6 +204,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData}) 
                   radius={"xl"}
                   leftIcon={<IconShoppingCart />}
                   color="orange"
+                  onClick={() => createBasketProduct()}
                 >
                   В корзину
                 </Button>
@@ -195,39 +248,23 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData}) 
               radius={20}
               height={150}
               width={150}
-              src="https://dodopizza-a.akamaihd.net/static/Img/Products/b3e4267e06334a428dcc9f1f10a72f34_292x292.webp"
+              src={`http://localhost:5000/${cartData?.product.image}`}
               alt="Norway"
             />
             <Stack>
               <Text size={20} w={255}>
-                Пепперони Фреш с перцем
+                {cartData?.title}
               </Text>
-              <Text size={15}>Средняя, 30 см, традиционное тесто</Text>
+              <Text size={15}>{cartData?.size === 30 ? 'Средняя' : cartData?.size === 25 ? 'Маленькая' : 'Большая'}, {cartData?.size} см, {cartData?.paste} тесто</Text>
             </Stack>
           </Group>
-          <Group>
-            <Button onClick={() => plusOrMinusCount("-")} color={"orange"}>
-              -
-            </Button>
-            <Text
-              variant="gradient"
-              gradient={{ from: "yellow", to: "orange", deg: 45 }}
-              size={"lg"}
-              fw={700}
-            >
-              {countProduct}
-            </Text>
-            <Button onClick={() => plusOrMinusCount("+")} color={"orange"}>
-              +
-            </Button>
-          </Group>
-
-          <Text size={20}>777 RUB</Text>
+          <Text size={20}>{cartData?.price} RUB</Text>
           <Button
             variant={"light"}
             leftIcon={<IconTrash />}
             color={"red"}
             bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
+            onClick={() => deleteProductFromBasket()}
           >
             Удалить
           </Button>
