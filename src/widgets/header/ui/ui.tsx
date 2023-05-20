@@ -91,7 +91,7 @@ export const Header = () => {
       onCancel: () => console.log("Cancel"),
       onConfirm: () => {
         localStorage.removeItem("token");
-        setUser(null);
+        logout()
         switchAuth(false);
         navigate('/')
       },
@@ -201,7 +201,7 @@ export const Header = () => {
             variant="subtle"
             color="orange"
             component={Link}
-            to={"/user/my-cart"}
+            to={`/user/my-cart/${user?.id}`}
           >
             Корзина
           </Button>

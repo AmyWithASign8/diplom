@@ -4,6 +4,8 @@ import { MainLayout } from "../layouts/main-layout";
 import { AuthLayout } from "../layouts/auth-layout";
 import { AdminPanelLayout } from "../layouts/admin-panel-layout";
 import { check } from "../shared/api/queries";
+import {useStore} from "effector-react/compat";
+import {$user} from "../app/models/userStore";
 
 const AdminPanelVewAllUsersLayout = lazy(() => import('./admin/view-users'))
 const AdminPanelRemoveProductPage = lazy(() => import('./admin/remove-product'))
@@ -23,6 +25,7 @@ const RegistrationPage = lazy(() => import("./reg-page"));
 const AuthPage = lazy(() => import("./auth-page"));
 
 const Pages = () => {
+    const user = useStore($user)
   React.useEffect(() => {
     check();
   }, []);
@@ -31,7 +34,7 @@ const Pages = () => {
       <Route path={"/"} element={<MainLayout />}>
         <Route index element={<LandingPage />} />
         <Route path={"about-us"} element={<AboutPage />} />
-        <Route path={"user/my-cart"} element={<CartPage />} />
+        <Route path={`user/my-cart/:userId`} element={<CartPage />} />
         <Route path={"catalog"} element={<ProductPage />} />
         <Route path={"user/my-profile"} element={<ViewerPage />} />
         <Route path={"reviews"} element={<ReviewsPage />} />
