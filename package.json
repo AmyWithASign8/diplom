@@ -20,6 +20,7 @@
     "@types/node": "^18.15.11",
     "axios": "^1.4.0",
     "compose-function": "^3.0.3",
+    "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "effector": "^22.7.0",
     "effector-react": "^22.5.1",

@@ -3,26 +3,25 @@ import {
   Button,
   Center,
   Group,
-  Input,
   Modal,
   NumberInput,
-  Rating, SimpleGrid,
+  Rating,
   Stack,
   Text,
   Textarea,
   TextInput,
 } from "@mantine/core";
 import { CommentCard } from "../../../entities/comment-card";
-import { IconPencil } from "@tabler/icons-react";
-import { modals } from "@mantine/modals";
+import {IconAlertCircle, IconCheck, IconPencil} from "@tabler/icons-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useDisclosure } from "@mantine/hooks";
 import { useStore } from "effector-react/compat";
 import { $isAuth } from "../../../app/models/isAuthStore";
-import {useGetAllReviews} from "../../../shared/api/queries/review/useGetAllReviews/useGetAllReviews";
-import {createReview} from "../../../shared/api/queries/review/createReview";
+import {useGetAllReviews} from "../../../shared/api/queries";
+import {createReview} from "../../../shared/api/queries";
 import {$user} from "../../../app/models/userStore";
-import {QueryClient, useMutation, useQueryClient} from "react-query";
+import {useMutation, useQueryClient} from "react-query";
+import {showNotification} from "@mantine/notifications";
 
 interface IFormInput {
   title: string;
@@ -30,6 +29,7 @@ interface IFormInput {
   rating: number;
 }
 export const ReviewsLayout = () => {
+  const queryClient = useQueryClient()
   const user = useStore($user)
   const {data, isSuccess} = useGetAllReviews()
   const isAuth = useStore($isAuth);
@@ -37,16 +37,32 @@ export const ReviewsLayout = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<IFormInput>();
+  const mutationCreateReview = useMutation((data: IFormInput) => createReview(data.title, data.description, data.rating, user?.id), {
+    onSuccess: () => queryClient.invalidateQueries(['getAllReviews'])
+  })
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-
-      const response = await createReview(data.title, data.description, data.rating, user?.id)
-      window.location.reload()
+      showNotification({
+        id: "load-data",
+        title: "Создание отзыва",
+        message: `Отзыв успешно опубликован!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconCheck size="1rem" />,
+      });
+      mutationCreateReview.mutate(data)
+      close()
     }catch (e) {
-      alert(e)
+      showNotification({
+        id: "load-data",
+        title: "Ошибка",
+        message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconAlertCircle/>
+      });
     }
   };
   const ValidateFunc = (validateInput: any) => {

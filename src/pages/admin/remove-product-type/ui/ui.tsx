@@ -1,15 +1,18 @@
 import React, {useState} from 'react';
 import {Button, Center, Select, Stack} from "@mantine/core";
 import {IconAlertCircle, IconCheck, IconCircleMinus} from "@tabler/icons-react";
-import {useGetAllTypes} from "../../../../shared/api/queries/type/useGetAllTypes";
-import {removeType} from "../../../../shared/api/queries/type/removeType";
+import {useGetAllTypes} from "../../../../shared/api/queries";
+import {removeType} from "../../../../shared/api/queries";
 import {showNotification} from "@mantine/notifications";
+import {useMutation, useQueryClient} from "react-query";
 
 export const AdminPanelRemoveProductTypeLayout = () => {
-
-    const [selectedType, setSelectedType] = useState<number | string | null>(null);
-    const { data, isLoading, isSuccess } = useGetAllTypes();
-    console.log(data)
+    const queryClient = useQueryClient()
+    const [selectedType, setSelectedType] = useState<string | null>(null);
+    const { data, isSuccess } = useGetAllTypes();
+    const mutationRemoveProductType = useMutation(() => removeType(selectedType), {
+        onSuccess: () => queryClient.invalidateQueries(['getAllTypes'])
+    })
     const removeTypeFunc = async () => {
         try {
             if (selectedType === null) showNotification({
@@ -21,7 +24,8 @@ export const AdminPanelRemoveProductTypeLayout = () => {
                 icon: <IconAlertCircle/>
             });
                 else{
-                const response = await removeType(selectedType)
+                mutationRemoveProductType.mutate()
+                setSelectedType('')
                 showNotification({
                     id: "load-data",
                     title: "Удаление типа",
@@ -48,7 +52,7 @@ export const AdminPanelRemoveProductTypeLayout = () => {
         <div>
             <Center>
                 <Stack>
-                    <Select label={'Выберите тип продукта который вы хотите удалить'} onChange={(value) => setSelectedType(value)} data={data.map((obj) => ({value: `${obj.id}`, label: `${obj.name}`}))}/>
+                    <Select value={selectedType} label={'Выберите тип продукта который вы хотите удалить'} onChange={(value) => setSelectedType(value)} data={data.map((obj) => ({value: `${obj.id}`, label: `${obj.name}`}))}/>
                     <Button color={'red'} leftIcon={<IconCircleMinus/>} onClick={() => removeTypeFunc()}>Удалить</Button>
                 </Stack>
             </Center>

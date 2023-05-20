@@ -7,6 +7,7 @@ import { check } from "../shared/api/queries";
 import {useStore} from "effector-react/compat";
 import {$user} from "../app/models/userStore";
 
+const AdminPanelRemoveUserPage = lazy(() => import('./admin/remove-user'))
 const AdminPanelVewAllUsersLayout = lazy(() => import('./admin/view-users'))
 const AdminPanelRemoveProductPage = lazy(() => import('./admin/remove-product'))
 const AdminPanelRemoveProductTypePage = lazy(() => import('./admin/remove-product-type'))
@@ -25,7 +26,6 @@ const RegistrationPage = lazy(() => import("./reg-page"));
 const AuthPage = lazy(() => import("./auth-page"));
 
 const Pages = () => {
-    const user = useStore($user)
   React.useEffect(() => {
     check();
   }, []);
@@ -43,6 +43,7 @@ const Pages = () => {
         <Route path={"auth"} element={<AuthPage />} />
         <Route path={"reg"} element={<RegistrationPage />} />
       </Route>
+        {/*Admin panel*/}
       <Route path={"/admin-panel"} element={<AdminPanelLayout />}>
         <Route index element={<AdminPanelMainPage />} />
         <Route path={"add-product"} element={<AdminPanelAddProductPage />} />
@@ -53,6 +54,7 @@ const Pages = () => {
           <Route path={'remove-product-type'} element={<AdminPanelRemoveProductTypePage/>}/>
           <Route path={'remove-product'} element={<AdminPanelRemoveProductPage/>}/>
           <Route path={'view-all-users'} element={<AdminPanelVewAllUsersLayout/>}/>
+          <Route path={'remove-user'} element={<AdminPanelRemoveUserPage/>}/>
       </Route>
     </Routes>
   );

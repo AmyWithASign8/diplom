@@ -16,8 +16,8 @@ import { CardInterface } from "../../pizza-card";
 import { useDisclosure } from "@mantine/hooks";
 import { useStore } from "effector-react/compat";
 import { $isAuth } from "../../../app/models/isAuthStore";
-import {useCreateBasketProduct} from "../../../shared/api/queries/basket/createBasketProduct";
-import {deleteBasketProduct} from "../../../shared/api/queries/basket/deleteBasketProduct";
+import {useCreateBasketProduct} from "../../../shared/api/queries";
+import {deleteBasketProduct} from "../../../shared/api/queries";
 import {showNotification} from "@mantine/notifications";
 import {$user} from "../../../app/models/userStore";
 import {useMutation, useQueryClient} from "react-query";
@@ -33,10 +33,25 @@ const DrinkCard: FC<CardInterface> = ({productData, toCard, landing, commerce, c
   })
   const createBasketProduct = async () => {
     try {
+      showNotification({
+        id: "load-data",
+        title: "Добавление товара в корзину",
+        message: `Товар «${productData.title}» успешно добавлен в корзину!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconCheck size="1rem" />,
+      });
       await useCreateBasketProduct(productData.title, productData.description, productData.price, user?.id, productData.id)
       close()
     }catch (e) {
-      alert(e)
+      showNotification({
+        id: "load-data",
+        title: "Ошибка",
+        message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconAlertCircle/>
+      });
     }
   }
   const deleteProductFromBasket = async () => {

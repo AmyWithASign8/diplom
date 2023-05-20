@@ -1,16 +1,21 @@
 import {Button, Center, Select, Stack} from "@mantine/core";
 import React from "react";
 import {IconAlertCircle, IconCheck, IconCircleMinus} from "@tabler/icons-react";
-import {useGetAllProducts} from "../../../../shared/api/queries/product/useGetAllProducts";
-import {removeProduct} from "../../../../shared/api/queries/product";
+import {useGetAllProducts} from "../../../../shared/api/queries";
+import {removeProduct} from "../../../../shared/api/queries";
 import {showNotification} from "@mantine/notifications";
+import {useMutation, useQueryClient} from "react-query";
 
 export const AdminPanelRemoveProductLayout = () => {
+    const queryClient = useQueryClient()
     const {data, isSuccess} = useGetAllProducts()
     const [checked, setChecked] = React.useState<string | null | number>(null)
+    const mutationRemoveProduct = useMutation(() => removeProduct(checked), {
+        onSuccess: () => queryClient.invalidateQueries(['getAllProducts'])
+    })
     const removeProductFunc = async () => {
         try{
-            const response = await removeProduct(checked)
+            mutationRemoveProduct.mutate()
             showNotification({
                 id: "load-data",
                 title: "Удаление продукта",

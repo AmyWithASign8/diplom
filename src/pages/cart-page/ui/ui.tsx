@@ -9,28 +9,54 @@ import {
   Text,
     Title
 } from "@mantine/core";
-import {IconArrowNarrowLeft, IconCreditCard, IconShoppingCartX} from "@tabler/icons-react";
+import {IconAlertCircle, IconArrowNarrowLeft, IconCheck, IconCreditCard, IconShoppingCartX} from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
-import {useGetBasket} from "../../../shared/api/queries";
+import {clearBasket, useGetBasket} from "../../../shared/api/queries";
 import {Link, useParams} from "react-router-dom";
 import PizzaCard from "../../../entities/pizza-card/ui/ui";
 import DrinkCard from "../../../entities/drink-card/ui/ui";
 import DessertCard from "../../../entities/dessert-card/ui/ui";
+import {useMutation, useQueryClient} from "react-query";
+import {showNotification} from "@mantine/notifications";
 
 export const CartLayout = () => {
-  const {userId} = useParams()
-  if (!userId) return null
-  const {data, isSuccess} = useGetBasket(userId)
-  console.log(data)
-  const [opened, { open, close }] = useDisclosure(false);
-  const sum = (obj: any) => {
-        var result = 0;
-
-        for (var i = 0; i < obj.length; i++) {
+    const queryClient = useQueryClient()
+    const {userId} = useParams()
+    if (!userId) return null
+    const {data, isSuccess} = useGetBasket(userId)
+    const [opened, { open, close }] = useDisclosure(false);
+    const sum = (obj: any) => {
+        let result = 0;
+        for (let i = 0; i < obj.length; i++) {
             result += obj[i].price;
         }
-
         return result;
+    }
+    const mutateClearBasket = useMutation(() => clearBasket(userId), {
+        onSuccess: () => queryClient.invalidateQueries(['getOneBasket'])
+    })
+    const clearAllBasketProducts = async () => {
+        try{
+            showNotification({
+                id: "load-data",
+                title: "Очистка корзины",
+                message: `Корзина очищена!`,
+                autoClose: true,
+                radius: "xl",
+                icon: <IconCheck size="1rem" />,
+            });
+            mutateClearBasket.mutate()
+            close()
+        }catch (e) {
+            showNotification({
+                id: "load-data",
+                title: "Ошибка",
+                message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
+                autoClose: true,
+                radius: "xl",
+                icon: <IconAlertCircle/>
+            });
+        }
     }
   if (!isSuccess) return null
   return (
@@ -38,7 +64,7 @@ export const CartLayout = () => {
       <Modal opened={opened} onClose={close} title="Очистить корзину" centered>
         <Text>Вы уверены что хотите очистить корзину?</Text>
         <Group position={"center"} mt={"5%"}>
-          <Button color={"green"} variant={"light"}>
+          <Button color={"green"} variant={"light"} onClick={() => clearAllBasketProducts()}>
             Да
           </Button>
           <Button color={"red"} variant={"light"} onClick={close}>

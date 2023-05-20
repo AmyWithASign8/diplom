@@ -1,6 +1,6 @@
 import { $authHost, $host } from "../../http";
 import jwtDecode from "jwt-decode";
-import { IUser, setUser } from "../../../../app/models/userStore";
+import {IUser, logout, setUser} from "../../../../app/models/userStore";
 import { switchAuth } from "../../../../app/models/isAuthStore";
 
 export const registration = async (email: string, password: string) => {
@@ -26,7 +26,7 @@ export const check = async () => {
     const user = jwtDecode<IUser>(data.token);
     setUser(user);
   } catch (e) {
-    setUser(null);
+    logout()
     switchAuth(false);
   }
 };

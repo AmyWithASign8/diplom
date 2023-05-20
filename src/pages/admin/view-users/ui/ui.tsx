@@ -1,6 +1,7 @@
 import React from 'react';
 import {useGetAllUsers} from "../../../../shared/api/queries/user/useGetAllUsers";
 import {Container, Table} from "@mantine/core";
+import dayjs from "dayjs";
 
 export const AdminPanelVewAllUsersLayout = () => {
     const {data, isSuccess} = useGetAllUsers()
@@ -21,7 +22,9 @@ export const AdminPanelVewAllUsersLayout = () => {
                         <tr key={obj.id}>
                             <td>№ {obj.id}</td>
                             <td>{obj.email}</td>
-                            <td>{obj.createdAt}</td>
+                            <td>{dayjs(obj.createdAt)
+                                .locale("ru")
+                                .format("DD MMMM YYYY HH:mm")}</td>
                             <td>{obj.role}</td>
                         </tr>
                     ))}</tbody>
