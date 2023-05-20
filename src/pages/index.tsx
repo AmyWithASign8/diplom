@@ -4,9 +4,8 @@ import { MainLayout } from "../layouts/main-layout";
 import { AuthLayout } from "../layouts/auth-layout";
 import { AdminPanelLayout } from "../layouts/admin-panel-layout";
 import { check } from "../shared/api/queries";
-import {useStore} from "effector-react/compat";
-import {$user} from "../app/models/userStore";
 
+const AdminPanelRemoveReviewPage = lazy(() => import('./admin/remove-review'))
 const AdminPanelRemoveUserPage = lazy(() => import('./admin/remove-user'))
 const AdminPanelVewAllUsersLayout = lazy(() => import('./admin/view-users'))
 const AdminPanelRemoveProductPage = lazy(() => import('./admin/remove-product'))
@@ -55,6 +54,7 @@ const Pages = () => {
           <Route path={'remove-product'} element={<AdminPanelRemoveProductPage/>}/>
           <Route path={'view-all-users'} element={<AdminPanelVewAllUsersLayout/>}/>
           <Route path={'remove-user'} element={<AdminPanelRemoveUserPage/>}/>
+          <Route path={'remove-review'} element={<AdminPanelRemoveReviewPage/>}/>
       </Route>
     </Routes>
   );

@@ -13,7 +13,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import {
-  IconAlertCircle,
+  IconAlertCircle, IconCheck,
   IconHistory,
   IconInfoCircle,
   IconSettings,
@@ -21,13 +21,42 @@ import {
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import { useStore } from "effector-react/compat";
-import { $user } from "../../../app/models/userStore";
-import { $isAuth } from "../../../app/models/isAuthStore";
+import {$user, logout} from "../../../app/models/userStore";
+import {switchAuth} from "../../../app/models/isAuthStore";
+import {removeUser} from "../../../shared/api/queries/user/removeUser";
+import {showNotification} from "@mantine/notifications";
+import {useNavigate} from "react-router-dom";
 
 export const ViewerLayout = () => {
+  const navigate = useNavigate()
   const user = useStore($user);
-  const isAuth = useStore($isAuth);
   const [opened, { open, close }] = useDisclosure(false);
+  const deleteAccount = async () => {
+    const response = await removeUser(String(user?.id))
+    try {
+      logout()
+      switchAuth(false)
+      showNotification({
+        id: "load-data",
+        title: "Удаление аккаунта",
+        message: `Ваш аккаунт был удален!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconCheck size="1rem" />,
+      });
+      close()
+      navigate('/')
+    }catch (e) {
+      showNotification({
+        id: "load-data",
+        title: "Ошибка",
+        message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconAlertCircle/>
+      });
+    }
+  }
   return (
     <div>
       <Modal opened={opened} onClose={close} title="Удаление аккаунта" centered>
@@ -36,7 +65,7 @@ export const ViewerLayout = () => {
           сможете его восстановить!
         </Text>
         <Group position={"center"} mt={"5%"}>
-          <Button color={"green"} variant={"light"}>
+          <Button onClick={() => deleteAccount()} color={"green"} variant={"light"}>
             Да
           </Button>
           <Button onClick={close} color={"red"} variant={"light"}>
