@@ -143,7 +143,7 @@ export const Header = () => {
         </Link>
         <Menu>
           <Menu.Target>
-            <Button variant="subtle" color="orange" leftIcon={<IconLocation />}>
+            <Button variant="subtle" color="orange" leftIcon={<IconLocation size={28}/>} size={'lg'}>
               Навигация по сайту
             </Button>
           </Menu.Target>
@@ -178,9 +178,10 @@ export const Header = () => {
         <Button
           component={Link}
           to={"/catalog"}
-          leftIcon={<IconPizza />}
+          leftIcon={<IconPizza size={28}/>}
           variant="subtle"
           color="orange"
+          size={'lg'}
         >
           Каталог
         </Button>
@@ -188,20 +189,22 @@ export const Header = () => {
           <Button
             component={Link}
             to={"/user/my-profile"}
-            leftIcon={<IconUserCircle />}
+            leftIcon={<IconUserCircle size={28}/>}
             variant="subtle"
             color="orange"
+            size={'lg'}
           >
             Мой профиль
           </Button>
         )}
         {isAuth && (
               <Button
-                  leftIcon={<IconShoppingCart />}
+                  leftIcon={<IconShoppingCart size={28}/>}
                   variant="subtle"
                   color="orange"
                   component={Link}
                   to={`/user/my-cart/${user?.id}`}
+                  size={'lg'}
               >
                   Корзина
               </Button>
@@ -209,7 +212,7 @@ export const Header = () => {
         {!isAuth && (
           <Menu>
             <Menu.Target>
-              <Button leftIcon={<IconUser />} variant="subtle" color="orange">
+              <Button leftIcon={<IconUser size={28}/>} variant="subtle" color="orange" size={'xl'}>
                 Авторизация
               </Button>
             </Menu.Target>
@@ -218,18 +221,20 @@ export const Header = () => {
                 <Button
                   component={Link}
                   to={"/user/auth"}
-                  leftIcon={<IconUser />}
+                  leftIcon={<IconUser size={28}/>}
                   variant="subtle"
                   color="orange"
+                  size={'lg'}
                 >
                   Войти в аккаунт
                 </Button>
                 <Button
                   component={Link}
                   to={"/user/reg"}
-                  leftIcon={<IconUserPlus />}
+                  leftIcon={<IconUserPlus size={28}/>}
                   variant="subtle"
                   color="orange"
+                  size={'lg'}
                 >
                   Регистрация
                 </Button>
@@ -243,7 +248,8 @@ export const Header = () => {
             to={"/admin-panel"}
             color={"orange"}
             variant={"subtle"}
-            leftIcon={<IconAdjustmentsCog />}
+            leftIcon={<IconAdjustmentsCog size={28}/>}
+            size={'lg'}
           >
             Админ. панель
           </Button>
@@ -253,11 +259,12 @@ export const Header = () => {
           variant={"subtle"}
           leftIcon={
             theme === "light" ? (
-              <IconMoonStars color={mantineTheme.colors.blue[6]} />
+              <IconMoonStars color={mantineTheme.colors.blue[6]} size={28}/>
             ) : (
-              <IconSun color={mantineTheme.colors.yellow[4]} />
+              <IconSun color={mantineTheme.colors.yellow[4]} size={28}/>
             )
           }
+          size={'md'}
           onClick={() => switchThemeAndShowNotification()}
         >
           Сменить тему
@@ -265,8 +272,9 @@ export const Header = () => {
         {isAuth && (
           <Button
             color={"red"}
-            leftIcon={<IconLogout />}
+            leftIcon={<IconLogout size={28}/>}
             onClick={() => openLogoutModal()}
+            size={'md'}
           >
             Выйти из аккаунта
           </Button>

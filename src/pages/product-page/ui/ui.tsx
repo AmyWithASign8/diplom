@@ -21,22 +21,22 @@ export const ProductLayout = () => {
       <Tabs
         orientation="vertical"
         color="orange"
-        defaultValue="gallery"
+        defaultValue="pizzas"
         mt={100}
       >
         <Tabs.List ml={10}>
-          <Tabs.Tab value="gallery" icon={<IconPizza size="0.8rem" />}>
+          <Tabs.Tab value="pizzas" icon={<IconPizza size="0.8rem" />}>
             Пиццы
           </Tabs.Tab>
-          <Tabs.Tab value="messages" icon={<IconCake size="0.8rem" />}>
+          <Tabs.Tab value="desserts" icon={<IconCake size="0.8rem" />}>
             Десерты
           </Tabs.Tab>
-          <Tabs.Tab value="settings" icon={<IconBottle size="0.8rem" />}>
+          <Tabs.Tab value="drinks" icon={<IconBottle size="0.8rem" />}>
             Напитки
           </Tabs.Tab>
         </Tabs.List>
 
-        <Tabs.Panel value="gallery" pt="xs">
+        <Tabs.Panel value="pizzas" pt="xs">
           <Group position={"center"}>
             <Input
               icon={<IconSearch />}
@@ -112,7 +112,7 @@ export const ProductLayout = () => {
           </Center>
         </Tabs.Panel>
 
-        <Tabs.Panel value="messages" pt="xs">
+        <Tabs.Panel value="desserts" pt="xs">
           <Group position={"center"}>
             <Input
               icon={<IconSearch />}
@@ -162,7 +162,7 @@ export const ProductLayout = () => {
           </Center>
         </Tabs.Panel>
 
-        <Tabs.Panel value="settings" pt="xs">
+        <Tabs.Panel value="drinks" pt="xs">
           <Group position={"center"}>
             <Input
               icon={<IconSearch />}

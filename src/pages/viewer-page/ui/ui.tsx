@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   Alert,
   Button,
   Center,
   Divider,
   Group,
-  Modal,
-  Popover,
+  Modal, PasswordInput,
+  Popover, Spoiler,
   Stack,
   Tabs,
   Text,
@@ -26,8 +26,30 @@ import {switchAuth} from "../../../app/models/isAuthStore";
 import {removeUser} from "../../../shared/api/queries/user/removeUser";
 import {showNotification} from "@mantine/notifications";
 import {useNavigate} from "react-router-dom";
+import {SubmitHandler, useForm} from "react-hook-form";
+import {updateEmail} from "../../../shared/api/queries/user/updateEmail";
+import {modals} from "@mantine/modals";
+import {updatePassword} from "../../../shared/api/queries/user/updatePassword";
 
+interface IFormInput {
+  email: string;
+}
+interface IFormPasswordInput {
+  oldPassword: string,
+  newPassword: string
+}
 export const ViewerLayout = () => {
+  const [openedPopover, setOpenedPopover] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>();
+  const {
+    register: registerPsw,
+    handleSubmit: handleSubmitPsw,
+    formState: { errors: errorsPsw },
+  } = useForm<IFormPasswordInput>();
   const navigate = useNavigate()
   const user = useStore($user);
   const [opened, { open, close }] = useDisclosure(false);
@@ -51,6 +73,79 @@ export const ViewerLayout = () => {
         id: "load-data",
         title: "Ошибка",
         message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconAlertCircle/>
+      });
+    }
+  }
+  const changePassword: SubmitHandler<IFormPasswordInput> = async (data) => {
+    try {
+      const response = updatePassword(data.newPassword, user?.id)
+      setOpenedPopover(false)
+      showNotification({
+        id: "load-data",
+        title: "Обновление данных аккаунта",
+        message: `Ваш пароль был перезаписан!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconCheck size="1rem" />,
+      });
+      modals.openConfirmModal({
+        centered: true,
+        title: "Перезапуск аккаунта",
+        children: <Text size="15">Вы изменили пароль, чтобы изменения вступили в силу вам необходимо перезайти в аккаунт</Text>,
+        labels: { confirm: "Да", cancel: "Отмена" },
+        confirmProps: { color: "red" },
+        onCancel: () => console.log("Cancel"),
+        onConfirm: () => {
+          localStorage.removeItem("token");
+          logout()
+          switchAuth(false);
+          navigate('/')
+        },
+      });
+    }catch (e) {
+      showNotification({
+        id: "load-data",
+        title: "Ошибка",
+        message: `Произошла ошщибка! Возможно вы не авторизованы или у нас проблемы с соединением!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconAlertCircle/>
+      });
+    }
+  }
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      const response = await updateEmail(data.email, user?.id)
+      showNotification({
+        id: "load-data",
+        title: "Обновление данных аккаунта",
+        message: `Ваша почта была перезаписана!`,
+        autoClose: true,
+        radius: "xl",
+        icon: <IconCheck size="1rem" />,
+      });
+      modals.openConfirmModal({
+        centered: true,
+        title: "Перезапуск аккаунта",
+        children: <Text size="15">Вы изменили электронную почту, чтобы изменения вступили в силу вам необходимо перезайти в аккаунт</Text>,
+        labels: { confirm: "Да", cancel: "Отмена" },
+        confirmProps: { color: "red" },
+        onCancel: () => console.log("Cancel"),
+        onConfirm: () => {
+          localStorage.removeItem("token");
+          logout()
+          switchAuth(false);
+          navigate('/')
+        },
+      });
+    }catch (e) {
+      showNotification({
+        id: "load-data",
+        title: "Ошибка",
+        message: `Произошла ошщибка! Возможно такая почта уже существует, попробуйте ввести другую почту, или вы не авторизованы или у нас проблемы с соединением!`,
         autoClose: true,
         radius: "xl",
         icon: <IconAlertCircle/>
@@ -111,48 +206,10 @@ export const ViewerLayout = () => {
                   >
                     Пароль: . . . . . . . . . . . . . . . . . . .
                   </Text>
-                  <Text size={20}>{user?.password}</Text>
+                  <Spoiler maxHeight={0} showLabel="Показать пароль" hideLabel="Скрыть пароль" color={'orange'}>
+                    <Text size={20}>{user?.password}</Text>
+                  </Spoiler>
                 </Group>
-                {/*  <Group>*/}
-                {/*    <Text*/}
-                {/*      variant="gradient"*/}
-                {/*      gradient={{ from: "yellow", to: "orange", deg: 45 }}*/}
-                {/*      size={20}*/}
-                {/*    >*/}
-                {/*      Количество заказов: . . . . . . .*/}
-                {/*    </Text>*/}
-                {/*    <Text size={20}>80</Text>*/}
-                {/*  </Group>*/}
-                {/*  <Group>*/}
-                {/*    <Text*/}
-                {/*      variant="gradient"*/}
-                {/*      gradient={{ from: "yellow", to: "orange", deg: 45 }}*/}
-                {/*      size={20}*/}
-                {/*    >*/}
-                {/*      Всего потрачено: . . . . . . . . . .*/}
-                {/*    </Text>*/}
-                {/*    <Text size={20}>8000 RUB</Text>*/}
-                {/*  </Group>*/}
-                {/*<Group>*/}
-                {/*  <Text*/}
-                {/*    variant="gradient"*/}
-                {/*    gradient={{ from: "yellow", to: "orange", deg: 45 }}*/}
-                {/*    size={20}*/}
-                {/*  >*/}
-                {/*    На сайте с. . . . . . . . . . . . . . . . .*/}
-                {/*  </Text>*/}
-                {/*  <Text size={20}>26.04.2023 года</Text>*/}
-                {/*</Group>*/}
-                {/*  <Group>*/}
-                {/*    <Text*/}
-                {/*      variant="gradient"*/}
-                {/*      gradient={{ from: "yellow", to: "orange", deg: 45 }}*/}
-                {/*      size={20}*/}
-                {/*    >*/}
-                {/*      Любимое блюдо: . . . . . . . . . .*/}
-                {/*    </Text>*/}
-                {/*    <Text size={20}>Сырная пицца(53 заказа)</Text>*/}
-                {/*  </Group>*/}
               </Stack>
             </Tabs.Panel>
             <Tabs.Panel value="history" pt="xs">
@@ -193,11 +250,11 @@ export const ViewerLayout = () => {
             </Tabs.Panel>
             <Tabs.Panel value={"settings"} pt={"xs"}>
               <Stack>
-                <Group>
-                  <Text size={20}>Изменить почту профиля</Text>
-                  <TextInput w={300} placeholder={user?.email} />
-                  <Button color={"orange"}>Сохранить изменения</Button>
-                </Group>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <Text size={20}>Изменить почту профиля</Text>
+                    <Group><TextInput {...register('email', {required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/, maxLength: 60})} error={errors.email?.type === 'required' ? 'Поле обязательно для заполнения' :  errors.email?.type === 'maxLength' ? 'Максимальное кол-во символов 60 ед.' : errors.email?.type === 'pattern' ? 'Неправильный вид почты, пример: example@gmail.com' : ''} w={300} placeholder={user?.email} />
+                      <Button type={'submit'} color={"orange"}>Сохранить изменения</Button></Group>
+                  </form>
                 <Group>
                   <Text size={20}>Изменить пароль</Text>
                   <Popover
@@ -206,20 +263,29 @@ export const ViewerLayout = () => {
                     position="bottom"
                     withArrow
                     shadow="md"
+                    opened={openedPopover} onChange={setOpenedPopover}
                   >
                     <Popover.Target>
-                      <Button color={"orange"} variant={"subtle"}>
+                      <Button color={"orange"} variant={"subtle"} onClick={() => setOpenedPopover((o) => !o)}>
                         Нажмите чтобы сменить пароль
                       </Button>
                     </Popover.Target>
                     <Popover.Dropdown>
-                      <TextInput label="Ваш пароль" size="xs" />
-                      <TextInput label="Новый пароль" size="xs" mt="xs" />
-                      <Center>
-                        <Button mt={10} color={"orange"}>
-                          Сменить пароль
-                        </Button>
-                      </Center>
+                      <form onSubmit={handleSubmitPsw(changePassword)}>
+                        <PasswordInput label="Ваш пароль" size="xs" {...registerPsw('oldPassword', {required: true, validate: (val: string) => {
+                            if (user?.password != val) {
+                              return "Вы ввели неверный пароль";
+                            }
+                          }})} error={errorsPsw.oldPassword?.type === 'required' ? 'Поле обязательно для заполнения' : errorsPsw.oldPassword?.type === 'validate' ? 'Вы ввели ваш старый пароль  неверно' : ''}/>
+                        <PasswordInput label="Новый пароль" size="xs" mt="xs" {...registerPsw('newPassword', {required: true, minLength: 6,
+                          maxLength: 60,
+                          pattern: /[^А-Яа-я0-9]/})} error={errorsPsw.newPassword?.type === 'required' ? 'Поле обязательно для заполнения' : errorsPsw.newPassword?.type === 'minLength' ? 'Минимальная длина пароля должно содержать 6 символов' : errorsPsw.newPassword?.type === 'maxLength' ? 'Максимальная длина пароля не должна превышать 60 символов' : errorsPsw.newPassword?.type === 'pattern' ? 'Пароль должен содержать только латинские буквы и хотя бы 1' : ''}/>
+                        <Center>
+                          <Button type={'submit'} mt={10} color={"orange"}>
+                            Сменить пароль
+                          </Button>
+                        </Center>
+                      </form>
                     </Popover.Dropdown>
                   </Popover>
                 </Group>

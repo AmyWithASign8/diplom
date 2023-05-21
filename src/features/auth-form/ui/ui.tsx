@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import {
   Button,
   Center,
-  Modal,
   PasswordInput,
   Text,
   TextInput,
@@ -14,7 +13,6 @@ import { login, registration } from "../../../shared/api/queries";
 import { useStore } from "effector-react/compat";
 import { $user, setUser } from "../../../app/models/userStore";
 import { $isAuth, switchAuth } from "../../../app/models/isAuthStore";
-import { useDisclosure } from "@mantine/hooks";
 import { modals } from "@mantine/modals";
 
 interface AuthFormInterface {
@@ -83,14 +81,14 @@ export const AuthForm: FC<AuthFormInterface> = ({ auth, reg }) => {
       if (validateInput?.type === "required")
         return "Это поле не может быть пустым";
       if (validateInput?.type === "maxLength")
-        return "Email должен содержать менее 40 символов";
+        return "Email должен содержать менее 60 символов";
       if (validateInput?.type === "pattern")
         return "Неккоректный email, пример: example@gmail.com";
     } else if (validateInput?.ref.name === "password") {
       if (validateInput?.type === "required")
         return "Это поле не может быть пустым";
       if (validateInput?.type === "maxLength")
-        return "Пароль должен содержать менее 40 символов";
+        return "Пароль должен содержать менее 60 символов";
       if (validateInput?.type === "minLength")
         return "Пароль должен содержать не менее 6 символов";
       if (validateInput?.type === "pattern")
@@ -110,7 +108,7 @@ export const AuthForm: FC<AuthFormInterface> = ({ auth, reg }) => {
           mb={10}
           {...register("email", {
             required: true,
-            maxLength: 40,
+            maxLength: 60,
             pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/,
           })}
         />
@@ -119,7 +117,7 @@ export const AuthForm: FC<AuthFormInterface> = ({ auth, reg }) => {
           {...register("password", {
             required: true,
             minLength: 6,
-            maxLength: 40,
+            maxLength: 60,
             pattern: /[^А-Яа-я0-9]/,
           })}
           placeholder="Введите ваш пароль"
