@@ -8,7 +8,7 @@ import {
   Group, Image,
   Modal, PasswordInput,
   Popover, Spoiler,
-  Stack,
+  Stack, Table,
   Tabs,
   Text,
   TextInput,
@@ -234,23 +234,29 @@ export const ViewerLayout = () => {
                       </Accordion.Control>
                       {obj.orderProducts.map((obj) => (
                           <Accordion.Panel>
-                            <Group position={'apart'}>
-                              <Group>
-                                <Image src={`http://localhost:5000/${obj.product.image}`} width={150}/>
-                                <Stack>
-                                  <Text fw={500} size={18}>{obj.title}</Text>
-                                  {obj.product.brand.name === 'Пицца' &&
-                                      <Group>
-                                        <Text fw={500}>{obj.size === 25 ? 'Маленькая' : obj.size === 30 ? 'Средняя' : 'Большая'}, {obj.size} см, {obj.paste} тесто</Text>
-                                      </Group>
-                                  }
-                                </Stack>
-                              </Group>
-                              <Text fw={500}>{obj.product.brand.name}</Text>
-                              <Text fw={500}>{obj.product.type.name}</Text>
-                              <Text fw={500}>{obj.product.additional}</Text>
-                              <Text fw={500} mr={40}>{obj.price} RUB</Text>
-                            </Group>
+                            <Table>
+                              <tbody>
+                              <tr key={obj.id}>
+                                <Group position={'apart'}>
+                                  <Group>
+                                    <td><Image src={`http://localhost:5000/${obj.product.image}`} width={150}/></td>
+                                    <td><Stack>
+                                      <Text fw={500} size={18} w={300}>{obj.title}</Text>
+                                      {obj.product.brand.name === 'Пицца' &&
+                                          <Group>
+                                            <Text fw={500}>{obj.size === 25 ? 'Маленькая' : obj.size === 30 ? 'Средняя' : 'Большая'}, {obj.size} см, {obj.paste} тесто</Text>
+                                          </Group>
+                                      }
+                                    </Stack></td>
+                                  </Group>
+                                  <td><Text fw={500}>{obj.product.brand.name}</Text></td>
+                                  <td><Text fw={500}>{obj.product.type.name}</Text></td>
+                                  <td><Text fw={500}>{obj.product.additional}</Text></td>
+                                  <td><Text fw={500} mr={40}>{obj.price} RUB</Text></td>
+                                </Group>
+                              </tr>
+                              </tbody>
+                            </Table>
                             <Divider/>
                           </Accordion.Panel>
                       ))}
