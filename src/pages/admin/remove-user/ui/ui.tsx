@@ -10,10 +10,7 @@ export const AdminPanelRemoveUserLayout = () => {
     const queryClient = useQueryClient()
     let users: User[] = []
     const {data, isSuccess} = useGetAllUsers()
-    if (!data) return null
     const [selectUser, setSelectUser] = React.useState<string | null>(null)
-    data.map((obj) => (obj.role !== "ADMIN" && users.push(obj)))
-    console.log(users)
     const mutationRemoveUser = useMutation(() => removeUser(selectUser), {
         onSuccess: () => queryClient.invalidateQueries(['getAllUsers'])
     })
@@ -41,6 +38,8 @@ export const AdminPanelRemoveUserLayout = () => {
         }
     }
     if (!isSuccess) return null
+    if (!data) return null
+    data.map((obj) => (obj.role !== "ADMIN" && users.push(obj)))
     return (
         <div>
             <Center>

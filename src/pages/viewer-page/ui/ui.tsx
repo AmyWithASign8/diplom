@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 import {
+  Accordion,
   Alert,
   Button,
   Center,
   Divider,
-  Group,
+  Group, Image,
   Modal, PasswordInput,
   Popover, Spoiler,
   Stack,
@@ -25,11 +26,13 @@ import {$user, logout} from "../../../app/models/userStore";
 import {switchAuth} from "../../../app/models/isAuthStore";
 import {removeUser} from "../../../shared/api/queries/user/removeUser";
 import {showNotification} from "@mantine/notifications";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {SubmitHandler, useForm} from "react-hook-form";
 import {updateEmail} from "../../../shared/api/queries/user/updateEmail";
 import {modals} from "@mantine/modals";
 import {updatePassword} from "../../../shared/api/queries/user/updatePassword";
+import {useGetAllOrders} from "../../../shared/api/queries/orders";
+import dayjs from "dayjs";
 
 interface IFormInput {
   email: string;
@@ -39,6 +42,7 @@ interface IFormPasswordInput {
   newPassword: string
 }
 export const ViewerLayout = () => {
+  const {id} = useParams()
   const [openedPopover, setOpenedPopover] = useState(false);
   const {
     register,
@@ -52,6 +56,7 @@ export const ViewerLayout = () => {
   } = useForm<IFormPasswordInput>();
   const navigate = useNavigate()
   const user = useStore($user);
+  const {data, isSuccess} = useGetAllOrders(id)
   const [opened, { open, close }] = useDisclosure(false);
   const deleteAccount = async () => {
     const response = await removeUser(String(user?.id))
@@ -152,6 +157,8 @@ export const ViewerLayout = () => {
       });
     }
   }
+  console.log(data)
+  if (!isSuccess) return null
   return (
     <div>
       <Modal opened={opened} onClose={close} title="Удаление аккаунта" centered>
@@ -213,40 +220,44 @@ export const ViewerLayout = () => {
               </Stack>
             </Tabs.Panel>
             <Tabs.Panel value="history" pt="xs">
-              <Stack>
-                <Group>
-                  <Text
-                    variant="gradient"
-                    gradient={{ from: "yellow", to: "orange", deg: 45 }}
-                    size={20}
-                  >
-                    Заказ №
-                  </Text>
-                  <Text size={20}>777</Text>
-                  <Divider size="sm" orientation="vertical" />
-                  <Text
-                    variant="gradient"
-                    gradient={{ from: "yellow", to: "orange", deg: 45 }}
-                    size={20}
-                  >
-                    Дата:
-                  </Text>
-                  <Text size={20}>24.03.2023 года</Text>
-                </Group>
-
-                <Group>
-                  <Text size={20}>Сырная пицца</Text>
-                  <Divider size="sm" orientation="vertical" />
-                  <Text size={20}>Кол-во: 80</Text>
-                </Group>
-                <Group>
-                  <Text size={20}>Сырная пицца</Text>
-                  <Divider size="sm" orientation="vertical" />
-                  <Text size={20}>Кол-во: 80</Text>
-                </Group>
-                <Text size={20}>Итоговая сумма заказа: 77777 RUB</Text>
-              </Stack>
-              <Divider mt={30} size={"xl"} mb={90} />
+              {data.length === 0 ? <Text>Вы не сделали еще ни одного заказа!</Text> : <Accordion variant="separated" radius="md" defaultValue="customization">
+                {data.map((obj) => (
+                    <Accordion.Item value={String(obj.id)}>
+                      <Accordion.Control>
+                        <Group>
+                          <Text fw={500} size={18}>Заказ №{obj.id}</Text>
+                          <Text fw={500} size={18}>Дата: {dayjs(obj.createdAt)
+                              .locale("ru")
+                              .format("DD MMMM YYYY HH:mm")}</Text>
+                          <Text fw={500} size={18}>Сумма: {obj.price} RUB</Text>
+                        </Group>
+                      </Accordion.Control>
+                      {obj.orderProducts.map((obj) => (
+                          <Accordion.Panel>
+                            <Group position={'apart'}>
+                              <Group>
+                                <Image src={`http://localhost:5000/${obj.product.image}`} width={150}/>
+                                <Stack>
+                                  <Text fw={500} size={18}>{obj.title}</Text>
+                                  {obj.product.brand.name === 'Пицца' &&
+                                      <Group>
+                                        <Text fw={500}>{obj.size === 25 ? 'Маленькая' : obj.size === 30 ? 'Средняя' : 'Большая'}, {obj.size} см, {obj.paste} тесто</Text>
+                                      </Group>
+                                  }
+                                </Stack>
+                              </Group>
+                              <Text fw={500}>{obj.product.brand.name}</Text>
+                              <Text fw={500}>{obj.product.type.name}</Text>
+                              <Text fw={500}>{obj.product.additional}</Text>
+                              <Text fw={500} mr={40}>{obj.price} RUB</Text>
+                            </Group>
+                            <Divider/>
+                          </Accordion.Panel>
+                      ))}
+                      <Divider/>
+                    </Accordion.Item>
+                ))}
+              </Accordion>}
             </Tabs.Panel>
             <Tabs.Panel value={"settings"} pt={"xs"}>
               <Stack>

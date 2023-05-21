@@ -70,7 +70,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
   })
   const createBasketProduct = async () => {
     try {
-      const response = await useCreateBasketProduct(productData.title, productData.description, productData.price, user?.id, productData.id, valueOfSize, valueOfPastry)
+      const response = await useCreateBasketProduct(productData.title, productData.description, currentPrice, user?.id, productData.id, valueOfSize, valueOfPastry)
       close()
       showNotification({
         id: "load-data",
@@ -113,7 +113,15 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
       });
     }
   }
+
+
   if (productData === undefined) return null
+  const [currentPrice, setCurrentPrice] = React.useState<number>(productData.price)
+  React.useEffect(() => {
+    if (valueOfSize === '30') setCurrentPrice(productData.price * 1.5)
+    else if (valueOfSize === '35') setCurrentPrice(productData.price * 2)
+    else if (valueOfSize === '25') setCurrentPrice(productData.price)
+  }, [valueOfSize])
   return (
     <div>
       {isAuth ? (
@@ -208,11 +216,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
               <Stack>
                 <Text size={20} fw={500}>
                   Итоговая стоимость:{" "}
-                  {valueOfSize === "30"
-                    ? productData.price * 1.5
-                    : valueOfSize === "25"
-                    ? productData.price
-                    : productData.price * 2}{" "}
+                  {currentPrice}{" "}
                   RUB
                 </Text>
                 <Button

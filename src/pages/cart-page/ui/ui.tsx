@@ -18,6 +18,7 @@ import DrinkCard from "../../../entities/drink-card/ui/ui";
 import DessertCard from "../../../entities/dessert-card/ui/ui";
 import {useMutation, useQueryClient} from "react-query";
 import {showNotification} from "@mantine/notifications";
+import {createOrder} from "../../../shared/api/queries/orders";
 
 export const CartLayout = () => {
     const queryClient = useQueryClient()
@@ -58,6 +59,30 @@ export const CartLayout = () => {
             });
         }
     }
+    if (!data) return null
+        const createOrderFunc = async () => {
+            try {
+                const response = await createOrder(sum(data['basket-products']), userId)
+                showNotification({
+                    id: "load-data",
+                    title: "Создание заказа",
+                    message: `Ваш заказ создан!`,
+                    autoClose: true,
+                    radius: "xl",
+                    icon: <IconCheck size="1rem" />,
+                });
+                await clearAllBasketProducts()
+            }catch (e) {
+                showNotification({
+                    id: "load-data",
+                    title: "Ошибка",
+                    message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
+                    autoClose: true,
+                    radius: "xl",
+                    icon: <IconAlertCircle/>
+                });
+            }
+        }
   if (!isSuccess) return null
   return (
     <div>
@@ -101,8 +126,8 @@ export const CartLayout = () => {
             <Text size={25}>Итоговая сумма:</Text>
             <Text size={26}>{sum(data['basket-products'])} RUB</Text>
           </Group>
-          <Button leftIcon={<IconCreditCard />} color={"green"}>
-            Оплатить
+          <Button leftIcon={<IconCreditCard />} color={"green"} onClick={() => createOrderFunc()}>
+            Заказать
           </Button></>}
       </Group>
     </div>

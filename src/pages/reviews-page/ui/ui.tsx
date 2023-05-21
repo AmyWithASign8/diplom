@@ -177,11 +177,11 @@ export const ReviewsLayout = () => {
         </Group>
       </Group>
       <Center mt={100}>
-        <Stack>
+        {data.length === 0 ? <Text size={30} mb={'18%'}>Еще нет ни одного отзыва</Text> : <Stack>
           {data.map((obj) => (
               <CommentCard key={obj.id} landing={false} maxWidth={700} reviewData={obj}/>
           ))}
-        </Stack>
+        </Stack>}
       </Center>
     </div>
   );

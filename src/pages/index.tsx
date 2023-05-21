@@ -35,7 +35,7 @@ const Pages = () => {
         <Route path={"about-us"} element={<AboutPage />} />
         <Route path={`user/my-cart/:userId`} element={<CartPage />} />
         <Route path={"catalog"} element={<ProductPage />} />
-        <Route path={"user/my-profile"} element={<ViewerPage />} />
+        <Route path={"user/my-profile/:id"} element={<ViewerPage />} />
         <Route path={"reviews"} element={<ReviewsPage />} />
       </Route>
       <Route path={"/user"} element={<AuthLayout />}>

@@ -25,13 +25,19 @@ export const ProductLayout = () => {
         mt={100}
       >
         <Tabs.List ml={10}>
-          <Tabs.Tab value="pizzas" icon={<IconPizza size="0.8rem" />}>
+          <Tabs.Tab value="pizzas" icon={<IconPizza size="28" />} sx={() => ({
+            fontSize: 18
+          })}>
             Пиццы
           </Tabs.Tab>
-          <Tabs.Tab value="desserts" icon={<IconCake size="0.8rem" />}>
+          <Tabs.Tab value="desserts" icon={<IconCake size="28" />} sx={() => ({
+            fontSize: 18
+          })}>
             Десерты
           </Tabs.Tab>
-          <Tabs.Tab value="drinks" icon={<IconBottle size="0.8rem" />}>
+          <Tabs.Tab value="drinks" icon={<IconBottle size="28" />} sx={() => ({
+            fontSize: 18
+          })}>
             Напитки
           </Tabs.Tab>
         </Tabs.List>

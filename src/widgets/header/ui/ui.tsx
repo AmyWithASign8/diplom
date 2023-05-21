@@ -188,7 +188,7 @@ export const Header = () => {
         {isAuth && (
           <Button
             component={Link}
-            to={"/user/my-profile"}
+            to={`/user/my-profile/${user?.id}`}
             leftIcon={<IconUserCircle size={28}/>}
             variant="subtle"
             color="orange"
