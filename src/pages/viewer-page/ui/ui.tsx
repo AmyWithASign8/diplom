@@ -234,7 +234,7 @@ export const ViewerLayout = () => {
                       </Accordion.Control>
                       {obj.orderProducts.map((obj) => (
                           <Accordion.Panel>
-                            <Table>
+                            <Table highlightOnHover fontSize="md" horizontalSpacing="xl">
                               <tbody>
                               <tr key={obj.id}>
                                 <Group position={'apart'}>
