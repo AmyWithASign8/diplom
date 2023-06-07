@@ -149,7 +149,6 @@ const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce,
         </Modal>
       {toCard && (
         <Group
-          w={1000}
           position={"apart"}
           bg={
             currentTheme.colorScheme === "light"

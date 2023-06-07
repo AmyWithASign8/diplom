@@ -1,5 +1,5 @@
 import React from "react";
-import {Alert, Center, Group, Input, Select, SimpleGrid, Tabs} from "@mantine/core";
+import {Alert, Center, Group, Input, Loader, Select, SimpleGrid, Tabs, TextInput, Text, Divider} from "@mantine/core";
 import {
   IconAlertCircle,
   IconBottle,
@@ -10,59 +10,50 @@ import {
 import PizzaCard from "../../../entities/pizza-card/ui/ui";
 import DessertCard from "../../../entities/dessert-card/ui/ui";
 import DrinkCard from "../../../entities/drink-card/ui/ui";
-import {useGetAllProducts, useGetAllTypes} from "../../../shared/api/queries";
+import {useGetAllBrands, useGetAllProducts, useGetAllTypes} from "../../../shared/api/queries";
+import {useStore} from "effector-react/compat";
+import {$productListFilter, setBrand, setPrice, setSearchQuery, setType} from "../model/product-list-type";
+import {useDebouncedState} from "@mantine/hooks";
 
 export const ProductLayout = () => {
-  const [checkByPrice, setCheckByPrice] = React.useState<string | null>(null)
-  const [searchInput, setSearchInput] = React.useState<string>('')
-  const {data, isSuccess, error} = useGetAllProducts('', 'none', 'none')
+  const {query, typeId, byPrice, brandId} = useStore($productListFilter)
+  const [checkByPrice, setCheckByPrice] = React.useState<any>('none')
+  const [checkByType, setCheckByType] = React.useState<any>('none')
+  const [checkByBrand, setCheckByBrand] = React.useState<any>('none')
+  const [searchValue, setSearchValue] = useDebouncedState('', 1000);
+  const {data, isSuccess, error, isLoading} = useGetAllProducts(query, typeId, byPrice, brandId)
+  React.useEffect(() => {
+    setSearchQuery({queryString: searchValue})
+    setPrice({byPrice: checkByPrice})
+    setBrand({brandId: checkByBrand})
+    setType({typeId: checkByType})
+  },[searchValue, checkByPrice, checkByType, checkByBrand])
   const {data: dataType, isSuccess: isSuccessType} = useGetAllTypes()
-  let newDataType: any = []
-  if (!isSuccess) return null
-  if (!isSuccessType) return null
-  dataType.map((obj) => obj.brandId === 1 && newDataType.push(obj))
-  if (error) return (
-      <Alert icon={<IconAlertCircle size="1rem" />} title="Bummer!" color="red">
+  const {data: dataBrand, isSuccess: isSuccessBrand} = useGetAllBrands()
+  if (isLoading) return <Center mt={'10%'} mb={'20%'}><Loader color="orange" size="xl" /></Center>
+  if (!isSuccess || !isSuccessType || !isSuccessBrand) return <Alert icon={<IconAlertCircle size="1rem" />} title="Bummer!" color="red">
+    Something terrible happened! You made a mistake and there is no going back, your data was lost forever!
+  </Alert>
+  if (error) return <Alert icon={<IconAlertCircle size="1rem" />} title="Bummer!" color="red">
         Something terrible happened! You made a mistake and there is no going back, your data was lost forever!
       </Alert>
-  )
+
+
   return (
     <div>
-
-      <Tabs
-        orientation="vertical"
-        color="orange"
-        defaultValue="pizzas"
-        mt={100}
-      >
-        <Tabs.List ml={10}>
-          <Tabs.Tab value="pizzas" icon={<IconPizza size="28" />} sx={() => ({
-            fontSize: 18
-          })}>
-            Пиццы
-          </Tabs.Tab>
-          <Tabs.Tab value="desserts" icon={<IconCake size="28" />} sx={() => ({
-            fontSize: 18
-          })}>
-            Десерты
-          </Tabs.Tab>
-          <Tabs.Tab value="drinks" icon={<IconBottle size="28" />} sx={() => ({
-            fontSize: 18
-          })}>
-            Напитки
-          </Tabs.Tab>
-        </Tabs.List>
-
-        <Tabs.Panel value="pizzas" pt="xs">
-          <Group position={"center"}>
-            <Input
+          <Group position={"center"} mt={'5%'}>
+            <TextInput
+                label={'Поиск...'}
               icon={<IconSearch />}
-              placeholder="Введите название пиццы"
+              defaultValue={searchValue}
+              onChange={(event) => setSearchValue(event.currentTarget.value)}
+              placeholder="Введите название продукта"
               sx={() => ({
                 width: 300,
               })}
             />
             <Select
+                label={'Фильтр цены'}
                 value={checkByPrice}
                 onChange={(value) => setCheckByPrice(value)}
               clearable
@@ -89,9 +80,12 @@ export const ProductLayout = () => {
               })}
             />
             <Select
+                label={'Фильтр вида продукта'}
+                value={checkByBrand}
+                onChange={(value) => setCheckByBrand(value)}
               clearable
-              placeholder="Выберите тип пиццы"
-              data={newDataType.map((obj: any) => ({value: `${obj.id}`, label: `${obj.name}`}))}
+              placeholder="Выберите вид продукта"
+              data={dataBrand.map((obj: any) => ({value: `${obj.id}`, label: `${obj.name}`}))}
               styles={(theme) => ({
                 item: {
                   "&[data-selected]": {
@@ -109,149 +103,48 @@ export const ProductLayout = () => {
                 },
               })}
             />
+            <Select
+                label={'Фильтр типа продукта'}
+                value={checkByType}
+                onChange={(value) => setCheckByType(value)}
+                clearable
+                placeholder="Выберите тип продукта"
+                data={dataType.map((obj: any) => ({value: `${obj.id}`, label: `${obj.name}`}))}
+                styles={(theme) => ({
+                  item: {
+                    "&[data-selected]": {
+                      "&, &:hover": {
+                        backgroundColor:
+                            theme.colorScheme === "dark"
+                                ? theme.colors.orange[9]
+                                : theme.colors.orange[1],
+                        color:
+                            theme.colorScheme === "dark"
+                                ? theme.white
+                                : theme.colors.orange[9],
+                      },
+                    },
+                  },
+                })}
+            />
           </Group>
-          <Center>
-            <SimpleGrid
-              cols={5}
+      {data.length === 0 ? <Center mt={'10%'} mb={'15%'}><Text size={'xl'}>К сожалению ничего не удалось найти :(</Text></Center> : <>
+        <Center>
+          <SimpleGrid
+              cols={4}
               mt={100}
               mr={100}
               ml={100}
               spacing={"xl"}
               mb={100}
-            >
-              {data.map((obj) => (
-                  obj.brandId === 1 && <PizzaCard productData={obj} landing={false} commerce={true} toCard={false}/>
-              ))}
-            </SimpleGrid>
-          </Center>
-        </Tabs.Panel>
+          >
+            {data.map((obj) => (
+                obj.brandId === 1 ? <PizzaCard productData={obj} landing={false} commerce={true} toCard={false}/> : obj.brandId === 3 ? <DessertCard productData={obj} landing={false} commerce={true} toCard={false}/> : <DrinkCard productData={obj} landing={false} toCard={false} commerce={true}/>
+            ))}
 
-        <Tabs.Panel value="desserts" pt="xs">
-          <Group position={"center"}>
-            <Input
-              icon={<IconSearch />}
-              placeholder="Введите название десерта"
-              sx={() => ({
-                width: 300,
-              })}
-            />
-            <Select
-              clearable
-              placeholder="Выберите фильтр цены"
-              data={[
-                { value: "Сначала дешевые", label: "Сначала дешевые" },
-                { value: "Сначала дорогие", label: "Сначала дорогие" },
-              ]}
-              styles={(theme) => ({
-                item: {
-                  "&[data-selected]": {
-                    "&, &:hover": {
-                      backgroundColor:
-                        theme.colorScheme === "dark"
-                          ? theme.colors.orange[9]
-                          : theme.colors.orange[1],
-                      color:
-                        theme.colorScheme === "dark"
-                          ? theme.white
-                          : theme.colors.orange[9],
-                    },
-                  },
-                },
-              })}
-            />
-          </Group>
-          <Center>
-            <SimpleGrid
-              cols={5}
-              mt={100}
-              mr={100}
-              ml={100}
-              spacing={"xl"}
-              mb={100}
-            >
-              {data.map((obj) => (
-                  obj.brandId === 3 && <DessertCard productData={obj} landing={false} commerce={true} toCard={false}/>
-              ))}
-            </SimpleGrid>
-          </Center>
-        </Tabs.Panel>
-
-        <Tabs.Panel value="drinks" pt="xs">
-          <Group position={"center"}>
-            <Input
-              icon={<IconSearch />}
-              placeholder="Введите название напитка"
-              sx={() => ({
-                width: 300,
-              })}
-            />
-            <Select
-              clearable
-              placeholder="Выберите фильтр цены"
-              data={[
-                { value: "Сначала дешевые", label: "Сначала дешевые" },
-                { value: "Сначала дорогие", label: "Сначала дорогие" },
-              ]}
-              styles={(theme) => ({
-                item: {
-                  "&[data-selected]": {
-                    "&, &:hover": {
-                      backgroundColor:
-                        theme.colorScheme === "dark"
-                          ? theme.colors.orange[9]
-                          : theme.colors.orange[1],
-                      color:
-                        theme.colorScheme === "dark"
-                          ? theme.white
-                          : theme.colors.orange[9],
-                    },
-                  },
-                },
-              })}
-            />
-            <Select
-              clearable
-              placeholder="Выберите тип напитка"
-              data={[
-                { value: "Горячие", label: "Горячие" },
-                { value: "Холодные", label: "Холодные" },
-                { value: "Соки", label: "Соки" },
-                { value: "Газированные", label: "Газированные" },
-              ]}
-              styles={(theme) => ({
-                item: {
-                  "&[data-selected]": {
-                    "&, &:hover": {
-                      backgroundColor:
-                        theme.colorScheme === "dark"
-                          ? theme.colors.orange[9]
-                          : theme.colors.orange[1],
-                      color:
-                        theme.colorScheme === "dark"
-                          ? theme.white
-                          : theme.colors.orange[9],
-                    },
-                  },
-                },
-              })}
-            />
-          </Group>
-          <Center>
-            <SimpleGrid
-              cols={5}
-              mt={100}
-              mr={100}
-              ml={100}
-              spacing={"xl"}
-              mb={100}
-            >
-              {data.map((obj) => (
-                  obj.brandId === 2 && <DrinkCard productData={obj} landing={false} commerce={true} toCard={false}/>
-              ))}
-            </SimpleGrid>
-          </Center>
-        </Tabs.Panel>
-      </Tabs>
+          </SimpleGrid>
+        </Center>
+      </>}
     </div>
   );
 };

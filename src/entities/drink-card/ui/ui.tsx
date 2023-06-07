@@ -8,7 +8,7 @@ import {
   Stack,
   Text,
   Modal,
-  useMantineTheme,
+  useMantineTheme, Center,
 } from "@mantine/core";
 import {IconAlertCircle, IconCheck, IconShoppingCart, IconTrash} from "@tabler/icons-react";
 import { Link } from "react-router-dom";
@@ -148,7 +148,6 @@ const DrinkCard: FC<CardInterface> = ({productData, toCard, landing, commerce, c
         </Modal>
       {toCard && (
         <Group
-          w={1000}
           position={"apart"}
           bg={
             currentTheme.colorScheme === "light"
@@ -190,12 +189,13 @@ const DrinkCard: FC<CardInterface> = ({productData, toCard, landing, commerce, c
       {!toCard && (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
-            <Image
-              height={300}
-              width={300}
-              src={`http://localhost:5000/${productData.image}`}
-              alt="Norway"
-            />
+            <Center>
+              <Image
+                  width={'90%'}
+                  src={`http://localhost:5000/${productData.image}`}
+                  alt="Norway"
+              />
+            </Center>
           </Card.Section>
 
           <Group position="apart" mt="md" mb="xs">
@@ -203,7 +203,7 @@ const DrinkCard: FC<CardInterface> = ({productData, toCard, landing, commerce, c
               {productData.title}
             </Text>
           </Group>
-          <Text maw={260} size={14} lineClamp={2}>
+          <Text maw={'70%'} size={14} lineClamp={2}>
             {productData.description}
           </Text>
           {landing && (

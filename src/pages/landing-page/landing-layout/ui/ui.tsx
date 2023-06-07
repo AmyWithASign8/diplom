@@ -5,7 +5,7 @@ import {
   Box,
   Button,
   Group,
-  Stack,
+  Stack, Alert, Loader, Center,
 } from "@mantine/core";
 import BgImagePizza from "../assets/images/bg-pizza.jpg";
 import { Carousel } from "@mantine/carousel";
@@ -14,13 +14,21 @@ import PizzaCard from "../../../../entities/pizza-card/ui/ui";
 import { CommentCard } from "../../../../entities/comment-card";
 import {useGetAllProducts} from "../../../../shared/api/queries";
 import {useGetAllReviews} from "../../../../shared/api/queries";
+import { IconAlertCircle } from "@tabler/icons-react";
 
 export const LandingLayout = () => {
   const commentData = useGetAllReviews()
-  console.log(commentData)
-  const {data, isSuccess} = useGetAllProducts('', 'none', 'none')
-  if (!isSuccess) return null
-  if (!commentData.isSuccess) return null
+  const {data, isSuccess, isLoading, error} = useGetAllProducts('', 'none', 'none', 'none')
+  if (isLoading) return <Center mt={'10%'} mb={'20%'}><Loader color="orange" size="xl" /></Center>
+  if (!isSuccess) return <Center><Alert mt={'10%'} mb={'20%'} icon={<IconAlertCircle size="1rem" />} title="Ошибка!" color="red">
+    Приносим свои извинения. При подключении к серверу произошла ошибка! Мы пытаемся это исправить!
+  </Alert></Center>
+  if (!commentData.isSuccess) return <Center><Alert mt={'10%'} mb={'20%'} icon={<IconAlertCircle size="1rem" />} title="Ошибка!" color="red">
+    Приносим свои извинения. При подключении к серверу произошла ошибка! Мы пытаемся это исправить!
+  </Alert></Center>
+  if (error) return <Center><Alert mt={'10%'} mb={'20%'}  icon={<IconAlertCircle size="1rem" />} title="Ошибка!" color="red">
+    Приносим свои извинения. При подключении к серверу произошла ошибка! Мы пытаемся это исправить!
+  </Alert></Center>
   return (
     <div>
       <BackgroundImage src={BgImagePizza}>
@@ -115,11 +123,11 @@ export const LandingLayout = () => {
           align="start"
           slidesToScroll={1}
         >
-          {data.map((obj) => (
-              <Carousel.Slide>
-                <PizzaCard productData={obj} landing={true} commerce={false} toCard={false} />
-              </Carousel.Slide>
-          ))}
+                  {data.map((obj) => (
+                    <Carousel.Slide>
+                      <PizzaCard productData={obj} landing={true} commerce={false} toCard={false} />
+                    </Carousel.Slide>
+                ))}
         </Carousel>
       </Group>
       {commentData.data.length !== 0 && <Group mt={"5%"} grow>

@@ -1,8 +1,9 @@
 import React from "react";
 import {
+  Alert,
   Button,
   Center,
-  Group,
+  Group, Loader,
   Modal,
   NumberInput,
   Rating,
@@ -31,7 +32,7 @@ interface IFormInput {
 export const ReviewsLayout = () => {
   const queryClient = useQueryClient()
   const user = useStore($user)
-  const {data, isSuccess} = useGetAllReviews()
+  const {data, isSuccess, isLoading, error} = useGetAllReviews()
   const isAuth = useStore($isAuth);
   const [opened, { open, close }] = useDisclosure(false);
   const {
@@ -87,7 +88,13 @@ export const ReviewsLayout = () => {
     }
   };
   const [rateValue, setRateValue] = React.useState<number | any>(0);
-  if (!isSuccess) return null
+  if (isLoading) return <Center mt={'10%'} mb={'20%'}><Loader color="orange" size="xl" /></Center>
+  if (!isSuccess) return <Alert icon={<IconAlertCircle size="1rem" />} title="Bummer!" color="red">
+    Something terrible happened! You made a mistake and there is no going back, your data was lost forever!
+  </Alert>
+  if (error) return <Alert icon={<IconAlertCircle size="1rem" />} title="Bummer!" color="red">
+    Something terrible happened! You made a mistake and there is no going back, your data was lost forever!
+  </Alert>
   return (
     <div>
       {isAuth ? (

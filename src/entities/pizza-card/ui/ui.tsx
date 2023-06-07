@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import {
   Badge,
   Button,
-  Card,
+  Card, Center,
   Chip,
   Group,
   Image,
@@ -133,112 +133,114 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
           onClose={close}
           title="Добавление товара в корзину"
           centered
-          size={"55%"}
+          size={"50%"}
         >
-          <Group>
-            <Image
-              radius={20}
-              height={500}
-              width={500}
-              src={`http://localhost:5000/${productData.image}`}
-              alt="Norway"
-            />
-            <div>
-              <Stack justify={"flex-start"} mb={"30%"}>
-                <Stack
-                  p={"3%"}
-                  sx={() => ({
-                    borderRadius: 20,
-                  })}
-                  bg={
-                    currentTheme.colorScheme === "light"
-                      ? "rgba(0, 0, 0, 0.1)"
-                      : "rgba(255, 255, 255, 0.1)"
-                  }
-                >
-                  <Text
-                    size={20}
-                    fw={500}
-                    color={
-                      currentTheme.colorScheme === "light" ? "black" : "white"
-                    }
+          <Group position={'center'}>
+            <Group maw={'100%'} position={'center'}>
+              <Image
+                  width={'100%'}
+                  radius={20}
+                  src={`http://localhost:5000/${productData.image}`}
+                  alt="Norway"
+              />
+            </Group>
+            <Group maw={'50%'}>
+              <div>
+                <Stack justify={"flex-start"} mb={"30%"}>
+                  <Stack
+                      p={"3%"}
+                      sx={() => ({
+                        borderRadius: 20,
+                      })}
+                      bg={
+                        currentTheme.colorScheme === "light"
+                            ? "rgba(0, 0, 0, 0.1)"
+                            : "rgba(255, 255, 255, 0.1)"
+                      }
                   >
-                    {productData.title}
-                  </Text>
-                  <Text maw={400} size={14}>
-                    {productData.description}
-                  </Text>
-                </Stack>
-                <Group position={"center"}>
-                  <Badge color={"orange"}>
-                    {valueOfSize}{" "}
-                    см.
-                  </Badge>
-                  <Badge color={"orange"}>
-                    {valueOfPastry}{" "}
-                    тесто
-                  </Badge>
-                </Group>
-                <Chip.Group
-                  multiple={false}
-                  value={valueOfSize}
-                  onChange={setValueOfSize}
-                >
-                  <Group position="center">
-                    <Chip color="orange.5" variant="filled" value="25">
-                      Маленькая
-                    </Chip>
-                    <Chip color="orange.7" variant="filled" value="30">
-                      Средняя
-                    </Chip>
-                    <Chip color="orange.9" variant="filled" value="35">
-                      Большая
-                    </Chip>
-                  </Group>
-                </Chip.Group>
-                <Chip.Group
-                  multiple={false}
-                  value={valueOfPastry}
-                  onChange={setValueOfPastry}
-                >
-                  <Group position="center">
-                    <Chip color="orange.8" variant="filled" value="традиционное">
-                      Традиционное
-                    </Chip>
-                    <Chip
-                      color="orange.6"
-                      variant="filled"
-                      value="тонкое"
-                      disabled={valueOfSize === "тонкое"}
+                    <Text
+                        size={20}
+                        fw={500}
+                        color={
+                          currentTheme.colorScheme === "light" ? "black" : "white"
+                        }
                     >
-                      Тонкое
-                    </Chip>
+                      {productData.title}
+                    </Text>
+                    <Text size={14}>
+                      {productData.description}
+                    </Text>
+                  </Stack>
+                  <Group position={"center"}>
+                    <Badge color={"orange"}>
+                      {valueOfSize}{" "}
+                      см.
+                    </Badge>
+                    <Badge color={"orange"}>
+                      {valueOfPastry}{" "}
+                      тесто
+                    </Badge>
                   </Group>
-                </Chip.Group>
-              </Stack>
-              <Stack>
-                <Text size={20} fw={500}>
-                  Итоговая стоимость:{" "}
-                  {currentPrice}{" "}
-                  RUB
-                </Text>
-                {!isAuth && <Text maw={300} color={'red'}>Чтобы добавить товар в корзину вам нужно авторизоваться!</Text>}
-                <Button
-                  radius={"xl"}
-                  leftIcon={<IconShoppingCart />}
-                  color="orange"
-                  onClick={() => createBasketProduct()}
-                  disabled={!isAuth && true}
-                >
-                  В корзину
-                </Button>
-              </Stack>
-            </div>
+                  <Chip.Group
+                      multiple={false}
+                      value={valueOfSize}
+                      onChange={setValueOfSize}
+                  >
+                    <Group position="center">
+                      <Chip color="orange.5" variant="filled" value="25">
+                        Маленькая
+                      </Chip>
+                      <Chip color="orange.7" variant="filled" value="30">
+                        Средняя
+                      </Chip>
+                      <Chip color="orange.9" variant="filled" value="35">
+                        Большая
+                      </Chip>
+                    </Group>
+                  </Chip.Group>
+                  <Chip.Group
+                      multiple={false}
+                      value={valueOfPastry}
+                      onChange={setValueOfPastry}
+                  >
+                    <Group position="center">
+                      <Chip color="orange.8" variant="filled" value="традиционное">
+                        Традиционное
+                      </Chip>
+                      <Chip
+                          color="orange.6"
+                          variant="filled"
+                          value="тонкое"
+                          disabled={valueOfSize === "тонкое"}
+                      >
+                        Тонкое
+                      </Chip>
+                    </Group>
+                  </Chip.Group>
+                </Stack>
+                <Stack>
+                  <Text size='xl' fw={500}>
+                    Итоговая стоимость:{" "}
+                    {currentPrice}{" "}
+                    RUB
+                  </Text>
+                  {!isAuth && <Text maw={300} color={'red'}>Чтобы добавить товар в корзину вам нужно авторизоваться!</Text>}
+                  <Button
+                      radius={"xl"}
+                      leftIcon={<IconShoppingCart />}
+                      color="orange"
+                      onClick={() => createBasketProduct()}
+                      disabled={!isAuth && true}
+                  >
+                    В корзину
+                  </Button>
+                </Stack>
+              </div>
+            </Group>
           </Group>
         </Modal>
       {toCard && (
         <Group
-          w={1000}
           position={"apart"}
           bg={
             currentTheme.colorScheme === "light"
@@ -259,13 +261,13 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
               alt="Norway"
             />
             <Stack>
-              <Text size={20} w={255}>
+              <Text size={'xl'} w={'70%'}>
                 {cartData?.title}
               </Text>
-              <Text size={15}>{cartData?.size === 30 ? 'Средняя' : cartData?.size === 25 ? 'Маленькая' : 'Большая'}, {cartData?.size} см, {cartData?.paste} тесто</Text>
+              <Text size={'xl'}>{cartData?.size === 30 ? 'Средняя' : cartData?.size === 25 ? 'Маленькая' : 'Большая'}, {cartData?.size} см, {cartData?.paste} тесто</Text>
             </Stack>
           </Group>
-          <Text size={20}>{cartData?.price} RUB</Text>
+          <Text size={'xl'}>{cartData?.price} RUB</Text>
           <Button
             variant={"light"}
             leftIcon={<IconTrash />}
@@ -280,12 +282,13 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
       {!toCard && (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
-            <Image
-              height={300}
-              width={300}
-              src={`http://localhost:5000/${productData.image}`}
-              alt="Norway"
-            />
+            <Center>
+              <Image
+                  width={'90%'}
+                  src={`http://localhost:5000/${productData.image}`}
+                  alt="Norway"
+              />
+            </Center>
           </Card.Section>
 
           <Group position="apart" mt="md" mb="xs">
@@ -293,7 +296,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
               {productData.title}
             </Text>
           </Group>
-          <Text maw={260} size={14} lineClamp={2}>
+          <Text maw={'70%'} size={14} lineClamp={2}>
             {productData.description}
           </Text>
           {landing && (
