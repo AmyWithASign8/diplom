@@ -1,6 +1,7 @@
 import React from "react";
-import {Center, Group, Input, Select, SimpleGrid, Tabs} from "@mantine/core";
+import {Alert, Center, Group, Input, Select, SimpleGrid, Tabs} from "@mantine/core";
 import {
+  IconAlertCircle,
   IconBottle,
   IconCake,
   IconPizza,
@@ -9,12 +10,22 @@ import {
 import PizzaCard from "../../../entities/pizza-card/ui/ui";
 import DessertCard from "../../../entities/dessert-card/ui/ui";
 import DrinkCard from "../../../entities/drink-card/ui/ui";
-import {useGetAllProducts} from "../../../shared/api/queries";
+import {useGetAllProducts, useGetAllTypes} from "../../../shared/api/queries";
 
 export const ProductLayout = () => {
-  const {data, isSuccess} = useGetAllProducts()
-  console.log(data)
+  const [checkByPrice, setCheckByPrice] = React.useState<string | null>(null)
+  const [searchInput, setSearchInput] = React.useState<string>('')
+  const {data, isSuccess, error} = useGetAllProducts('', 'none', 'none')
+  const {data: dataType, isSuccess: isSuccessType} = useGetAllTypes()
+  let newDataType: any = []
   if (!isSuccess) return null
+  if (!isSuccessType) return null
+  dataType.map((obj) => obj.brandId === 1 && newDataType.push(obj))
+  if (error) return (
+      <Alert icon={<IconAlertCircle size="1rem" />} title="Bummer!" color="red">
+        Something terrible happened! You made a mistake and there is no going back, your data was lost forever!
+      </Alert>
+  )
   return (
     <div>
 
@@ -52,11 +63,13 @@ export const ProductLayout = () => {
               })}
             />
             <Select
+                value={checkByPrice}
+                onChange={(value) => setCheckByPrice(value)}
               clearable
               placeholder="Выберите фильтр цены"
               data={[
-                { value: "Сначала дешевые", label: "Сначала дешевые" },
-                { value: "Сначала дорогие", label: "Сначала дорогие" },
+                { value: "ASC", label: "Сначала дешевые" },
+                { value: "DESC", label: "Сначала дорогие" },
               ]}
               styles={(theme) => ({
                 item: {
@@ -78,12 +91,7 @@ export const ProductLayout = () => {
             <Select
               clearable
               placeholder="Выберите тип пиццы"
-              data={[
-                { value: "Мясные", label: "Мясные" },
-                { value: "Вегатарианские", label: "Вегатарианские" },
-                { value: "Сырные", label: "Сырные" },
-                { value: "Бербекью", label: "Бербекью" },
-              ]}
+              data={newDataType.map((obj: any) => ({value: `${obj.id}`, label: `${obj.name}`}))}
               styles={(theme) => ({
                 item: {
                   "&[data-selected]": {

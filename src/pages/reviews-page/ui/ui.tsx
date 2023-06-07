@@ -47,9 +47,10 @@ export const ReviewsLayout = () => {
       showNotification({
         id: "load-data",
         title: "Создание отзыва",
-        message: `Отзыв успешно опубликован!`,
+        message: `Ваш отзыв отправлен на рассмотрение администрации!`,
         autoClose: true,
         radius: "xl",
+        fw: 500,
         icon: <IconCheck size="1rem" />,
       });
       mutationCreateReview.mutate(data)
@@ -151,7 +152,7 @@ export const ReviewsLayout = () => {
           <Center>
             <Stack>
               <Text size={20} fw={500}>
-                Сначала авторизуйтесь!
+                Чтобы написать отзыв вам нужно авторизоваться!
               </Text>
               <Button color={"orange"} onClick={close}>
                 Ок

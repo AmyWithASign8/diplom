@@ -85,19 +85,8 @@ export const AdminPanelHeader = () => {
           </Menu.Target>
           <Menu.Dropdown>
             <Stack>
-              <Button color={"green"}>Добавить отзыв</Button>
               <Button color={"red"} component={Link} to={'remove-review'}>Удалить отзыв</Button>
-            </Stack>
-          </Menu.Dropdown>
-        </Menu>
-        <Menu>
-          <Menu.Target>
-            <Button>Действия над заказами</Button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Stack>
-              <Button color={"red"}>Удалить заказ</Button>
-              <Button>Просмотр заказов</Button>
+              <Button component={Link} to={'approval-review'}>Рассмотрение отзывов</Button>
             </Stack>
           </Menu.Dropdown>
         </Menu>

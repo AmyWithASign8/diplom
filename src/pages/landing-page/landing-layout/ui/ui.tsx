@@ -12,13 +12,13 @@ import { Carousel } from "@mantine/carousel";
 import { Link } from "react-router-dom";
 import PizzaCard from "../../../../entities/pizza-card/ui/ui";
 import { CommentCard } from "../../../../entities/comment-card";
-import {useGetAllProducts} from "../../../../shared/api/queries/product/useGetAllProducts";
-import {useGetAllReviews} from "../../../../shared/api/queries/review/useGetAllReviews";
+import {useGetAllProducts} from "../../../../shared/api/queries";
+import {useGetAllReviews} from "../../../../shared/api/queries";
 
 export const LandingLayout = () => {
   const commentData = useGetAllReviews()
   console.log(commentData)
-  const {data, isSuccess} = useGetAllProducts()
+  const {data, isSuccess} = useGetAllProducts('', 'none', 'none')
   if (!isSuccess) return null
   if (!commentData.isSuccess) return null
   return (
@@ -122,45 +122,45 @@ export const LandingLayout = () => {
           ))}
         </Carousel>
       </Group>
-      <Group mt={"5%"} grow>
+      {commentData.data.length !== 0 && <Group mt={"5%"} grow>
         <Stack ml={"10%"} mb={"5%"}>
           <Text
-            variant={"gradient"}
-            gradient={{ from: "yellow", to: "orange", deg: 45 }}
-            fw={700}
-            size={70}
+              variant={"gradient"}
+              gradient={{ from: "yellow", to: "orange", deg: 45 }}
+              fw={700}
+              size={70}
           >
             Последние
           </Text>
           <Text
-            variant={"gradient"}
-            gradient={{ from: "orange", to: "yellow", deg: 45 }}
-            ml={"16%"}
-            fw={700}
-            size={70}
+              variant={"gradient"}
+              gradient={{ from: "orange", to: "yellow", deg: 45 }}
+              ml={"16%"}
+              fw={700}
+              size={70}
           >
             отзывы :
           </Text>
         </Stack>
-        <Carousel
-          mr={"7%"}
-          withIndicators
-          height={"100%"}
-          slideSize={commentData.data.length === 1 ? '100%' : commentData.data.length === 2 ? '50%' : "27.333333%"}
-          slideGap="md"
-          loop
-          align="start"
-          slidesToScroll={1}
+        {commentData.data.length <= 3 ? <Group>{commentData.data.map((obj) => (<CommentCard key={obj.id} reviewData={obj} landing={true} maxWidth={400}/>))}</Group> : <Carousel
+            mr={"7%"}
+            withIndicators
+            height={"100%"}
+            slideSize={commentData.data.length === 1 ? '100%' : commentData.data.length === 2 ? '50%' : "27.333333%"}
+            slideGap="md"
+            loop
+            align="start"
+            slidesToScroll={1}
         >
           {commentData.data.map((obj) => (
               <Carousel.Slide>
                 <Link to={"/reviews"}>
-                  <CommentCard reviewData={obj} landing={true} maxWidth={400}/>
+                  <CommentCard key={obj.id} reviewData={obj} landing={true} maxWidth={400}/>
                 </Link>
               </Carousel.Slide>
           ))}
-        </Carousel>
-      </Group>
+        </Carousel>}
+      </Group>}
       <Group mt={150} position={"center"} mb={200}>
         <Box
           maw={700}

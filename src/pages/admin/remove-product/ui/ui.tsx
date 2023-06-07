@@ -8,7 +8,7 @@ import {useMutation, useQueryClient} from "react-query";
 
 export const AdminPanelRemoveProductLayout = () => {
     const queryClient = useQueryClient()
-    const {data, isSuccess} = useGetAllProducts()
+    const {data, isSuccess} = useGetAllProducts('', 'none', 'none')
     const [checked, setChecked] = React.useState<string | null | number>(null)
     const mutationRemoveProduct = useMutation(() => removeProduct(checked), {
         onSuccess: () => queryClient.invalidateQueries(['getAllProducts'])

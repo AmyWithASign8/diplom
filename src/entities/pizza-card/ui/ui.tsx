@@ -78,7 +78,8 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
         message: `Товар «${productData.title}» успешно добавлен в корзину!`,
         autoClose: true,
         radius: "xl",
-        icon: <IconCheck size="1rem" />,
+        fw: 500,
+        icon: <IconCheck size="2rem" />,
       });
     }catch (e) {
       showNotification({
@@ -87,7 +88,8 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
         message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
         autoClose: true,
         radius: "xl",
-        icon: <IconAlertCircle/>
+        fw: 500,
+        icon: <IconAlertCircle size="2rem"/>
       });
     }
   }
@@ -100,7 +102,8 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
         message: `${cartData?.title} успешно удален!`,
         autoClose: true,
         radius: "xl",
-        icon: <IconCheck size="1rem" />,
+        fw: 500,
+        icon: <IconCheck size="2rem" />,
       });
     }catch (e) {
       showNotification({
@@ -109,7 +112,8 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
         message: `Произошла ошщибка! Похоже вы не авторизованы или у нас проблемы с соединением!`,
         autoClose: true,
         radius: "xl",
-        icon: <IconAlertCircle/>
+        fw: 500,
+        icon: <IconAlertCircle size="2rem"/>
       });
     }
   }
@@ -124,7 +128,6 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
   }, [valueOfSize])
   return (
     <div>
-      {isAuth ? (
         <Modal
           opened={opened}
           onClose={close}
@@ -219,11 +222,13 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
                   {currentPrice}{" "}
                   RUB
                 </Text>
+                {!isAuth && <Text maw={300} color={'red'}>Чтобы добавить товар в корзину вам нужно авторизоваться!</Text>}
                 <Button
                   radius={"xl"}
                   leftIcon={<IconShoppingCart />}
                   color="orange"
                   onClick={() => createBasketProduct()}
+                  disabled={!isAuth && true}
                 >
                   В корзину
                 </Button>
@@ -231,23 +236,6 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
             </div>
           </Group>
         </Modal>
-      ) : (
-        <Modal
-          opened={opened}
-          onClose={close}
-          title="Добавление товара в корзину"
-          centered
-        >
-          <Stack justify={"center"}>
-            <Text size={20} fw={500}>
-              Сначала авторизуйтесь!
-            </Text>
-            <Button color={"orange"} onClick={close}>
-              Ок
-            </Button>
-          </Stack>
-        </Modal>
-      )}
       {toCard && (
         <Group
           w={1000}
