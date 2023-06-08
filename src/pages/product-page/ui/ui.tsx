@@ -15,8 +15,11 @@ import {useStore} from "effector-react/compat";
 import {$productListFilter, setBrand, setPrice, setSearchQuery, setType} from "../model/product-list-type";
 import {useDebouncedState} from "@mantine/hooks";
 import {SkeletonCard} from "../../../entities/skeleton-card";
+import {useScreenSize} from "../../../shared/hooks";
+import {Breakpoints} from "../../../shared/types";
 
 export const ProductLayout = () => {
+  const currentScreenSize = useScreenSize()
   const {query, typeId, byPrice, brandId} = useStore($productListFilter)
   const [checkByPrice, setCheckByPrice] = React.useState<any>('none')
   const [checkByType, setCheckByType] = React.useState<any>('none')
@@ -47,9 +50,17 @@ const cards = data && !isLoading ? data.map((obj) => (
       spacing={"xl"}
       mb={100}
   >{cards}</SimpleGrid>
+  const currentColsForScreenSize = () => {
+    if (currentScreenSize > Breakpoints.xxl) return 5
+    if (currentScreenSize <= Breakpoints.xxl) return 4
+    if (currentScreenSize <= Breakpoints.xl) return 3
+    if (currentScreenSize <= Breakpoints.lg) return 2
+    if (currentScreenSize <= Breakpoints.md) return 1
+  }
+  React.useEffect(() => {currentColsForScreenSize()}, [currentScreenSize])
   return (
     <div>
-          <Group position={"center"} mt={'5%'}>
+          <Group position={"center"} mt={currentScreenSize <= Breakpoints.lg ? "15%" : '7%'}>
             <TextInput
                 label={'Поиск...'}
               icon={<IconSearch />}
@@ -137,9 +148,8 @@ const cards = data && !isLoading ? data.map((obj) => (
             />
           </Group>
       {data.length === 0 ? <Center mt={'10%'} mb={'15%'}><Text size={'xl'}>К сожалению ничего не удалось найти :(</Text></Center> : <>
-        <Center>
           <SimpleGrid
-              cols={5}
+              cols={currentScreenSize <= Breakpoints.md ? 1 : currentScreenSize <= Breakpoints.lg ? 2 : currentScreenSize <= Breakpoints.xl ? 3 : currentScreenSize <= Breakpoints.xxl ? 4 : 5}
               mt={100}
               mr={100}
               ml={100}
@@ -148,7 +158,6 @@ const cards = data && !isLoading ? data.map((obj) => (
           >
             {cards}
           </SimpleGrid>
-        </Center>
       </>}
     </div>
   );

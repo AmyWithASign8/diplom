@@ -318,6 +318,40 @@ export const Header = () => {
                     Админ. панель
                 </Button>
             )}
+                {currentScreenSize < Breakpoints.xxl && <>
+                    {!isAuth && (
+                        <Menu>
+                            <Menu.Target>
+                                <Button leftIcon={<IconUser size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>} variant="subtle" color="orange" size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}>
+                                    Авторизация
+                                </Button>
+                            </Menu.Target>
+                            <Menu.Dropdown>
+                                <Stack>
+                                    <Button
+                                        component={Link}
+                                        to={"/user/auth"}
+                                        leftIcon={<IconUser size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                                        variant="subtle"
+                                        color="orange"
+                                        size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
+                                    >
+                                        Войти в аккаунт
+                                    </Button>
+                                    <Button
+                                        component={Link}
+                                        to={"/user/reg"}
+                                        leftIcon={<IconUserPlus size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                                        variant="subtle"
+                                        color="orange"
+                                        size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
+                                    >
+                                        Регистрация
+                                    </Button>
+                                </Stack>
+                            </Menu.Dropdown>
+                        </Menu>
+                    )}<div/></>}
             <Button
                 color={theme === "light" ? "blue" : "orange"}
                 variant={"subtle"}

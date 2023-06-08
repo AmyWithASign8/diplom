@@ -90,7 +90,7 @@ const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce,
           centered
           size={"50%"}
         >
-          <Group>
+          <Group position={'center'}>
            <Group maw={'100%'}>
              <Image
                  radius={20}

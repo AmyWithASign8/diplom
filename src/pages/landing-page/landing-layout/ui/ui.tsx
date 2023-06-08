@@ -15,8 +15,11 @@ import { CommentCard } from "../../../../entities/comment-card";
 import {useGetAllProducts} from "../../../../shared/api/queries";
 import {useGetAllReviews} from "../../../../shared/api/queries";
 import { IconAlertCircle } from "@tabler/icons-react";
+import {useScreenSize} from "../../../../shared/hooks";
+import {Breakpoints} from "../../../../shared/types";
 
 export const LandingLayout = () => {
+  const currentScreenSize = useScreenSize()
   const commentData = useGetAllReviews()
   const {data, isSuccess, isLoading, error} = useGetAllProducts('', 'none', 'none', 'none')
   if (isLoading) return <Center mt={'10%'} mb={'20%'}><Loader color="orange" size="xl" /></Center>
@@ -44,7 +47,7 @@ export const LandingLayout = () => {
         <Box
           bg={"rgba(0, 0, 0, 0);"}
           maw={1600}
-          ml={"10%"}
+          ml={currentScreenSize < Breakpoints.md ? "0%" : "10%"}
           sx={() => ({
             padding: 50,
             borderRadius: 20,
@@ -54,7 +57,7 @@ export const LandingLayout = () => {
             variant={"gradient"}
             gradient={{ from: "orange", to: "yellow", deg: 45 }}
             fw={700}
-            size={70}
+            size={currentScreenSize < Breakpoints.xl ? 50 : 70}
           >
             Добро пожаловать
           </Text>
@@ -63,8 +66,8 @@ export const LandingLayout = () => {
             variant={"gradient"}
             gradient={{ from: "orange", to: "yellow", deg: 75 }}
             fw={700}
-            size={70}
-            ml={"35%"}
+            size={currentScreenSize < Breakpoints.xl ? 50 : 70}
+            ml={currentScreenSize < Breakpoints.lg ? "15%" : "33%"}
           >
             на наш сайт
           </Text>
@@ -72,8 +75,8 @@ export const LandingLayout = () => {
             variant={"gradient"}
             gradient={{ from: "orange", to: "yellow", deg: 45 }}
             fw={700}
-            size={70}
-            ml={"60%"}
+            size={currentScreenSize < Breakpoints.xl ? 50 : 70}
+            ml={currentScreenSize < Breakpoints.lg ? "15%" : "55%"}
           >
             TASTY PIZZA
           </Text>
@@ -93,82 +96,83 @@ export const LandingLayout = () => {
         <br />
         <br />
       </BackgroundImage>
-      <Group mt={"5%"} grow>
-        <Stack ml={"10%"} mb={"5%"}>
-          <Text
-            variant={"gradient"}
-            gradient={{ from: "yellow", to: "orange", deg: 45 }}
-            fw={700}
-            size={70}
+      {currentScreenSize >= Breakpoints.lg && <>
+        <Group mt={"5%"} grow>
+          <Stack ml={"10%"} mb={"5%"}>
+            <Text
+                variant={"gradient"}
+                gradient={{ from: "yellow", to: "orange", deg: 45 }}
+                fw={700}
+                size={currentScreenSize < Breakpoints.xl ? 50 : 70}
+            >
+              Наши
+            </Text>
+            <Text
+                variant={"gradient"}
+                gradient={{ from: "orange", to: "yellow", deg: 45 }}
+                ml={"7%"}
+                fw={700}
+                size={currentScreenSize < Breakpoints.xl ? 50 : 70}
+            >
+              новинки :
+            </Text>
+          </Stack>
+          <Carousel
+              mr={"7%"}
+              withIndicators
+              height={"100%"}
+              slideSize={currentScreenSize < Breakpoints.xxl ? "40%" : "27.333333%"}
+              slideGap="md"
+              loop
+              align="start"
+              slidesToScroll={1}
           >
-            Наши
-          </Text>
-          <Text
-            variant={"gradient"}
-            gradient={{ from: "orange", to: "yellow", deg: 45 }}
-            ml={"7%"}
-            fw={700}
-            size={70}
+            {data.map((obj) => (
+                <Carousel.Slide>
+                  <PizzaCard productData={obj} landing={true} commerce={false} toCard={false} />
+                </Carousel.Slide>
+            ))}
+          </Carousel>
+        </Group>
+        {commentData.data.length !== 0 && <Group mt={"5%"} grow>
+          <Stack ml={"10%"} mb={"5%"}>
+            <Text
+                variant={"gradient"}
+                gradient={{ from: "yellow", to: "orange", deg: 45 }}
+                fw={700}
+                size={70}
+            >
+              Последние
+            </Text>
+            <Text
+                variant={"gradient"}
+                gradient={{ from: "orange", to: "yellow", deg: 45 }}
+                ml={"16%"}
+                fw={700}
+                size={70}
+            >
+              отзывы :
+            </Text>
+          </Stack>
+          {commentData.data.length <= 3 ? <Group>{commentData.data.map((obj) => (<CommentCard key={obj.id} reviewData={obj} landing={true} maxWidth={400}/>))}</Group> : <Carousel
+              mr={"7%"}
+              withIndicators
+              height={"100%"}
+              slideSize={commentData.data.length === 1 ? '100%' : commentData.data.length === 2 ? '50%' : "27.333333%"}
+              slideGap="md"
+              loop
+              align="start"
+              slidesToScroll={1}
           >
-            новинки :
-          </Text>
-        </Stack>
-        <Carousel
-          mr={"7%"}
-          withIndicators
-          height={"100%"}
-          slideSize="27.333333%"
-          slideGap="md"
-          loop
-          align="start"
-          slidesToScroll={1}
-        >
-                  {data.map((obj) => (
-                    <Carousel.Slide>
-                      <PizzaCard productData={obj} landing={true} commerce={false} toCard={false} />
-                    </Carousel.Slide>
-                ))}
-        </Carousel>
-      </Group>
-      {commentData.data.length !== 0 && <Group mt={"5%"} grow>
-        <Stack ml={"10%"} mb={"5%"}>
-          <Text
-              variant={"gradient"}
-              gradient={{ from: "yellow", to: "orange", deg: 45 }}
-              fw={700}
-              size={70}
-          >
-            Последние
-          </Text>
-          <Text
-              variant={"gradient"}
-              gradient={{ from: "orange", to: "yellow", deg: 45 }}
-              ml={"16%"}
-              fw={700}
-              size={70}
-          >
-            отзывы :
-          </Text>
-        </Stack>
-        {commentData.data.length <= 3 ? <Group>{commentData.data.map((obj) => (<CommentCard key={obj.id} reviewData={obj} landing={true} maxWidth={400}/>))}</Group> : <Carousel
-            mr={"7%"}
-            withIndicators
-            height={"100%"}
-            slideSize={commentData.data.length === 1 ? '100%' : commentData.data.length === 2 ? '50%' : "27.333333%"}
-            slideGap="md"
-            loop
-            align="start"
-            slidesToScroll={1}
-        >
-          {commentData.data.map((obj) => (
-              <Carousel.Slide>
-                <Link to={"/reviews"}>
-                  <CommentCard key={obj.id} reviewData={obj} landing={true} maxWidth={400}/>
-                </Link>
-              </Carousel.Slide>
-          ))}
-        </Carousel>}
-      </Group>}
+            {commentData.data.map((obj) => (
+                <Carousel.Slide>
+                  <Link to={"/reviews"}>
+                    <CommentCard key={obj.id} reviewData={obj} landing={true} maxWidth={400}/>
+                  </Link>
+                </Carousel.Slide>
+            ))}
+          </Carousel>}
+        </Group>}</>}
       <Group mt={150} position={"center"} mb={200}>
         <Box
           maw={700}
