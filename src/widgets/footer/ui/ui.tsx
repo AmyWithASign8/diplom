@@ -9,8 +9,11 @@ import {
   Text,
 } from "@mantine/core";
 import { Link } from "react-router-dom";
+import {useScreenSize} from "../../../shared/hooks";
+import {Breakpoints} from "../../../shared/types";
 
 export const Footer = () => {
+  const currentScreenSize = useScreenSize()
   return (
     <div>
       <Divider
@@ -19,15 +22,14 @@ export const Footer = () => {
         labelPosition="center"
         variant={"dashed"}
       />
-      <Group position={"center"} grow mah={200}>
-        <Stack align="center" h={200}>
-          <Text fw={700}>Контактная информация</Text>
-          <a href="mailto:danilstorage@gmail.com">
-            <Button variant="subtle" color="orange">
+      <Group grow>
+        <Stack align="center" >
+          <Text fw={700} size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}>Контактная информация</Text>
+            <Button component={'a'} href="mailto:danilstorage@gmail.com"  variant="subtle" color="orange" size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}>
               Эл. почта: danilstorage@gmail.com
             </Button>
-          </a>
           <Button
+              size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}
             component={"a"}
             href={"tel:+79999999999"}
             variant="subtle"
@@ -36,20 +38,20 @@ export const Footer = () => {
             Телефон: +7 (999) 999 99-99
           </Button>
         </Stack>
-        <Stack align="center" h={200}>
-          <Text fw={700}>Общая информация</Text>
+        <Stack align="center" >
+          <Text size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} fw={700}>Общая информация</Text>
           <Link to={"/about-us"}>
-            <Button variant="subtle" color="orange">
+            <Button size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} variant="subtle" color="orange">
               О нас
             </Button>
           </Link>
         </Stack>
-        <Stack align="center" h={200}>
-          <Text fw={700}>Время работы</Text>
-          <Button variant="subtle" color="orange">
+        <Stack align="center" >
+          <Text size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} fw={700}>Время работы</Text>
+          <Button size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} variant="subtle" color="orange">
             Пн - чт : 9:00, 22:00 мск.
           </Button>
-          <Button id={"footer"} variant="subtle" color="orange">
+          <Button size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} id={"footer"} variant="subtle" color="orange">
             Пт - Сб : 12:00, 21:00 мск.
           </Button>
         </Stack>

@@ -88,63 +88,66 @@ const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce,
           onClose={close}
           title="Добавление товара в корзину"
           centered
-          size={"60%"}
+          size={"50%"}
         >
           <Group>
-            <Image
-              radius={20}
-              height={500}
-              width={500}
-              src={`http://localhost:5000/${productData.image}`}
-              alt="Norway"
-            />
-            <div>
-              <Stack justify={"flex-start"} mb={"40%"}>
-                <Stack
-
-                  p={"3%"}
-                  sx={() => ({
-                    borderRadius: 20,
-                  })}
-                  bg={
-                    currentTheme.colorScheme === "light"
-                      ? "rgba(0, 0, 0, 0.1)"
-                      : "rgba(255, 255, 255, 0.1)"
-                  }
-                >
-                  <Text
-                    size={20}
-                    fw={500}
-                    color={
-                      currentTheme.colorScheme === "light" ? "black" : "white"
-                    }
+           <Group maw={'100%'}>
+             <Image
+                 radius={20}
+                 width={'100%'}
+                 src={`http://localhost:5000/${productData.image}`}
+                 alt="Norway"
+             />
+           </Group>
+            <Group maw={'50%'}>
+              <div>
+                <Stack justify={"flex-start"} mb={"30%"}>
+                  <Stack
+                      p={"3%"}
+                      sx={() => ({
+                        borderRadius: 20,
+                      })}
+                      bg={
+                        currentTheme.colorScheme === "light"
+                            ? "rgba(0, 0, 0, 0.1)"
+                            : "rgba(255, 255, 255, 0.1)"
+                      }
                   >
-                    {productData.title}
-                  </Text>
-                  <Text maw={390} size={14}>
-                    {productData.description}
-                  </Text>
+                    <Text
+                        size={'xl'}
+                        fw={500}
+                        color={
+                          currentTheme.colorScheme === "light" ? "black" : "white"
+                        }
+                    >
+                      {productData.title}
+                    </Text>
+                    <Text maw={'100%'} size={'lg'}>
+                      {productData.description}
+                    </Text>
+                  </Stack>
+                  <Badge color={"orange"} variant={"outline"}>
+                    {productData?.additional}
+                  </Badge>
                 </Stack>
-                <Badge color={"orange"} variant={"light"}>
-                  {productData?.additional}
-                </Badge>
-              </Stack>
-              <Stack>
-                <Text size={20} fw={500}>
-                  Итоговая стоимость: {productData.price} RUB
-                </Text>
-                {!isAuth && <Text maw={300} color={'red'}>Чтобы добавить товар в корзину вам нужно авторизоваться!</Text>}
-                <Button
-                  radius={"xl"}
-                  leftIcon={<IconShoppingCart />}
-                  color="orange"
-                  onClick={() => createBasketProduct()}
-                  disabled={!isAuth && true}
-                >
-                  В корзину
-                </Button>
-              </Stack>
-            </div>
+                <Stack>
+                  <Text size={'xl'} fw={500}>
+                    Итоговая стоимость: {productData.price} RUB
+                  </Text>
+
+                  <Button
+                      radius={"xl"}
+                      leftIcon={<IconShoppingCart />}
+                      color="orange"
+                      onClick={() => createBasketProduct()}
+                      disabled={!isAuth && true}
+                  >
+                    В корзину
+                  </Button>
+                  {!isAuth && <Text maw={300} color={'red'}>Чтобы добавить товар в корзину вам нужно авторизоваться!</Text>}
+                </Stack>
+              </div>
+            </Group>
           </Group>
         </Modal>
       {toCard && (

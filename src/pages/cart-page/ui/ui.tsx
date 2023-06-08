@@ -105,21 +105,21 @@ export const CartLayout = () => {
           </Button>}
         </Group>
       </Center>
-      <Center mt={"3%"}>
-        <SimpleGrid cols={1}>
-            {data['basket-products'].length === 0 &&
-                <Stack>
+            <Stack>
+                {data['basket-products'].length === 0 &&
                     <Center>
-                        <IconShoppingCartX size={'80%'} stroke={1.5}/>
-                        <Title>Ваша корзина пуста!</Title>
-                    </Center>
-                    <Button color={'orange'} leftIcon={<IconArrowNarrowLeft/>} component={Link} to={'/catalog'}>В каталог</Button>
-                </Stack>}
-            {data['basket-products'].map((obj) => (
-                obj.product.brandId === 1 ? <PizzaCard productData={''} cartData={obj} landing={false} commerce={false} toCard={true} /> : obj.product.brandId === 2 ? <DrinkCard productData={''} cartData={obj} landing={false} commerce={false} toCard={true}/> : <DessertCard productData={''} cartData={obj} landing={false} commerce={false} toCard={true}/>
-            ))}
-        </SimpleGrid>
-      </Center>
+                        <Stack maw={'40%'}>
+                            <Group>
+                                <IconShoppingCartX size={'40%'} stroke={1}/>
+                                <Title>Ваша корзина пуста!</Title>
+                            </Group>
+                            <Button color={'orange'} leftIcon={<IconArrowNarrowLeft/>} component={Link} to={'/catalog'} fullWidth>В каталог</Button>
+                        </Stack>
+                    </Center>}
+                {data['basket-products'].map((obj) => (
+                    obj.product.brandId === 1 ? <PizzaCard productData={''} cartData={obj} landing={false} commerce={false} toCard={true} /> : obj.product.brandId === 2 ? <DrinkCard productData={''} cartData={obj} landing={false} commerce={false} toCard={true}/> : <DessertCard productData={''} cartData={obj} landing={false} commerce={false} toCard={true}/>
+                ))}
+            </Stack>
       <Group mt={"4%"} ml={"25%"} position={"apart"} w={"50%"}>
         {data["basket-products"].length !== 0 && <>
           <Group>

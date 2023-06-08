@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import {
-  Badge,
+  Badge, Box,
   Button,
   Card, Center,
   Chip,
@@ -99,7 +99,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
       showNotification({
         id: "load-data",
         title: "Удаление продукта",
-        message: `${cartData?.title} успешно удален!`,
+        message: `${cartData?.title} успешно удален из корзины!`,
         autoClose: true,
         radius: "xl",
         fw: 500,
@@ -146,7 +146,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
             </Group>
             <Group maw={'50%'}>
               <div>
-                <Stack justify={"flex-start"} mb={"30%"}>
+                <Stack mb={"20%"}>
                   <Stack
                       p={"3%"}
                       sx={() => ({
@@ -159,7 +159,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
                       }
                   >
                     <Text
-                        size={20}
+                        size={'xl'}
                         fw={500}
                         color={
                           currentTheme.colorScheme === "light" ? "black" : "white"
@@ -167,16 +167,16 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
                     >
                       {productData.title}
                     </Text>
-                    <Text size={14}>
+                    <Text size={'lg'}>
                       {productData.description}
                     </Text>
                   </Stack>
                   <Group position={"center"}>
-                    <Badge color={"orange"}>
+                    <Badge color={"orange"} variant={'outline'}>
                       {valueOfSize}{" "}
                       см.
                     </Badge>
-                    <Badge color={"orange"}>
+                    <Badge color={"orange"} variant={'outline'}>
                       {valueOfPastry}{" "}
                       тесто
                     </Badge>
@@ -224,7 +224,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
                     {currentPrice}{" "}
                     RUB
                   </Text>
-                  {!isAuth && <Text maw={300} color={'red'}>Чтобы добавить товар в корзину вам нужно авторизоваться!</Text>}
+
                   <Button
                       radius={"xl"}
                       leftIcon={<IconShoppingCart />}
@@ -234,57 +234,64 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
                   >
                     В корзину
                   </Button>
+                  {!isAuth && <Text maw={300} color={'red'}>Чтобы добавить товар в корзину вам нужно авторизоваться!</Text>}
                 </Stack>
               </div>
             </Group>
           </Group>
         </Modal>
       {toCard && (
-        <Group
-          position={"apart"}
-          bg={
+        <Center>
+          <Box w={1200} bg={
             currentTheme.colorScheme === "light"
-              ? "rgba(0, 0, 0, 0.1)"
-              : "rgba(255, 255, 255, 0.1)"
+                ? "rgba(0, 0, 0, 0.1)"
+                : "rgba(255, 255, 255, 0.1)"
           }
-          p={"3%"}
-          sx={() => ({
-            borderRadius: 20,
-          })}
-        >
-          <Group>
-            <Image
-              radius={20}
-              height={150}
-              width={150}
-              src={`http://localhost:5000/${cartData?.product.image}`}
-              alt="Norway"
-            />
-            <Stack>
-              <Text size={'xl'} w={'70%'}>
-                {cartData?.title}
-              </Text>
-              <Text size={'xl'}>{cartData?.size === 30 ? 'Средняя' : cartData?.size === 25 ? 'Маленькая' : 'Большая'}, {cartData?.size} см, {cartData?.paste} тесто</Text>
-            </Stack>
-          </Group>
-          <Text size={'xl'}>{cartData?.price} RUB</Text>
-          <Button
-            variant={"light"}
-            leftIcon={<IconTrash />}
-            color={"red"}
-            bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
-            onClick={() => deleteProductFromBasket()}
-          >
-            Удалить
-          </Button>
-        </Group>
+               p={'3%'}
+               sx={() => ({
+                 borderRadius: 20,
+               })}>
+            <Group position={"apart"}>
+              <Group>
+                <Group>
+                  <Image
+                      radius={20}
+                      width={'90%'}
+                      src={`http://localhost:5000/${cartData?.product.image}`}
+                      alt="Norway"
+                  />
+                </Group>
+                <Group>
+                  <Stack>
+                    <Text size={'xl'}>
+                      {cartData?.title}
+                    </Text>
+                    <Text size={'lg'}>{cartData?.size === 30 ? 'Средняя' : cartData?.size === 25 ? 'Маленькая' : 'Большая'}, {cartData?.size} см, {cartData?.paste} тесто</Text>
+                  </Stack>
+                </Group>
+              </Group>
+              <Group>
+                <Text fw={500} size={'lg'}>{cartData?.price} RUB</Text>
+                <Button
+                    variant={"light"}
+                    leftIcon={<IconTrash />}
+                    color={"red"}
+                    bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
+                    onClick={() => deleteProductFromBasket()}
+                >
+                  Убрать
+                </Button>
+              </Group>
+            </Group>
+          </Box>
+        </Center>
       )}
       {!toCard && (
-        <Card shadow="sm" padding="lg" radius="md" withBorder>
+        <Card shadow="xl" padding="lg" radius="md" withBorder>
           <Card.Section>
             <Center>
               <Image
-                  width={'90%'}
+                  width={'100%'}
                   src={`http://localhost:5000/${productData.image}`}
                   alt="Norway"
               />
@@ -292,11 +299,11 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
           </Card.Section>
 
           <Group position="apart" mt="md" mb="xs">
-            <Text size={18} fw={500}>
+            <Text size={"lg"} fw={500}>
               {productData.title}
             </Text>
           </Group>
-          <Text maw={'70%'} size={14} lineClamp={2}>
+          <Text maw={'100%'} size={'md'} lineClamp={2}>
             {productData.description}
           </Text>
           {landing && (

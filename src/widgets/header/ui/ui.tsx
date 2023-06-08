@@ -12,19 +12,19 @@ import {
 } from "@mantine/core";
 import HeaderImg from "../assets/images/favicon.png";
 import {
-  IconAdjustmentsCog,
-  IconHome2,
-  IconInfoCircle,
-  IconLocation,
-  IconLogout,
-  IconMessages,
-  IconMoonStars,
-  IconPizza,
-  IconShoppingCart,
-  IconSun,
-  IconUser,
-  IconUserCircle,
-  IconUserPlus,
+    IconAdjustmentsCog,
+    IconHome2,
+    IconInfoCircle,
+    IconLocation,
+    IconLogout, IconMenu2,
+    IconMessages,
+    IconMoonStars,
+    IconPizza,
+    IconShoppingCart,
+    IconSun,
+    IconUser,
+    IconUserCircle,
+    IconUserPlus,
 } from "@tabler/icons-react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import { useStore } from "effector-react/compat";
@@ -33,8 +33,11 @@ import { notifications } from "@mantine/notifications";
 import { $isAuth, switchAuth } from "../../../app/models/isAuthStore";
 import { $user, logout } from "../../../app/models/userStore";
 import { modals } from "@mantine/modals";
+import {useScreenSize} from "../../../shared/hooks";
+import {Breakpoints} from "../../../shared/types";
 
 export const Header = () => {
+    const currentScreenSize = useScreenSize()
     const navigate = useNavigate()
   const user = useStore($user);
   const isAuth = useStore($isAuth);
@@ -126,160 +129,222 @@ export const Header = () => {
         },
       })}
     >
-      <Group position={"apart"} mr={"5%"}>
-        <Link to={"/"}>
-          <Group>
-            <Image src={HeaderImg} width={70} />
-            <Text
-              variant="gradient"
-              gradient={{ from: "yellow", to: "orange", deg: 45 }}
-              fs={"Italic"}
-              fw={500}
-              size={30}
-            >
-              Tasty pizza
-            </Text>
-          </Group>
-        </Link>
-        <Menu>
-          <Menu.Target>
-            <Button variant="subtle" color="orange" leftIcon={<IconLocation size={28}/>} size={'lg'}>
-              Навигация по сайту
-            </Button>
-          </Menu.Target>
-          <Menu.Dropdown>
-            <Grid
-              grow
-              maw={600}
-              gutter={"xs"}
-              sx={() => ({
-                textAlign: "center",
-                padding: 10,
-              })}
-            >
-              {dataNavigation.map((data) => (
-                <Grid.Col span={4} key={data.name}>
-                  <Button
+        <Group position={"apart"} mr={"5%"}>
+            <Link to={"/"}>
+                <Group>
+                    <Image src={HeaderImg} width={70} />
+                    <Text
+                        variant="gradient"
+                        gradient={{ from: "yellow", to: "orange", deg: 45 }}
+                        fs={"Italic"}
+                        fw={500}
+                        size={30}
+                    >
+                        Tasty pizza
+                    </Text>
+                </Group>
+            </Link>
+            {currentScreenSize < Breakpoints.lg && <Menu>
+                <Menu.Target>
+                    <Button color={'orange'} variant={'subtle'} leftIcon={<IconMenu2/>}>Меню</Button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                       <Stack>
+                           {dataNavigation.map((data) => (
+                                   <Button
+                                       component={Link}
+                                       to={data.currentUrl}
+                                       variant={
+                                           urll.pathname === data.currentUrl ? "filled" : "subtle"
+                                       }
+                                       color={"orange"}
+                                       leftIcon={data.icon}
+                                   >
+                                       {data.name}
+                                   </Button>
+                           ))}
+                           {user?.role === "ADMIN" && (
+                               <Button
+                                   component={Link}
+                                   to={"/admin-panel"}
+                                   color={"orange"}
+                                   variant={"subtle"}
+                                   leftIcon={<IconAdjustmentsCog size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                                   size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
+                               >
+                                   Админ. панель
+                               </Button>
+                           )}
+                           <Button
+                               color={theme === "light" ? "blue" : "orange"}
+                               variant={"subtle"}
+                               leftIcon={
+                                   theme === "light" ? (
+                                       <IconMoonStars color={mantineTheme.colors.blue[6]} size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>
+                                   ) : (
+                                       <IconSun color={mantineTheme.colors.yellow[4]} size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>
+                                   )
+                               }
+                               size={'md'}
+                               onClick={() => switchThemeAndShowNotification()}
+                           >
+                               Сменить тему
+                           </Button>
+                           {isAuth && (
+                               <Button
+                                   color={"red"}
+                                   leftIcon={<IconLogout size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                                   onClick={() => openLogoutModal()}
+                                   size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
+                               >
+                                   Выйти из аккаунта
+                               </Button>
+                           )}
+                       </Stack>
+                </Menu.Dropdown>
+            </Menu>}
+            {currentScreenSize >= Breakpoints.lg && <>
+            <Menu>
+                <Menu.Target>
+                    <Button variant="subtle" color="orange" leftIcon={<IconLocation size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>} size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}>
+                        Навигация по сайту
+                    </Button>
+                </Menu.Target>
+                <Menu.Dropdown>
+                    <Grid
+                        grow
+                        maw={600}
+                        gutter={"xs"}
+                        sx={() => ({
+                            textAlign: "center",
+                            padding: 10,
+                        })}
+                    >
+                        {dataNavigation.map((data) => (
+                            <Grid.Col span={4} key={data.name}>
+                                <Button
+                                    component={Link}
+                                    to={data.currentUrl}
+                                    variant={
+                                        urll.pathname === data.currentUrl ? "filled" : "subtle"
+                                    }
+                                    color={"orange"}
+                                    leftIcon={data.icon}
+                                >
+                                    {data.name}
+                                </Button>
+                            </Grid.Col>
+                        ))}
+                    </Grid>
+                </Menu.Dropdown>
+            </Menu>
+            {currentScreenSize >= Breakpoints.xxl && <>
+                <Button
                     component={Link}
-                    to={data.currentUrl}
-                    variant={
-                      urll.pathname === data.currentUrl ? "filled" : "subtle"
-                    }
+                    to={"/catalog"}
+                    leftIcon={<IconPizza size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                    variant="subtle"
+                    color="orange"
+                    size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
+                >
+                    Каталог
+                </Button>
+                {isAuth && (
+                    <Button
+                        component={Link}
+                        to={`/user/my-profile/${user?.id}`}
+                        leftIcon={<IconUserCircle size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                        variant="subtle"
+                        color="orange"
+                        size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
+                    >
+                        Мой профиль
+                    </Button>
+                )}
+                {isAuth && (
+                    <Button
+                        leftIcon={<IconShoppingCart size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                        variant="subtle"
+                        color="orange"
+                        component={Link}
+                        to={`/user/my-cart/${user?.id}`}
+                        size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
+                    >
+                        Корзина
+                    </Button>
+                )}
+                {!isAuth && (
+                    <Menu>
+                        <Menu.Target>
+                            <Button leftIcon={<IconUser size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>} variant="subtle" color="orange" size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}>
+                                Авторизация
+                            </Button>
+                        </Menu.Target>
+                        <Menu.Dropdown>
+                            <Stack>
+                                <Button
+                                    component={Link}
+                                    to={"/user/auth"}
+                                    leftIcon={<IconUser size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                                    variant="subtle"
+                                    color="orange"
+                                    size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
+                                >
+                                    Войти в аккаунт
+                                </Button>
+                                <Button
+                                    component={Link}
+                                    to={"/user/reg"}
+                                    leftIcon={<IconUserPlus size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                                    variant="subtle"
+                                    color="orange"
+                                    size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
+                                >
+                                    Регистрация
+                                </Button>
+                            </Stack>
+                        </Menu.Dropdown>
+                    </Menu>
+                )}</>}
+            {user?.role === "ADMIN" && (
+                <Button
+                    component={Link}
+                    to={"/admin-panel"}
                     color={"orange"}
-                    leftIcon={data.icon}
-                  >
-                    {data.name}
-                  </Button>
-                </Grid.Col>
-              ))}
-            </Grid>
-          </Menu.Dropdown>
-        </Menu>
-        <Button
-          component={Link}
-          to={"/catalog"}
-          leftIcon={<IconPizza size={28}/>}
-          variant="subtle"
-          color="orange"
-          size={'lg'}
-        >
-          Каталог
-        </Button>
-        {isAuth && (
-          <Button
-            component={Link}
-            to={`/user/my-profile/${user?.id}`}
-            leftIcon={<IconUserCircle size={28}/>}
-            variant="subtle"
-            color="orange"
-            size={'lg'}
-          >
-            Мой профиль
-          </Button>
-        )}
-        {isAuth && (
-              <Button
-                  leftIcon={<IconShoppingCart size={28}/>}
-                  variant="subtle"
-                  color="orange"
-                  component={Link}
-                  to={`/user/my-cart/${user?.id}`}
-                  size={'lg'}
-              >
-                  Корзина
-              </Button>
-        )}
-        {!isAuth && (
-          <Menu>
-            <Menu.Target>
-              <Button leftIcon={<IconUser size={28}/>} variant="subtle" color="orange" size={'xl'}>
-                Авторизация
-              </Button>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Stack>
-                <Button
-                  component={Link}
-                  to={"/user/auth"}
-                  leftIcon={<IconUser size={28}/>}
-                  variant="subtle"
-                  color="orange"
-                  size={'lg'}
+                    variant={"subtle"}
+                    leftIcon={<IconAdjustmentsCog size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                    size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
                 >
-                  Войти в аккаунт
+                    Админ. панель
                 </Button>
+            )}
+            <Button
+                color={theme === "light" ? "blue" : "orange"}
+                variant={"subtle"}
+                leftIcon={
+                    theme === "light" ? (
+                        <IconMoonStars color={mantineTheme.colors.blue[6]} size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>
+                    ) : (
+                        <IconSun color={mantineTheme.colors.yellow[4]} size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>
+                    )
+                }
+                size={'md'}
+                onClick={() => switchThemeAndShowNotification()}
+            >
+                Сменить тему
+            </Button>
+            {isAuth && (
                 <Button
-                  component={Link}
-                  to={"/user/reg"}
-                  leftIcon={<IconUserPlus size={28}/>}
-                  variant="subtle"
-                  color="orange"
-                  size={'lg'}
+                    color={"red"}
+                    leftIcon={<IconLogout size={currentScreenSize >=Breakpoints.xxxl ? 28 : 20}/>}
+                    onClick={() => openLogoutModal()}
+                    size={currentScreenSize >=Breakpoints.xxxl ? 'lg' : 'md'}
                 >
-                  Регистрация
+                    Выйти из аккаунта
                 </Button>
-              </Stack>
-            </Menu.Dropdown>
-          </Menu>
-        )}
-        {user?.role === "ADMIN" && (
-          <Button
-            component={Link}
-            to={"/admin-panel"}
-            color={"orange"}
-            variant={"subtle"}
-            leftIcon={<IconAdjustmentsCog size={28}/>}
-            size={'lg'}
-          >
-            Админ. панель
-          </Button>
-        )}
-        <Button
-          color={theme === "light" ? "blue" : "orange"}
-          variant={"subtle"}
-          leftIcon={
-            theme === "light" ? (
-              <IconMoonStars color={mantineTheme.colors.blue[6]} size={28}/>
-            ) : (
-              <IconSun color={mantineTheme.colors.yellow[4]} size={28}/>
-            )
-          }
-          size={'md'}
-          onClick={() => switchThemeAndShowNotification()}
-        >
-          Сменить тему
-        </Button>
-        {isAuth && (
-          <Button
-            color={"red"}
-            leftIcon={<IconLogout size={28}/>}
-            onClick={() => openLogoutModal()}
-            size={'md'}
-          >
-            Выйти из аккаунта
-          </Button>
-        )}
-      </Group>
+            )}
+            </>}
+        </Group>
     </ManTineHeader>
   );
 };
