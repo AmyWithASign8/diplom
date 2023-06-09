@@ -47,7 +47,7 @@ export const LandingLayout = () => {
         <Box
           bg={"rgba(0, 0, 0, 0);"}
           maw={1600}
-          ml={currentScreenSize < Breakpoints.md ? "0%" : "10%"}
+          ml={"10%"}
           sx={() => ({
             padding: 50,
             borderRadius: 20,
@@ -57,7 +57,7 @@ export const LandingLayout = () => {
             variant={"gradient"}
             gradient={{ from: "orange", to: "yellow", deg: 45 }}
             fw={700}
-            size={currentScreenSize < Breakpoints.xl ? 50 : 70}
+            size={currentScreenSize < Breakpoints.md ? 30 : currentScreenSize < Breakpoints.lg ? 40 : currentScreenSize < Breakpoints.xl ? 50 : 70}
           >
             Добро пожаловать
           </Text>
@@ -66,8 +66,8 @@ export const LandingLayout = () => {
             variant={"gradient"}
             gradient={{ from: "orange", to: "yellow", deg: 75 }}
             fw={700}
-            size={currentScreenSize < Breakpoints.xl ? 50 : 70}
-            ml={currentScreenSize < Breakpoints.lg ? "15%" : "33%"}
+            size={currentScreenSize < Breakpoints.md ? 30 : currentScreenSize < Breakpoints.lg ? 40 : currentScreenSize < Breakpoints.xl ? 50 : 70}
+            ml={currentScreenSize > Breakpoints.sm ? "33%" : '15%'}
           >
             на наш сайт
           </Text>
@@ -75,8 +75,8 @@ export const LandingLayout = () => {
             variant={"gradient"}
             gradient={{ from: "orange", to: "yellow", deg: 45 }}
             fw={700}
-            size={currentScreenSize < Breakpoints.xl ? 50 : 70}
-            ml={currentScreenSize < Breakpoints.lg ? "15%" : "55%"}
+            size={currentScreenSize < Breakpoints.md ? 30 : currentScreenSize < Breakpoints.lg ? 40 : currentScreenSize < Breakpoints.xl ? 50 : 70}
+            ml={currentScreenSize > Breakpoints.sm ? "55%" : "15%"}
           >
             TASTY PIZZA
           </Text>

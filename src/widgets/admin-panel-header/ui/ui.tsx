@@ -90,6 +90,7 @@ export const AdminPanelHeader = () => {
             </Stack>
           </Menu.Dropdown>
         </Menu>
+        <Button component={Link} to={'check-orders'}>Просмотр заказов</Button>
         <Button
           color={theme === "light" ? "blue" : "orange"}
           variant={"subtle"}

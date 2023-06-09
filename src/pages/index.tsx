@@ -8,6 +8,7 @@ import {useStore} from "effector-react/compat";
 import {$isAuth} from "../app/models/isAuthStore";
 import {$user} from "../app/models/userStore";
 
+const AdminPanelViewOrdersPage = lazy(() => import('./admin/view-orders'))
 const AdminPanelApprovalReviewPage = lazy(() => import('./admin/approval-review'))
 const AdminPanelRemoveReviewPage = lazy(() => import('./admin/remove-review'))
 const AdminPanelRemoveUserPage = lazy(() => import('./admin/remove-user'))
@@ -64,6 +65,7 @@ const Pages = () => {
             <Route path={'remove-user'} element={<AdminPanelRemoveUserPage/>}/>
             <Route path={'remove-review'} element={<AdminPanelRemoveReviewPage/>}/>
             <Route path={'approval-review'} element={<AdminPanelApprovalReviewPage/>}/>
+            <Route path={'check-orders'} element={<AdminPanelViewOrdersPage/>}/>
         </Route>}
         <Route path={'*'} element={<NotFoundPage/>}/>
     </Routes>

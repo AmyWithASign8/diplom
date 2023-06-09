@@ -22,6 +22,8 @@ import {$user} from "../../../app/models/userStore";
 import {deleteBasketProduct} from "../../../shared/api/queries";
 import {showNotification} from "@mantine/notifications";
 import {useMutation, useQueryClient} from "react-query";
+import {useScreenSize} from "../../../shared/hooks";
+import {Breakpoints} from "../../../shared/types";
 
 export interface CardInterface {
   landing: boolean | undefined;
@@ -54,6 +56,7 @@ export interface CardInterface {
   }
 }
 const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, cartData}) => {
+  const currentScreenSize = useScreenSize()
   const queryClient = useQueryClient()
   const user = useStore($user)
   const isAuth = useStore($isAuth);
@@ -251,22 +254,45 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
                sx={() => ({
                  borderRadius: 20,
                })}>
-            <Group position={"apart"}>
+            {currentScreenSize < Breakpoints.md ? <Stack align={'center'}>
+                  <Image
+                      radius={20}
+                      width={currentScreenSize < Breakpoints.lg ? 150 : '90%'}
+                      src={`http://localhost:5000/${cartData?.product.image}`}
+                      alt="Norway"
+                  />
+                  <Stack>
+                    <Text size={currentScreenSize < Breakpoints.lg ? 'lg' : 'xl'}>
+                      {cartData?.title}
+                    </Text>
+                    <Text size={currentScreenSize < Breakpoints.lg ? 'md' : 'lg'}>{cartData?.size === 30 ? 'Средняя' : cartData?.size === 25 ? 'Маленькая' : 'Большая'}, {cartData?.size} см, {cartData?.paste} тесто</Text>
+                  </Stack>
+                <Text fw={500} size={'lg'}>{cartData?.price} RUB</Text>
+                <Button
+                    variant={"light"}
+                    leftIcon={<IconTrash />}
+                    color={"red"}
+                    bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
+                    onClick={() => deleteProductFromBasket()}
+                >
+                  Убрать
+                </Button>
+            </Stack> : <Group position={"apart"}>
               <Group>
                 <Group>
                   <Image
                       radius={20}
-                      width={'90%'}
+                      width={currentScreenSize < Breakpoints.lg ? 150 : '90%'}
                       src={`http://localhost:5000/${cartData?.product.image}`}
                       alt="Norway"
                   />
                 </Group>
                 <Group>
                   <Stack>
-                    <Text size={'xl'}>
+                    <Text size={currentScreenSize < Breakpoints.lg ? 'lg' : 'xl'}>
                       {cartData?.title}
                     </Text>
-                    <Text size={'lg'}>{cartData?.size === 30 ? 'Средняя' : cartData?.size === 25 ? 'Маленькая' : 'Большая'}, {cartData?.size} см, {cartData?.paste} тесто</Text>
+                    <Text size={currentScreenSize < Breakpoints.lg ? 'md' : 'lg'}>{cartData?.size === 30 ? 'Средняя' : cartData?.size === 25 ? 'Маленькая' : 'Большая'}, {cartData?.size} см, {cartData?.paste} тесто</Text>
                   </Stack>
                 </Group>
               </Group>
@@ -282,7 +308,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
                   Убрать
                 </Button>
               </Group>
-            </Group>
+            </Group>}
           </Box>
         </Center>
       )}

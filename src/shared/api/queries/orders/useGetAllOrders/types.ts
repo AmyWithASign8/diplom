@@ -1,6 +1,7 @@
 export type Orders = {
     id: number
     price: number
+    status: string
     createdAt: string
     updatedAt: string
     userId: number

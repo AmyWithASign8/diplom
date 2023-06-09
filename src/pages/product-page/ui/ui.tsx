@@ -57,7 +57,6 @@ const cards = data && !isLoading ? data.map((obj) => (
     if (currentScreenSize <= Breakpoints.lg) return 2
     if (currentScreenSize <= Breakpoints.md) return 1
   }
-  React.useEffect(() => {currentColsForScreenSize()}, [currentScreenSize])
   return (
     <div>
           <Group position={"center"} mt={currentScreenSize <= Breakpoints.lg ? "15%" : '7%'}>

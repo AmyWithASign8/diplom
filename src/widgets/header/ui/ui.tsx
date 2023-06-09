@@ -116,7 +116,7 @@ export const Header = () => {
   };
   return (
     <ManTineHeader
-      height={80}
+        height={currentScreenSize <= Breakpoints.xl ? 60 : 80}
       sx={() => ({
         position: "fixed",
         width: "100%",
@@ -132,19 +132,19 @@ export const Header = () => {
         <Group position={"apart"} mr={"5%"}>
             <Link to={"/"}>
                 <Group>
-                    <Image src={HeaderImg} width={70} />
+                    <Image src={HeaderImg} width={currentScreenSize <= Breakpoints.xl ? 55 : 70} />
                     <Text
                         variant="gradient"
                         gradient={{ from: "yellow", to: "orange", deg: 45 }}
                         fs={"Italic"}
                         fw={500}
-                        size={30}
+                        size={currentScreenSize <= Breakpoints.xl ? 25 : 30}
                     >
                         Tasty pizza
                     </Text>
                 </Group>
             </Link>
-            {currentScreenSize < Breakpoints.lg && <Menu>
+            {currentScreenSize < Breakpoints.lg && <Menu trigger={'hover'}>
                 <Menu.Target>
                     <Button color={'orange'} variant={'subtle'} leftIcon={<IconMenu2/>}>Меню</Button>
                 </Menu.Target>

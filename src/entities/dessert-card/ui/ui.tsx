@@ -1,8 +1,9 @@
 import React, { FC } from "react";
 import {
   Badge,
+  Box,
   Button,
-  Card,
+  Card, Center,
   Group,
   Image,
   Modal,
@@ -21,8 +22,11 @@ import {showNotification} from "@mantine/notifications";
 import {deleteBasketProduct} from "../../../shared/api/queries";
 import {$user} from "../../../app/models/userStore";
 import {useMutation, useQueryClient} from "react-query";
+import {useScreenSize} from "../../../shared/hooks";
+import {Breakpoints} from "../../../shared/types";
 
 const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce, cartData}) => {
+  const currentScreenSize = useScreenSize()
   const queryClient = useQueryClient()
   const user = useStore($user)
   const isAuth = useStore($isAuth);
@@ -151,44 +155,73 @@ const DessertCard: FC<CardInterface> = ({productData, toCard, landing, commerce,
           </Group>
         </Modal>
       {toCard && (
-        <Group
-          position={"apart"}
-          bg={
-            currentTheme.colorScheme === "light"
-              ? "rgba(0, 0, 0, 0.1)"
-              : "rgba(255, 255, 255, 0.1)"
-          }
-          p={"3%"}
-          sx={() => ({
-            borderRadius: 20,
-          })}
-        >
-          <Group>
-            <Image
-              radius={20}
-              height={150}
-              width={150}
-              src={`http://localhost:5000/${cartData?.product.image}`}
-              alt="Norway"
-            />
-            <Stack>
-              <Text size={20} maw={255}>
-                {cartData?.title}
-              </Text>
-              <Text size={15}>{cartData?.product.additional}</Text>
-            </Stack>
-          </Group>
-          <Text size={20}>{cartData?.price} RUB</Text>
-          <Button
-            variant={"light"}
-            leftIcon={<IconTrash />}
-            color={"red"}
-            bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
-            onClick={() => deleteProductFromBasket()}
-          >
-            Удалить
-          </Button>
-        </Group>
+          <Center>
+            <Box w={1200} bg={
+              currentTheme.colorScheme === "light"
+                  ? "rgba(0, 0, 0, 0.1)"
+                  : "rgba(255, 255, 255, 0.1)"
+            }
+                 p={'3%'}
+                 sx={() => ({
+                   borderRadius: 20,
+                 })}>
+              {currentScreenSize < Breakpoints.md ? <Stack align={'center'} >
+                    <Image
+                        radius={20}
+                        width={currentScreenSize < Breakpoints.lg ? 150 : '90%'}
+                        src={`http://localhost:5000/${cartData?.product.image}`}
+                        alt="Norway"
+                    />
+                  <Stack>
+                    <Text size={currentScreenSize < Breakpoints.lg ? 'lg' : 'xl'} w={255}>
+                      {cartData?.title}
+                    </Text>
+                    <Text size={currentScreenSize < Breakpoints.lg ? 'md' : 'lg'}>{cartData?.product.additional}</Text>
+                  </Stack>
+                  <Text fw={500} size={'lg'}>{cartData?.price} RUB</Text>
+                  <Button
+                      variant={"light"}
+                      leftIcon={<IconTrash />}
+                      color={"red"}
+                      bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
+                      onClick={() => deleteProductFromBasket()}
+                  >
+                    Удалить
+                  </Button>
+              </Stack> : <Group
+                  position={"apart"}
+              >
+                <Group>
+                  <Group>
+                    <Image
+                        radius={20}
+                        width={currentScreenSize < Breakpoints.lg ? 150 : '90%'}
+                        src={`http://localhost:5000/${cartData?.product.image}`}
+                        alt="Norway"
+                    />
+                  </Group>
+                  <Stack>
+                    <Text size={currentScreenSize < Breakpoints.lg ? 'lg' : 'xl'} w={255}>
+                      {cartData?.title}
+                    </Text>
+                    <Text size={currentScreenSize < Breakpoints.lg ? 'md' : 'lg'}>{cartData?.product.additional}</Text>
+                  </Stack>
+                </Group>
+                <Group>
+                  <Text fw={500} size={'lg'}>{cartData?.price} RUB</Text>
+                  <Button
+                      variant={"light"}
+                      leftIcon={<IconTrash />}
+                      color={"red"}
+                      bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
+                      onClick={() => deleteProductFromBasket()}
+                  >
+                    Удалить
+                  </Button>
+                </Group>
+              </Group>}
+            </Box>
+          </Center>
       )}
       {!toCard && (
         <Card shadow="sm" padding="lg" radius="md" withBorder>

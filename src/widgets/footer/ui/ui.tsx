@@ -22,18 +22,18 @@ export const Footer = () => {
         labelPosition="center"
         variant={"dashed"}
       />
-      <Group grow>
+      {currentScreenSize <= Breakpoints.md ? <Stack>
         <Stack align="center" >
           <Text fw={700} size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}>Контактная информация</Text>
-            <Button component={'a'} href="mailto:danilstorage@gmail.com"  variant="subtle" color="orange" size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}>
-              Эл. почта: danilstorage@gmail.com
-            </Button>
+          <Button component={'a'} href="mailto:danilstorage@gmail.com"  variant="subtle" color="orange" size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}>
+            Эл. почта: danilstorage@gmail.com
+          </Button>
           <Button
               size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}
-            component={"a"}
-            href={"tel:+79999999999"}
-            variant="subtle"
-            color="orange"
+              component={"a"}
+              href={"tel:+79999999999"}
+              variant="subtle"
+              color="orange"
           >
             Телефон: +7 (999) 999 99-99
           </Button>
@@ -55,7 +55,40 @@ export const Footer = () => {
             Пт - Сб : 12:00, 21:00 мск.
           </Button>
         </Stack>
-      </Group>
+      </Stack> : <Group grow>
+        <Stack align="center" >
+          <Text fw={700} size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}>Контактная информация</Text>
+          <Button component={'a'} href="mailto:danilstorage@gmail.com"  variant="subtle" color="orange" size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}>
+            Эл. почта: danilstorage@gmail.com
+          </Button>
+          <Button
+              size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'}
+              component={"a"}
+              href={"tel:+79999999999"}
+              variant="subtle"
+              color="orange"
+          >
+            Телефон: +7 (999) 999 99-99
+          </Button>
+        </Stack>
+        <Stack align="center" >
+          <Text size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} fw={700}>Общая информация</Text>
+          <Link to={"/about-us"}>
+            <Button size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} variant="subtle" color="orange">
+              О нас
+            </Button>
+          </Link>
+        </Stack>
+        <Stack align="center" >
+          <Text size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} fw={700}>Время работы</Text>
+          <Button size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} variant="subtle" color="orange">
+            Пн - чт : 9:00, 22:00 мск.
+          </Button>
+          <Button size={currentScreenSize <= Breakpoints.md ? 'sm' : 'md'} id={"footer"} variant="subtle" color="orange">
+            Пт - Сб : 12:00, 21:00 мск.
+          </Button>
+        </Stack>
+      </Group>}
       <Center>
         <Stack
           sx={() => ({

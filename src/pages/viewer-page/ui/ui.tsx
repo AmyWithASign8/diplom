@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {
   Accordion,
-  Alert,
+  Alert, Badge,
   Button,
   Center,
   Divider,
@@ -205,18 +205,18 @@ export const ViewerLayout = () => {
                   </Text>
                   <Text size={20}>{user?.email}</Text>
                 </Group>
-                <Group>
+                {user?.role === 'USER' && <Group>
                   <Text
-                    variant="gradient"
-                    gradient={{ from: "yellow", to: "orange", deg: 45 }}
-                    size={20}
+                      variant="gradient"
+                      gradient={{ from: "yellow", to: "orange", deg: 45 }}
+                      size={20}
                   >
                     Пароль: . . . . . . . . . . . . . . . . . . .
                   </Text>
                   <Spoiler maxHeight={0} showLabel="Показать пароль" hideLabel="Скрыть пароль" color={'orange'}>
                     <Text size={20}>{user?.password}</Text>
                   </Spoiler>
-                </Group>
+                </Group>}
               </Stack>
             </Tabs.Panel>
             <Tabs.Panel value="history" pt="xs">
@@ -224,12 +224,13 @@ export const ViewerLayout = () => {
                 {data.map((obj) => (
                     <Accordion.Item value={String(obj.id)}>
                       <Accordion.Control>
-                        <Group>
+                        <Group position={'apart'}>
                           <Text fw={500} size={18}>Заказ №{obj.id}</Text>
                           <Text fw={500} size={18}>Дата: {dayjs(obj.createdAt)
                               .locale("ru")
                               .format("DD MMMM YYYY HH:mm")}</Text>
                           <Text fw={500} size={18}>Сумма: {obj.price} RUB</Text>
+                          {obj.status === 'waiting' ? <Badge color="yellow" size="lg" radius="lg" variant="filled">В ожидании</Badge> : <Badge color="green" size="lg" radius="lg" variant="filled">Выполнен</Badge>}
                         </Group>
                       </Accordion.Control>
                       {obj.orderProducts.map((obj) => (
@@ -266,21 +267,21 @@ export const ViewerLayout = () => {
               </Accordion>}
             </Tabs.Panel>
             <Tabs.Panel value={"settings"} pt={"xs"}>
-              <Stack>
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <Text size={20}>Изменить почту профиля</Text>
-                    <Group><TextInput {...register('email', {required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/, maxLength: 60})} error={errors.email?.type === 'required' ? 'Поле обязательно для заполнения' :  errors.email?.type === 'maxLength' ? 'Максимальное кол-во символов 60 ед.' : errors.email?.type === 'pattern' ? 'Неправильный вид почты, пример: example@gmail.com' : ''} w={300} placeholder={user?.email} />
-                      <Button type={'submit'} color={"orange"}>Сохранить изменения</Button></Group>
-                  </form>
+              {user?.role === 'USER' ? <Stack>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <Text size={20}>Изменить почту профиля</Text>
+                  <Group><TextInput {...register('email', {required: true, pattern: /[^@\s]+@[^@\s]+\.[^@\s]+/, maxLength: 60})} error={errors.email?.type === 'required' ? 'Поле обязательно для заполнения' :  errors.email?.type === 'maxLength' ? 'Максимальное кол-во символов 60 ед.' : errors.email?.type === 'pattern' ? 'Неправильный вид почты, пример: example@gmail.com' : ''} w={300} placeholder={user?.email} />
+                    <Button type={'submit'} color={"orange"}>Сохранить изменения</Button></Group>
+                </form>
                 <Group>
                   <Text size={20}>Изменить пароль</Text>
                   <Popover
-                    width={300}
-                    trapFocus
-                    position="bottom"
-                    withArrow
-                    shadow="md"
-                    opened={openedPopover} onChange={setOpenedPopover}
+                      width={300}
+                      trapFocus
+                      position="bottom"
+                      withArrow
+                      shadow="md"
+                      opened={openedPopover} onChange={setOpenedPopover}
                   >
                     <Popover.Target>
                       <Button color={"orange"} variant={"subtle"} onClick={() => setOpenedPopover((o) => !o)}>
@@ -307,15 +308,15 @@ export const ViewerLayout = () => {
                   </Popover>
                 </Group>
                 <Button
-                  onClick={open}
-                  leftIcon={<IconTrash />}
-                  color={"red"}
-                  w={300}
-                  mt={100}
+                    onClick={open}
+                    leftIcon={<IconTrash />}
+                    color={"red"}
+                    w={300}
+                    mt={100}
                 >
                   Удалить мой аккаунт
                 </Button>
-              </Stack>
+              </Stack> : <Center><Text mt={'5%'} fw={500} color={'red'}>Администратор не может изменять свои данные!</Text></Center>}
             </Tabs.Panel>
           </Tabs>
 
@@ -323,6 +324,7 @@ export const ViewerLayout = () => {
             icon={<IconAlertCircle size="1rem" />}
             title="Внимание!"
             color="orange"
+            variant={'outline'}
           >
             Вся ваша статистика анонимна, другие пользователи не смогут никак ее
             посмотреть! В оставленных вами отзывах на странице "Отзывы", другие
