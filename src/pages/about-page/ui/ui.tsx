@@ -161,10 +161,8 @@ export const AboutUs = () => {
           </Text>
           <AspectRatio ratio={20 / 15}>
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d814.4060661102209!2d55.95101525644837!3d54.73621662996031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x43d93a6a4362416f%3A0x53e627c568e62f75!2z0KPRhNC40LzRgdC60LjQuSDQsNCy0LjQsNGG0LjQvtC90L3Ri9C5INGC0LXRhdC90LjQutGD0Lw!5e0!3m2!1sru!2sru!4v1656150905802!5m2!1sru!2sru"
-              title="Google map"
-              style={{ borderRadius: 10 }}
-            />
+                src="https://yandex.ru/map-widget/v1/?um=constructor%3A7fdc79425de70a80ab733128b430358c44547cf688377a874a868b06950128a5&amp;source=constructor"
+                width="500" height="400" frameBorder="0"></iframe>
           </AspectRatio>
         </Stack>
       </Center>

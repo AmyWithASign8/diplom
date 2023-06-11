@@ -214,7 +214,7 @@ const PizzaCard: FC<CardInterface> = ({landing, commerce, toCard, productData, c
                           color="orange.6"
                           variant="filled"
                           value="тонкое"
-                          disabled={valueOfSize === "тонкое"}
+                          disabled={valueOfSize === "25"}
                       >
                         Тонкое
                       </Chip>

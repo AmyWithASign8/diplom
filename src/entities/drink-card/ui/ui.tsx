@@ -185,7 +185,7 @@ const DrinkCard: FC<CardInterface> = ({productData, toCard, landing, commerce, c
                     bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
                     onClick={() => deleteProductFromBasket()}
                 >
-                  Удалить
+                  Убрать
                 </Button>
             </Stack> :  <Group
                 position={"apart"}
@@ -215,7 +215,7 @@ const DrinkCard: FC<CardInterface> = ({productData, toCard, landing, commerce, c
                     bg={currentTheme.colorScheme === "light" ? "rgba(0, 0, 0, 0)" : ""}
                     onClick={() => deleteProductFromBasket()}
                 >
-                  Удалить
+                  Убрать
                 </Button>
               </Group>
             </Group>}
