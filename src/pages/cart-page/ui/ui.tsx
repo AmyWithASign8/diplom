@@ -135,7 +135,7 @@ export const CartLayout = () => {
           </Button></>}
       </Group>
         <Center mt={'2%'}>
-            <Alert w={'40%'} icon={<IconAlertCircle size="1rem" />} title="Внимание!" color="orange" variant={'filled'}>
+            <Alert w={currentScreenSize < Breakpoints.lg ? '80%' : '40%'} icon={<IconAlertCircle size="1rem" />} title="Внимание!" color="orange" variant={'filled'}>
                 Оплата при получении товара, забрать можно в течении часа по адресу ул. Менделеева, 169, Уфа, Респ. Башкортостан, 450022 , чтобы узнать готов ли ваш заказ напишите нам на почту или спросите продавца в пункте выдачи.
             </Alert>
         </Center>

@@ -33,6 +33,8 @@ import {modals} from "@mantine/modals";
 import {updatePassword} from "../../../shared/api/queries/user/updatePassword";
 import {useGetAllOrders} from "../../../shared/api/queries/orders";
 import dayjs from "dayjs";
+import {useScreenSize} from "../../../shared/hooks";
+import {Breakpoints} from "../../../shared/types";
 
 interface IFormInput {
   email: string;
@@ -42,6 +44,7 @@ interface IFormPasswordInput {
   newPassword: string
 }
 export const ViewerLayout = () => {
+  const currentScreenSize = useScreenSize()
   const {id} = useParams()
   const [openedPopover, setOpenedPopover] = useState(false);
   const {
@@ -225,12 +228,12 @@ export const ViewerLayout = () => {
                     <Accordion.Item value={String(obj.id)}>
                       <Accordion.Control>
                         <Group position={'apart'}>
-                          <Text fw={500} size={18}>Заказ №{obj.id}</Text>
-                          <Text fw={500} size={18}>Дата: {dayjs(obj.createdAt)
+                          <Text fw={500} size={currentScreenSize < Breakpoints.lg ? 'md' : 'lg'}>Заказ №{obj.id}</Text>
+                          <Text fw={500} size={currentScreenSize < Breakpoints.lg ? 'md' : 'lg'}>Дата: {dayjs(obj.createdAt)
                               .locale("ru")
                               .format("DD MMMM YYYY HH:mm")}</Text>
-                          <Text fw={500} size={18}>Сумма: {obj.price} RUB</Text>
-                          {obj.status === 'waiting' ? <Badge color="yellow" size="lg" radius="lg" variant="filled">В ожидании</Badge> : <Badge color="green" size="lg" radius="lg" variant="filled">Выполнен</Badge>}
+                          <Text fw={500} size={currentScreenSize < Breakpoints.lg ? 'md' : 'lg'}>Сумма: {obj.price} RUB</Text>
+                          {obj.status === 'waiting' ? <Badge color="yellow" size={currentScreenSize < Breakpoints.lg ? 'md' : 'lg'} radius="lg" variant="filled">В ожидании</Badge> : <Badge color="green" size={currentScreenSize < Breakpoints.lg ? 'md' : 'lg'} radius="lg" variant="filled">Выполнен</Badge>}
                         </Group>
                       </Accordion.Control>
                       {obj.orderProducts.map((obj) => (
