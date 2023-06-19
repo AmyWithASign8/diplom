@@ -245,18 +245,18 @@ export const ViewerLayout = () => {
                                   <Group>
                                     <td><Image src={`http://localhost:5000/${obj.product.image}`} width={150}/></td>
                                     <td><Stack>
-                                      <Text fw={500} size={18} w={300}>{obj.title}</Text>
+                                      <Text fw={500} size={currentScreenSize < Breakpoints.lg ? 'sm' : 'lg'} w={300}>{obj.title}</Text>
                                       {obj.product.brand.name === 'Пицца' &&
                                           <Group>
-                                            <Text fw={500}>{obj.size === 25 ? 'Маленькая' : obj.size === 30 ? 'Средняя' : 'Большая'}, {obj.size} см, {obj.paste} тесто</Text>
+                                            <Text fw={500} size={currentScreenSize < Breakpoints.lg ? 'sm' : 'lg'}>{obj.size === 25 ? 'Маленькая' : obj.size === 30 ? 'Средняя' : 'Большая'}, {obj.size} см, {obj.paste} тесто</Text>
                                           </Group>
                                       }
                                     </Stack></td>
                                   </Group>
-                                  <td><Text fw={500}>{obj.product.brand.name}</Text></td>
-                                  <td><Text fw={500}>{obj.product.type.name}</Text></td>
-                                  <td><Text fw={500}>{obj.product.additional}</Text></td>
-                                  <td><Text fw={500} mr={40}>{obj.price} RUB</Text></td>
+                                  <td><Text fw={500} size={currentScreenSize < Breakpoints.lg ? 'sm' : 'lg'}>{obj.product.brand.name}</Text></td>
+                                  <td><Text fw={500} size={currentScreenSize < Breakpoints.lg ? 'sm' : 'lg'}>{obj.product.type.name}</Text></td>
+                                  <td><Text fw={500} size={currentScreenSize < Breakpoints.lg ? 'sm' : 'lg'}>{obj.product.additional}</Text></td>
+                                  <td><Text fw={500}  size={currentScreenSize < Breakpoints.lg ? 'sm' : 'lg'}>{obj.price} RUB</Text></td>
                                 </Group>
                               </tr>
                               </tbody>
