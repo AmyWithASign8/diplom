@@ -1,5 +1,5 @@
 # diplom
-Web-сайт "Онлайн пиццерия "Tasty pizza""
+Дипломный проект web-сайт "Онлайн пиццерия "Tasty pizza""
 Стек: 
 1) React TypeScript
 2) React Query
